@@ -1,6 +1,7 @@
 package de.ravenguard.ausbildungsnachweis.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TrainingPeriod {
@@ -8,12 +9,12 @@ public class TrainingPeriod {
   private LocalDate begin;
   private LocalDate end;
   private String schoolClass;
-  private List<DataMonth> months;
-  private List<SchoolSubject> schoolSubjects;
+  private final List<DataMonth> months = new ArrayList<>();
+  private final List<SchoolSubject> schoolSubjects = new ArrayList<>();
 
   /**
    * Field Constructor.
-   * 
+   *
    * @param label label, may not be null or empty
    * @param begin begin of period, may not be null
    * @param end end of period, may not be null
@@ -62,7 +63,7 @@ public class TrainingPeriod {
 
   /**
    * Adds a month to the training period.
-   * 
+   *
    * @param month month to add, may not be null, not already in the list and must be within the
    *        bonds of the period
    */
@@ -86,7 +87,7 @@ public class TrainingPeriod {
 
   /**
    * Adds a school subject to the training period.
-   * 
+   *
    * @param schoolSubject school subject to add, may not be null and not already in the list
    */
   public void addSchoolSubject(SchoolSubject schoolSubject) {
@@ -130,6 +131,37 @@ public class TrainingPeriod {
     return schoolSubjects;
   }
 
+  /**
+   * Removes a month from the training period.
+   *
+   * @param month the month to remove, may not be null.
+   */
+  public void removeMonth(DataMonth month) {
+    if (month == null) {
+      throw new IllegalArgumentException("month cannot be null.");
+    }
+
+    months.remove(month);
+  }
+
+  /**
+   * Removes a SchoolSubject from the training period.
+   *
+   * @param subject the subject to remove, may not be null.
+   */
+  public void removeSchoolSubject(SchoolSubject subject) {
+    if (subject == null) {
+      throw new IllegalArgumentException("subject cannot be null.");
+    }
+
+    schoolSubjects.remove(subject);
+  }
+
+  /**
+   * Sets the begin of the period.
+   *
+   * @param begin LocalDate of the begin, may not be null
+   */
   public void setBegin(LocalDate begin) {
     if (begin == null) {
       throw new IllegalArgumentException("begin cannot be null.");
@@ -138,6 +170,11 @@ public class TrainingPeriod {
     this.begin = begin;
   }
 
+  /**
+   * Sets the end of the period.
+   *
+   * @param end LocalDate of the end, may not be null
+   */
   public void setEnd(LocalDate end) {
     if (end == null) {
       throw new IllegalArgumentException("end cannot be null.");
@@ -146,35 +183,61 @@ public class TrainingPeriod {
     this.end = end;
   }
 
+  /**
+   * Sets the label of the period.
+   *
+   * @param label label of the period, may not be empty or null
+   */
   public void setLabel(String label) {
     if (label == null || label.trim().length() == 0) {
       throw new IllegalArgumentException("label cannot be null or empty.");
     }
 
-    this.label = label;
+    this.label = label.trim();
   }
 
+  /**
+   * Sets the months.
+   *
+   * @param months List of months to add, may not be null.
+   */
   public void setMonths(List<DataMonth> months) {
     if (months == null) {
       throw new IllegalArgumentException("months cannot be null.");
     }
 
-    this.months = months;
+    this.months.clear();
+    months.forEach(month -> {
+      addMonth(month);
+    });
   }
 
+  /**
+   * Sets the schoolClass of the period.
+   *
+   * @param schoolClass schoolClass of the period, may not be empty or null
+   */
   public void setSchoolClass(String schoolClass) {
     if (schoolClass == null || schoolClass.trim().length() == 0) {
       throw new IllegalArgumentException("schoolClass cannot be null or empty.");
     }
 
-    this.schoolClass = schoolClass;
+    this.schoolClass = schoolClass.trim();
   }
 
+  /**
+   * Sets the schoolSubjects.
+   *
+   * @param schoolSubjects List of schoolSubjects to add, may not be null.
+   */
   public void setSchoolSubjects(List<SchoolSubject> schoolSubjects) {
     if (schoolSubjects == null) {
       throw new IllegalArgumentException("schoolSubjects cannot be null.");
     }
 
-    this.schoolSubjects = schoolSubjects;
+    this.schoolSubjects.clear();
+    schoolSubjects.forEach(subject -> {
+      addSchoolSubject(subject);
+    });
   }
 }

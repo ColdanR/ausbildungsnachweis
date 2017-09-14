@@ -39,13 +39,32 @@ public class Install {
     LOGGER.trace("Called Install()");
   }
 
+  /**
+   * Adds a holiday to the list.
+   *
+   * @param holiday the holiday to add, may not be null
+   */
   public void addHoliday(LocalDate holiday) {
     LOGGER.trace("Called addHoliday(holiday: {})", holiday);
+    if (holiday == null) {
+      throw new IllegalArgumentException("holiday may not be null.");
+    }
+    if (holidays.contains(holiday)) {
+      throw new IllegalArgumentException("holiday already in the list");
+    }
     holidays.add(holiday);
   }
 
+  /**
+   * Deletes a holiday from the list.
+   *
+   * @param holiday holiday to add, may not be null
+   */
   public void deleteHoliday(LocalDate holiday) {
     LOGGER.trace("Called deleteHoliday(holiday: {})", holiday);
+    if (holiday == null) {
+      throw new IllegalArgumentException("holiday may not be null.");
+    }
     holidays.remove(holiday);
   }
 
@@ -72,6 +91,19 @@ public class Install {
   public Path getSettingsPath() {
     LOGGER.trace("Called getSettingsPath()");
     return installPath.resolve(SETTINGS);
+  }
+
+  /**
+   * Checks if the date is a holiday.
+   *
+   * @param date date to check, may not be null.
+   * @return true if holiday, false otherwise
+   */
+  public boolean isHoliday(LocalDate date) {
+    if (date == null) {
+      throw new IllegalArgumentException("date may not be null.");
+    }
+    return holidays.contains(date);
   }
 
   public boolean isSaturdayWorkday() {
