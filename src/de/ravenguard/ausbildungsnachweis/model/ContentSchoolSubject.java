@@ -1,12 +1,14 @@
 package de.ravenguard.ausbildungsnachweis.model;
 
-import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ContentSchoolSubject {
   private SchoolSubject subject;
-  private List<String> content;
+  private String content;
 
-  public List<String> getContent() {
+  public String getContent() {
     return content;
   }
 
@@ -14,7 +16,7 @@ public class ContentSchoolSubject {
     return subject;
   }
 
-  public void setContent(List<String> content) {
+  public void setContent(String content) {
     this.content = content;
   }
 

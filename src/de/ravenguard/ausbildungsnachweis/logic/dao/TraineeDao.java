@@ -1,6 +1,5 @@
 package de.ravenguard.ausbildungsnachweis.logic.dao;
 
-import de.ravenguard.ausbildungsnachweis.logic.dao.HolidaysDao.HolidayWrapper;
 import de.ravenguard.ausbildungsnachweis.model.Trainee;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -71,7 +70,7 @@ public class TraineeDao {
       throw new IllegalArgumentException("path cannot be null.");
     }
 
-    final JAXBContext jc = JAXBContext.newInstance(HolidayWrapper.class);
+    final JAXBContext jc = JAXBContext.newInstance(Trainee.class);
     final Marshaller m = jc.createMarshaller();
     final OutputStream os = Files.newOutputStream(path, StandardOpenOption.CREATE,
         StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);

@@ -1,17 +1,37 @@
 package de.ravenguard.ausbildungsnachweis.model;
 
+import de.ravenguard.ausbildungsnachweis.logic.dao.LocalDateAdapter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Trainee {
   private String familiyName;
   private String givenNames;
+  @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
   private LocalDate begin;
+  @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
   private LocalDate end;
   private String trainer;
   private String school;
+  @XmlElementWrapper(name = "trainingPeriods")
+  @XmlElement(name = "trainingPeriod")
   private final List<TrainingPeriod> trainingPeriods = new ArrayList<>();
+
+  /**
+   * empty argument constructor.
+   */
+  public Trainee() {
+    ;
+  }
 
   /**
    * Fields Constructor.

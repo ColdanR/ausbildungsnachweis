@@ -1,20 +1,32 @@
 package de.ravenguard.ausbildungsnachweis.model;
 
+import de.ravenguard.ausbildungsnachweis.logic.dao.LocalDateAdapter;
+import de.ravenguard.ausbildungsnachweis.logic.dao.WeekTypeAdapter;
 import java.time.LocalDate;
 import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class DataWeek {
+  @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
   private LocalDate begin;
+  @XmlJavaTypeAdapter(value = WeekTypeAdapter.class)
   private WeekType type;
-  private List<ContentSchoolSubject> contentSchool;
   private String notes;
-  private List<String> contentCompany;
+  private String contentCompany;
+  @XmlElementWrapper(name = "schoolContents")
+  @XmlElement(name = "contentSchool")
+  private List<ContentSchoolSubject> contentSchool;
 
   public LocalDate getBegin() {
     return begin;
   }
 
-  public List<String> getContentCompany() {
+  public String getContentCompany() {
     return contentCompany;
   }
 
@@ -34,7 +46,7 @@ public class DataWeek {
     this.begin = begin;
   }
 
-  public void setContentCompany(List<String> contentCompany) {
+  public void setContentCompany(String contentCompany) {
     this.contentCompany = contentCompany;
   }
 
