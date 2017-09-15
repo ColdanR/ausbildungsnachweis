@@ -1,14 +1,27 @@
 package de.ravenguard.ausbildungsnachweis.model;
 
+import de.ravenguard.ausbildungsnachweis.logic.dao.LocalDateAdapter;
 import java.time.LocalDate;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class SchoolSubject {
   private String label;
+  @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
   private LocalDate exemptSince = null;
 
   /**
+   * empty argument constructor.
+   */
+  public SchoolSubject() {
+    ;
+  }
+
+  /**
    * Label Field Constructor.
-   * 
+   *
    * @param label label of the SchoolSubject, may not be null or empty.
    */
   public SchoolSubject(String label) {
@@ -21,7 +34,7 @@ public class SchoolSubject {
 
   /**
    * Field Constructor.
-   * 
+   *
    * @param label label of the SchoolSubject, may not be null or empty.
    * @param exemptSince LocalDate of exempt for this SchoolSubject
    */
@@ -57,5 +70,10 @@ public class SchoolSubject {
       throw new IllegalArgumentException("label may not be null or empty.");
     }
     this.label = label.trim();
+  }
+
+  @Override
+  public String toString() {
+    return "SchoolSubject [label=" + label + ", exemptSince=" + exemptSince + "]";
   }
 }

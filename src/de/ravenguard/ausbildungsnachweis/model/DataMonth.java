@@ -1,14 +1,31 @@
 package de.ravenguard.ausbildungsnachweis.model;
 
 import de.ravenguard.ausbildungsnachweis.logic.Install;
+import de.ravenguard.ausbildungsnachweis.logic.dao.LocalDateAdapter;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class DataMonth {
+  @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
   private LocalDate begin;
-  private List<DataWeek> weeks;
   private String notes;
+  @XmlElementWrapper(name = "weeks")
+  @XmlElement(name = "week")
+  private List<DataWeek> weeks;
+
+  /**
+   * empty argument constructor.
+   */
+  public DataMonth() {
+    ;
+  }
 
   /**
    * Fields Constructor.
@@ -104,5 +121,10 @@ public class DataMonth {
     }
 
     this.weeks = weeks;
+  }
+
+  @Override
+  public String toString() {
+    return "DataMonth [begin=" + begin + ", notes=" + notes + ", weeks=" + weeks + "]";
   }
 }

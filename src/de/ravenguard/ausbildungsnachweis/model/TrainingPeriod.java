@@ -1,16 +1,36 @@
 package de.ravenguard.ausbildungsnachweis.model;
 
+import de.ravenguard.ausbildungsnachweis.logic.dao.LocalDateAdapter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class TrainingPeriod {
   private String label;
+  @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
   private LocalDate begin;
+  @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
   private LocalDate end;
   private String schoolClass;
+  @XmlElementWrapper(name = "months")
+  @XmlElement(name = "month")
   private final List<DataMonth> months = new ArrayList<>();
+  @XmlElementWrapper(name = "schoolSubjects")
+  @XmlElement(name = "schoolSubject")
   private final List<SchoolSubject> schoolSubjects = new ArrayList<>();
+
+  /**
+   * empty argument constructor.
+   */
+  public TrainingPeriod() {
+    ;
+  }
 
   /**
    * Field Constructor.
@@ -239,5 +259,11 @@ public class TrainingPeriod {
     schoolSubjects.forEach(subject -> {
       addSchoolSubject(subject);
     });
+  }
+
+  @Override
+  public String toString() {
+    return "TrainingPeriod [label=" + label + ", begin=" + begin + ", end=" + end + ", schoolClass="
+        + schoolClass + ", months=" + months + ", schoolSubjects=" + schoolSubjects + "]";
   }
 }
