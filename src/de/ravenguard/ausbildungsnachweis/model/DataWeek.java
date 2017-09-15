@@ -61,4 +61,10 @@ public class DataWeek {
   public void setType(WeekType type) {
     this.type = type;
   }
+
+  @Override
+  public String toString() {
+    return "DataWeek [begin=" + begin + ", type=" + type + ", notes=" + notes + ", contentCompany="
+        + contentCompany + ", contentSchool=" + contentSchool + "]";
+  }
 }

@@ -71,4 +71,9 @@ public class SchoolSubject {
     }
     this.label = label.trim();
   }
+
+  @Override
+  public String toString() {
+    return "SchoolSubject [label=" + label + ", exemptSince=" + exemptSince + "]";
+  }
 }

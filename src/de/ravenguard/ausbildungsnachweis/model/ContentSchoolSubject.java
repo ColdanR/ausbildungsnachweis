@@ -23,4 +23,9 @@ public class ContentSchoolSubject {
   public void setSubject(SchoolSubject subject) {
     this.subject = subject;
   }
+
+  @Override
+  public String toString() {
+    return "ContentSchoolSubject [subject=" + subject + ", content=" + content + "]";
+  }
 }

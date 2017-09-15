@@ -122,4 +122,9 @@ public class DataMonth {
 
     this.weeks = weeks;
   }
+
+  @Override
+  public String toString() {
+    return "DataMonth [begin=" + begin + ", notes=" + notes + ", weeks=" + weeks + "]";
+  }
 }

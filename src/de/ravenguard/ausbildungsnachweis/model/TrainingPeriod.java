@@ -260,4 +260,10 @@ public class TrainingPeriod {
       addSchoolSubject(subject);
     });
   }
+
+  @Override
+  public String toString() {
+    return "TrainingPeriod [label=" + label + ", begin=" + begin + ", end=" + end + ", schoolClass="
+        + schoolClass + ", months=" + months + ", schoolSubjects=" + schoolSubjects + "]";
+  }
 }

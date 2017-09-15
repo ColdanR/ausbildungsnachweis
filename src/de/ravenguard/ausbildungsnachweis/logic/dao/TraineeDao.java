@@ -72,6 +72,8 @@ public class TraineeDao {
 
     final JAXBContext jc = JAXBContext.newInstance(Trainee.class);
     final Marshaller m = jc.createMarshaller();
+    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+    m.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
     final OutputStream os = Files.newOutputStream(path, StandardOpenOption.CREATE,
         StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
 

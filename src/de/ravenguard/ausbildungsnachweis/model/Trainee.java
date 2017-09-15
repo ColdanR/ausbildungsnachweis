@@ -218,4 +218,11 @@ public class Trainee {
       addTrainingPeriode(period);
     });
   }
+
+  @Override
+  public String toString() {
+    return "Trainee [familiyName=" + familiyName + ", givenNames=" + givenNames + ", begin=" + begin
+        + ", end=" + end + ", trainer=" + trainer + ", school=" + school + ", trainingPeriods="
+        + trainingPeriods + "]";
+  }
 }

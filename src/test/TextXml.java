@@ -25,5 +25,8 @@ public class TextXml {
     final Path path = Paths.get("D:", "temp", "text.xml");
 
     TraineeDao.saveToPath(path, trainee);
+
+    final Trainee traineeLoad = TraineeDao.getFromPath(path);
+    System.out.println(traineeLoad.toString());
   }
 }
