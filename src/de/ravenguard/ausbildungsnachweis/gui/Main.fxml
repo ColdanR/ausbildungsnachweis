@@ -10,8 +10,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 
-
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111">
+<BorderPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="800.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
          <children>
@@ -30,19 +29,17 @@
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
-          <Menu mnemonicParsing="false" text="File">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
-            </items>
+          <Menu fx:id="Menu" mnemonicParsing="false" text="Menu">
+               <items>
+                  <MenuItem fx:id="New" mnemonicParsing="false" text="New" />
+                  <MenuItem fx:id="Save" mnemonicParsing="false" text="Save" />
+                  <MenuItem fx:id="Close" mnemonicParsing="false" text="Close" />
+               </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
+          <Menu fx:id="Edit" mnemonicParsing="false" text="Edit">
             <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
+              <MenuItem mnemonicParsing="false" text="Edit  Trainee" />
+                  <MenuItem mnemonicParsing="false" text="Edit Ausbildung-Zeitraum" />
             </items>
           </Menu>
         </menus>
