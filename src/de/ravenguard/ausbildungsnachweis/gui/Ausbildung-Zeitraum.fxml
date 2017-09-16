@@ -4,29 +4,48 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Light.Distant?>
+<?import javafx.scene.effect.Lighting?>
+<?import javafx.scene.effect.MotionBlur?>
+<?import javafx.scene.effect.Shadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="800.0" prefWidth="1000.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111">
+<AnchorPane prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ListView layoutX="41.0" layoutY="530.0" prefHeight="200.0" prefWidth="200.0" />
-      <Button layoutX="183.0" layoutY="737.0" mnemonicParsing="false" text="+" />
-      <Button layoutX="218.0" layoutY="737.0" mnemonicParsing="false" text="-" />
-      <DatePicker layoutX="345.0" layoutY="705.0" />
-      <TextField layoutX="345.0" layoutY="596.0" />
-      <Label layoutX="345.0" layoutY="550.0" text="Bezeichnung" underline="true">
+      <ListView layoutX="41.0" layoutY="492.0" prefHeight="200.0" prefWidth="200.0" />
+      <Button layoutX="183.0" layoutY="699.0" mnemonicParsing="false" text="+" />
+      <Button layoutX="218.0" layoutY="699.0" mnemonicParsing="false" text="-" />
+      <DatePicker layoutX="345.0" layoutY="667.0" />
+      <TextField layoutX="345.0" layoutY="558.0" />
+      <Label layoutX="345.0" layoutY="512.0" text="Bezeichnung" underline="true">
          <font>
             <Font size="13.0" />
          </font>
       </Label>
-      <Label layoutX="345.0" layoutY="653.0" text="Berfreit ab:" underline="true">
+      <Label layoutX="345.0" layoutY="615.0" text="Berfreit ab:" underline="true">
          <font>
             <Font size="13.0" />
          </font>
       </Label>
-      <Region layoutX="27.0" layoutY="31.0" prefHeight="412.0" prefWidth="669.0" />
+      <Region layoutX="41.0" layoutY="45.0" prefHeight="320.0" prefWidth="500.0" />
+      <Separator layoutX="32.0" layoutY="430.0" prefHeight="5.0" prefWidth="936.0">
+         <effect>
+            <MotionBlur angle="4.29">
+               <input>
+                  <Lighting>
+                     <bumpInput>
+                        <Shadow />
+                     </bumpInput>
+                     <light>
+                        <Light.Distant color="BLACK" />
+                     </light>
+                  </Lighting>
+               </input>
+            </MotionBlur>
+         </effect></Separator>
    </children>
 </AnchorPane>
