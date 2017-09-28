@@ -1,4 +1,4 @@
-package de.ravenguard.ausbildungsnachweis.logic.dao;
+package de.ravenguard.ausbildungsnachweis.model;
 
 import java.time.LocalDate;
 import javax.xml.bind.annotation.adapters.XmlAdapter;

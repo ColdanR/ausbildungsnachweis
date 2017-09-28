@@ -1,6 +1,6 @@
 package de.ravenguard.ausbildungsnachweis.gui;
 
-import de.ravenguard.ausbildungsnachweis.logic.Install;
+import de.ravenguard.ausbildungsnachweis.logic.Configuration;
 import de.ravenguard.ausbildungsnachweis.logic.InstallStatus;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,7 +14,7 @@ public class StartupController {
    * @throws JAXBException I/O or parse error
    */
   public void startUp() {
-    final Install install = Install.getInstance();
+    final Configuration install = Configuration.getInstance();
     final InstallStatus status = install.loadSettings();
 
     switch (status) {

@@ -1,6 +1,6 @@
 package de.ravenguard.ausbildungsnachweis.model;
 
-import de.ravenguard.ausbildungsnachweis.logic.dao.LocalDateAdapter;
+import de.ravenguard.ausbildungsnachweis.utils.DateUtils;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,19 +9,17 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Trainee {
   private String familiyName;
   private String givenNames;
-  @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
   private LocalDate begin;
-  @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
   private LocalDate end;
   private String trainer;
   private String school;
+  private String training;
   @XmlElementWrapper(name = "trainingPeriods")
   @XmlElement(name = "trainingPeriod")
   private final List<TrainingPeriod> trainingPeriods = new ArrayList<>();
@@ -29,9 +27,7 @@ public class Trainee {
   /**
    * empty argument constructor.
    */
-  public Trainee() {
-    ;
-  }
+  public Trainee() {}
 
   /**
    * Fields Constructor.
@@ -42,38 +38,20 @@ public class Trainee {
    * @param end end of training
    * @param trainer name of trainer
    * @param school name of school
+   * @param training training
    * @param trainingPeriods list of training periods
    */
   public Trainee(String familiyName, String givenNames, LocalDate begin, LocalDate end,
-      String trainer, String school, List<TrainingPeriod> trainingPeriods) {
+      String trainer, String school, String training, List<TrainingPeriod> trainingPeriods) {
     super();
-    if (familiyName == null || familiyName.trim().length() == 0) {
-      throw new IllegalArgumentException("familyName cannot be null or empty");
-    }
-    if (givenNames == null || givenNames.trim().length() == 0) {
-      throw new IllegalArgumentException("givenNames cannot be null or empty");
-    }
-    if (begin == null) {
-      throw new IllegalArgumentException("begin cannot be null");
-    }
-    if (end == null) {
-      throw new IllegalArgumentException("end cannot be null");
-    }
-    if (trainer == null || trainer.trim().length() == 0) {
-      throw new IllegalArgumentException("trainer cannot be null or empty");
-    }
-    if (school == null || school.trim().length() == 0) {
-      throw new IllegalArgumentException("school cannot be null or empty");
-    }
-    this.familiyName = familiyName.trim();
-    this.givenNames = givenNames.trim();
-    this.begin = begin;
-    this.end = end;
-    this.trainer = trainer.trim();
-    this.school = school.trim();
-    trainingPeriods.forEach(trainingPeriod -> {
-      addTrainingPeriode(trainingPeriod);
-    });
+    setFamiliyName(familiyName);
+    setGivenNames(givenNames);
+    setBegin(begin);
+    setEnd(end);
+    setTrainer(trainer);
+    setSchool(school);
+    setTraining(training);
+    setTrainingPeriodes(trainingPeriods);
   }
 
   /**
@@ -97,10 +75,81 @@ public class Trainee {
     });
 
     if (conflict) {
-      throw new IllegalArgumentException("Time Conflict with existing periodes.");
+      throw new IllegalArgumentException("Time conflict with existing periodes.");
     }
 
     trainingPeriods.add(trainingPeriod);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    final Trainee other = (Trainee) obj;
+    if (begin == null) {
+      if (other.begin != null) {
+        return false;
+      }
+    } else if (!begin.equals(other.begin)) {
+      return false;
+    }
+    if (end == null) {
+      if (other.end != null) {
+        return false;
+      }
+    } else if (!end.equals(other.end)) {
+      return false;
+    }
+    if (familiyName == null) {
+      if (other.familiyName != null) {
+        return false;
+      }
+    } else if (!familiyName.equals(other.familiyName)) {
+      return false;
+    }
+    if (givenNames == null) {
+      if (other.givenNames != null) {
+        return false;
+      }
+    } else if (!givenNames.equals(other.givenNames)) {
+      return false;
+    }
+    if (school == null) {
+      if (other.school != null) {
+        return false;
+      }
+    } else if (!school.equals(other.school)) {
+      return false;
+    }
+    if (trainer == null) {
+      if (other.trainer != null) {
+        return false;
+      }
+    } else if (!trainer.equals(other.trainer)) {
+      return false;
+    }
+    if (training == null) {
+      if (other.training != null) {
+        return false;
+      }
+    } else if (!training.equals(other.training)) {
+      return false;
+    }
+    if (trainingPeriods == null) {
+      if (other.trainingPeriods != null) {
+        return false;
+      }
+    } else if (!trainingPeriods.equals(other.trainingPeriods)) {
+      return false;
+    }
+    return true;
   }
 
   public LocalDate getBegin() {
@@ -127,8 +176,27 @@ public class Trainee {
     return trainer;
   }
 
+  public String getTraining() {
+    return training;
+  }
+
   public List<TrainingPeriod> getTrainingPeriods() {
     return trainingPeriods;
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + (begin == null ? 0 : begin.hashCode());
+    result = prime * result + (end == null ? 0 : end.hashCode());
+    result = prime * result + (familiyName == null ? 0 : familiyName.hashCode());
+    result = prime * result + (givenNames == null ? 0 : givenNames.hashCode());
+    result = prime * result + (school == null ? 0 : school.hashCode());
+    result = prime * result + (trainer == null ? 0 : trainer.hashCode());
+    result = prime * result + (training == null ? 0 : training.hashCode());
+    result = prime * result + (trainingPeriods == null ? 0 : trainingPeriods.hashCode());
+    return result;
   }
 
   /**
@@ -137,9 +205,9 @@ public class Trainee {
    * @param begin LocalDate of the begin, cannot be null.
    */
   public void setBegin(LocalDate begin) {
-    if (begin == null) {
-      throw new IllegalArgumentException("begin cannot be null");
-    }
+    DateUtils.checkDate(begin);
+    DateUtils.checkDate(begin, end);
+
     this.begin = begin;
   }
 
@@ -149,9 +217,9 @@ public class Trainee {
    * @param end LocalDate of the end, cannot be null.
    */
   public void setEnd(LocalDate end) {
-    if (end == null) {
-      throw new IllegalArgumentException("end cannot be null");
-    }
+    DateUtils.checkDate(end);
+    DateUtils.checkDate(begin, end);
+
     this.end = end;
   }
 
@@ -164,7 +232,7 @@ public class Trainee {
     if (familiyName == null || familiyName.trim().length() == 0) {
       throw new IllegalArgumentException("familyName cannot be null or empty");
     }
-    this.familiyName = familiyName;
+    this.familiyName = familiyName.trim();
   }
 
   /**
@@ -176,7 +244,7 @@ public class Trainee {
     if (givenNames == null || givenNames.trim().length() == 0) {
       throw new IllegalArgumentException("givenNames cannot be null or empty");
     }
-    this.givenNames = givenNames;
+    this.givenNames = givenNames.trim();
   }
 
   /**
@@ -188,7 +256,7 @@ public class Trainee {
     if (school == null || school.trim().length() == 0) {
       throw new IllegalArgumentException("school cannot be null or empty");
     }
-    this.school = school;
+    this.school = school.trim();
   }
 
   /**
@@ -200,7 +268,19 @@ public class Trainee {
     if (trainer == null || trainer.trim().length() == 0) {
       throw new IllegalArgumentException("trainer cannot be null or empty");
     }
-    this.trainer = trainer;
+    this.trainer = trainer.trim();
+  }
+
+  /**
+   * Sets the training.
+   *
+   * @param training training label, may not be null or empty
+   */
+  public void setTraining(String training) {
+    if (training == null || training.trim().length() == 0) {
+      throw new IllegalArgumentException("training cannot be null or empty");
+    }
+    this.training = training.trim();
   }
 
   /**
@@ -222,7 +302,7 @@ public class Trainee {
   @Override
   public String toString() {
     return "Trainee [familiyName=" + familiyName + ", givenNames=" + givenNames + ", begin=" + begin
-        + ", end=" + end + ", trainer=" + trainer + ", school=" + school + ", trainingPeriods="
-        + trainingPeriods + "]";
+        + ", end=" + end + ", trainer=" + trainer + ", school=" + school + ", training=" + training
+        + ", trainingPeriods=" + trainingPeriods + "]";
   }
 }

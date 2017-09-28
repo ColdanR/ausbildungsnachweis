@@ -2,6 +2,7 @@ package de.ravenguard.ausbildungsnachweis.logic;
 
 import de.ravenguard.ausbildungsnachweis.logic.dao.HolidaysDao;
 import de.ravenguard.ausbildungsnachweis.logic.dao.SettingDao;
+import de.ravenguard.ausbildungsnachweis.model.Settings;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,19 +14,19 @@ import javax.xml.bind.JAXBException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class Install {
+public class Configuration {
   private static final String SETTINGS = "settings.xml";
   private static final String HOLIDAYS = "holidays.xml";
-  private static final Logger LOGGER = LogManager.getLogger(Install.class);
+  private static final Logger LOGGER = LogManager.getLogger(Configuration.class);
 
-  private static Install INSTANCE = new Install();
+  private static Configuration INSTANCE = new Configuration();
 
   /**
    * Returns the singleton instance.
    *
    * @return Instance of Install
    */
-  public static Install getInstance() {
+  public static Configuration getInstance() {
     LOGGER.trace("Called getInstance()");
     return INSTANCE;
   }
@@ -35,8 +36,8 @@ public class Install {
   private final Path installPath = Paths.get(System.getenv("user.home"), "ausbildungsnachweis");
   private Path currentFile;
 
-  private Install() {
-    LOGGER.trace("Called Install()");
+  private Configuration() {
+    LOGGER.trace("Called Configuration()");
   }
 
   /**
@@ -58,7 +59,7 @@ public class Install {
   /**
    * Deletes a holiday from the list.
    *
-   * @param holiday holiday to add, may not be null
+   * @param holiday holiday to delete, may not be null
    */
   public void deleteHoliday(LocalDate holiday) {
     LOGGER.trace("Called deleteHoliday(holiday: {})", holiday);
@@ -71,11 +72,6 @@ public class Install {
   public Path getCurrentFile() {
     LOGGER.trace("Called getCurrentFile()");
     return currentFile;
-  }
-
-  public String getDefaultStorage() {
-    LOGGER.trace("Called getDefaultStorage()");
-    return settings.getDefaultStorage();
   }
 
   public Path getHolidaysPath() {
@@ -91,6 +87,10 @@ public class Install {
   public Path getSettingsPath() {
     LOGGER.trace("Called getSettingsPath()");
     return installPath.resolve(SETTINGS);
+  }
+
+  public boolean isCompanyAndSchool() {
+    return settings.isCompanyAndSchool();
   }
 
   /**
@@ -109,6 +109,10 @@ public class Install {
   public boolean isSaturdayWorkday() {
     LOGGER.trace("Called isSaturdayWorkday()");
     return settings.isSaturdayWorkday();
+  }
+
+  public boolean isSundayWorkday() {
+    return settings.isSundayWorkday();
   }
 
   /**
@@ -154,18 +158,21 @@ public class Install {
     SettingDao.saveToPath(getSettingsPath(), settings);
   }
 
+  public void setCompanyAndSchool(boolean companyAndSchool) {
+    settings.setCompanyAndSchool(companyAndSchool);
+  }
+
   public void setCurrentFile(Path currentFile) {
     LOGGER.trace("Called setCurrentFile(currentFile: {})", currentFile);
     this.currentFile = currentFile;
   }
 
-  public void setDefaultStorage(String defaultStorage) {
-    LOGGER.trace("Called setDefaultStorage(defaultStorage: {})", defaultStorage);
-    settings.setDefaultStorage(defaultStorage);
-  }
-
   public void setSaturdayWorkday(boolean saturdayWorkday) {
     LOGGER.trace("Called setSaturdayWorkday(saturdayWorkday: {})", saturdayWorkday);
     settings.setSaturdayWorkday(saturdayWorkday);
+  }
+
+  public void setSundayWorkday(boolean sundayWorkday) {
+    settings.setSundayWorkday(sundayWorkday);
   }
 }

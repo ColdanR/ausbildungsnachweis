@@ -1,6 +1,6 @@
 package de.ravenguard.ausbildungsnachweis.model;
 
-import de.ravenguard.ausbildungsnachweis.logic.dao.LocalDateAdapter;
+import de.ravenguard.ausbildungsnachweis.utils.DateUtils;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,16 +8,14 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class TrainingPeriod {
   private String label;
-  @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
   private LocalDate begin;
-  @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
   private LocalDate end;
   private String schoolClass;
+  private String classTeacher;
   @XmlElementWrapper(name = "months")
   @XmlElement(name = "month")
   private final List<DataMonth> months = new ArrayList<>();
@@ -28,9 +26,7 @@ public class TrainingPeriod {
   /**
    * empty argument constructor.
    */
-  public TrainingPeriod() {
-    ;
-  }
+  public TrainingPeriod() {}
 
   /**
    * Field Constructor.
@@ -39,46 +35,20 @@ public class TrainingPeriod {
    * @param begin begin of period, may not be null
    * @param end end of period, may not be null
    * @param schoolClass schoolClass, may not be null or empty
+   * @param classTeacher class teacher, may not be null or empty
    * @param months months of period, may not be null
    * @param schoolSubjects schoolSubjects, may not be null
    */
   public TrainingPeriod(String label, LocalDate begin, LocalDate end, String schoolClass,
-      List<DataMonth> months, List<SchoolSubject> schoolSubjects) {
+      String classTeacher, List<DataMonth> months, List<SchoolSubject> schoolSubjects) {
     super();
-
-    if (label == null || label.trim().length() == 0) {
-      throw new IllegalArgumentException("label cannot be null or empty.");
-    }
-
-    if (begin == null) {
-      throw new IllegalArgumentException("begin cannot be null.");
-    }
-
-    if (end == null) {
-      throw new IllegalArgumentException("end cannot be null.");
-    }
-
-    if (schoolClass == null || schoolClass.trim().length() == 0) {
-      throw new IllegalArgumentException("schoolClass cannot be null or empty.");
-    }
-
-    if (months == null) {
-      throw new IllegalArgumentException("months cannot be null.");
-    }
-
-    if (schoolSubjects == null) {
-      throw new IllegalArgumentException("schoolSubjects cannot be null.");
-    }
-    this.label = label.trim();
-    this.begin = begin;
-    this.end = end;
-    this.schoolClass = schoolClass.trim();
-    months.forEach(month -> {
-      addMonth(month);
-    });
-    schoolSubjects.forEach(schoolSubject -> {
-      addSchoolSubject(schoolSubject);
-    });
+    setLabel(label);
+    setBegin(begin);
+    setEnd(end);
+    setSchoolClass(schoolClass);
+    setClassTeacher(classTeacher);
+    setMonths(months);
+    setSchoolSubjects(schoolSubjects);
   }
 
   /**
@@ -127,8 +97,76 @@ public class TrainingPeriod {
     schoolSubjects.add(schoolSubject);
   }
 
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    final TrainingPeriod other = (TrainingPeriod) obj;
+    if (begin == null) {
+      if (other.begin != null) {
+        return false;
+      }
+    } else if (!begin.equals(other.begin)) {
+      return false;
+    }
+    if (classTeacher == null) {
+      if (other.classTeacher != null) {
+        return false;
+      }
+    } else if (!classTeacher.equals(other.classTeacher)) {
+      return false;
+    }
+    if (end == null) {
+      if (other.end != null) {
+        return false;
+      }
+    } else if (!end.equals(other.end)) {
+      return false;
+    }
+    if (label == null) {
+      if (other.label != null) {
+        return false;
+      }
+    } else if (!label.equals(other.label)) {
+      return false;
+    }
+    if (months == null) {
+      if (other.months != null) {
+        return false;
+      }
+    } else if (!months.equals(other.months)) {
+      return false;
+    }
+    if (schoolClass == null) {
+      if (other.schoolClass != null) {
+        return false;
+      }
+    } else if (!schoolClass.equals(other.schoolClass)) {
+      return false;
+    }
+    if (schoolSubjects == null) {
+      if (other.schoolSubjects != null) {
+        return false;
+      }
+    } else if (!schoolSubjects.equals(other.schoolSubjects)) {
+      return false;
+    }
+    return true;
+  }
+
   public LocalDate getBegin() {
     return begin;
+  }
+
+  public String getClassTeacher() {
+    return classTeacher;
   }
 
   public LocalDate getEnd() {
@@ -149,6 +187,20 @@ public class TrainingPeriod {
 
   public List<SchoolSubject> getSchoolSubjects() {
     return schoolSubjects;
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + (begin == null ? 0 : begin.hashCode());
+    result = prime * result + (classTeacher == null ? 0 : classTeacher.hashCode());
+    result = prime * result + (end == null ? 0 : end.hashCode());
+    result = prime * result + (label == null ? 0 : label.hashCode());
+    result = prime * result + (months == null ? 0 : months.hashCode());
+    result = prime * result + (schoolClass == null ? 0 : schoolClass.hashCode());
+    result = prime * result + (schoolSubjects == null ? 0 : schoolSubjects.hashCode());
+    return result;
   }
 
   /**
@@ -183,11 +235,23 @@ public class TrainingPeriod {
    * @param begin LocalDate of the begin, may not be null
    */
   public void setBegin(LocalDate begin) {
-    if (begin == null) {
-      throw new IllegalArgumentException("begin cannot be null.");
-    }
+    DateUtils.checkDate(begin);
+    DateUtils.checkDate(begin, end);
 
     this.begin = begin;
+  }
+
+  /**
+   * Sets the class teacher of the period.
+   *
+   * @param classTeacher class teacher to set, may not be null or empty
+   */
+  public void setClassTeacher(String classTeacher) {
+    if (classTeacher == null || classTeacher.trim().length() == 0) {
+      throw new IllegalArgumentException("classTeacher cannot be null or empty.");
+    }
+
+    this.classTeacher = classTeacher.trim();
   }
 
   /**
@@ -196,9 +260,8 @@ public class TrainingPeriod {
    * @param end LocalDate of the end, may not be null
    */
   public void setEnd(LocalDate end) {
-    if (end == null) {
-      throw new IllegalArgumentException("end cannot be null.");
-    }
+    DateUtils.checkDate(end);
+    DateUtils.checkDate(begin, end);
 
     this.end = end;
   }
@@ -264,6 +327,7 @@ public class TrainingPeriod {
   @Override
   public String toString() {
     return "TrainingPeriod [label=" + label + ", begin=" + begin + ", end=" + end + ", schoolClass="
-        + schoolClass + ", months=" + months + ", schoolSubjects=" + schoolSubjects + "]";
+        + schoolClass + ", classTeacher=" + classTeacher + ", months=" + months
+        + ", schoolSubjects=" + schoolSubjects + "]";
   }
 }

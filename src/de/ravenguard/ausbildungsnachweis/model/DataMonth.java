@@ -1,24 +1,21 @@
 package de.ravenguard.ausbildungsnachweis.model;
 
-import de.ravenguard.ausbildungsnachweis.logic.Install;
-import de.ravenguard.ausbildungsnachweis.logic.dao.LocalDateAdapter;
-import java.time.DayOfWeek;
+import de.ravenguard.ausbildungsnachweis.utils.DateUtils;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class DataMonth {
-  @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
   private LocalDate begin;
-  private String notes;
+  private LocalDate end;
   @XmlElementWrapper(name = "weeks")
   @XmlElement(name = "week")
-  private List<DataWeek> weeks;
+  private final List<DataWeek> weeks = new ArrayList<>();
 
   /**
    * empty argument constructor.
@@ -31,23 +28,23 @@ public class DataMonth {
    * Fields Constructor.
    *
    * @param begin begin of the month, may not be null
+   * @param end end of the month, may not be null
    * @param weeks list of weeks, may not be null
-   * @param notes notes for the month, may not be null
    */
-  public DataMonth(LocalDate begin, List<DataWeek> weeks, String notes) {
+  public DataMonth(LocalDate begin, LocalDate end, List<DataWeek> weeks) {
     super();
-    if (begin == null) {
-      throw new IllegalArgumentException("begin may not be null");
-    }
+    DateUtils.checkDate(begin);
+    DateUtils.checkDate(end);
+    DateUtils.checkDate(begin, end);
     if (weeks == null) {
       throw new IllegalArgumentException("weeks may not be null");
     }
-    if (notes == null) {
-      throw new IllegalArgumentException("notes may not be null");
-    }
+
     this.begin = begin;
-    this.weeks = weeks;
-    this.notes = notes.trim();
+    this.end = end;
+    for (final DataWeek week : weeks) {
+      addWeek(week);
+    }
   }
 
   /**
@@ -60,28 +57,98 @@ public class DataMonth {
       throw new IllegalArgumentException("week cannot be null.");
     }
 
-    final LocalDate begin = week.getBegin();
-    if (begin.getMonth() != this.begin.getMonth()) {
-      throw new IllegalArgumentException("Week is not in month");
+    if (week.getBegin().getMonth() != begin.getMonth()) {
+      throw new IllegalArgumentException("Begin of week is not in month");
+    }
+    if (week.getEnd().getMonth() != end.getMonth()) {
+      throw new IllegalArgumentException("End of week is not in month");
     }
 
-    if (begin.getDayOfWeek() == DayOfWeek.SUNDAY
-        || begin.getDayOfWeek() == DayOfWeek.SATURDAY && !Install.getInstance().isSaturdayWorkday()
-        || Install.getInstance().isHoliday(begin)) {
-      throw new IllegalArgumentException("Begin of the week is not a work day");
+    boolean conflict = false;
+    for (final DataWeek temp : weeks) {
+      if (week.getBegin().isAfter(temp.getBegin()) && week.getBegin().isBefore(temp.getEnd())
+          || week.getEnd().isAfter(temp.getBegin()) && week.getEnd().isBefore(temp.getEnd())
+          || week.getBegin().isBefore(temp.getBegin()) && week.getEnd().isAfter(temp.getEnd())) {
+        conflict = true;
+        break;
+      }
     }
+    if (conflict) {
+      throw new IllegalArgumentException("week is within another week.");
+    }
+
+    weeks.add(week);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    final DataMonth other = (DataMonth) obj;
+    if (begin == null) {
+      if (other.begin != null) {
+        return false;
+      }
+    } else if (!begin.equals(other.begin)) {
+      return false;
+    }
+    if (end == null) {
+      if (other.end != null) {
+        return false;
+      }
+    } else if (!end.equals(other.end)) {
+      return false;
+    }
+    if (weeks == null) {
+      if (other.weeks != null) {
+        return false;
+      }
+    } else if (!weeks.equals(other.weeks)) {
+      return false;
+    }
+    return true;
   }
 
   public LocalDate getBegin() {
     return begin;
   }
 
-  public String getNotes() {
-    return notes;
+  public LocalDate getEnd() {
+    return end;
   }
 
   public List<DataWeek> getWeeks() {
     return weeks;
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + (begin == null ? 0 : begin.hashCode());
+    result = prime * result + (end == null ? 0 : end.hashCode());
+    result = prime * result + (weeks == null ? 0 : weeks.hashCode());
+    return result;
+  }
+
+  /**
+   * Removes a week to the month.
+   *
+   * @param week week to remove, may not be null
+   */
+  public void removeWeek(DataWeek week) {
+    if (week == null) {
+      throw new IllegalArgumentException("week cannot be null.");
+    }
+
+    weeks.remove(week);
   }
 
   /**
@@ -90,24 +157,22 @@ public class DataMonth {
    * @param begin begin to set, may not be null
    */
   public void setBegin(LocalDate begin) {
-    if (begin == null) {
-      throw new IllegalArgumentException("begin may not be null");
-    }
+    DateUtils.checkDate(begin);
+    DateUtils.checkDate(begin, end);
 
     this.begin = begin;
   }
 
   /**
-   * Sets the begin of the month.
+   * Sets the end of the month.
    *
-   * @param notes notes to set, may not be null
+   * @param end end to set, may not be null
    */
-  public void setNotes(String notes) {
-    if (notes == null) {
-      throw new IllegalArgumentException("notes may not be null");
-    }
+  public void setEnd(LocalDate end) {
+    DateUtils.checkDate(end);
+    DateUtils.checkDate(begin, end);
 
-    this.notes = notes.trim();
+    this.end = end;
   }
 
   /**
@@ -120,11 +185,13 @@ public class DataMonth {
       throw new IllegalArgumentException("weeks may not be null");
     }
 
-    this.weeks = weeks;
+    for (final DataWeek week : weeks) {
+      addWeek(week);
+    }
   }
 
   @Override
   public String toString() {
-    return "DataMonth [begin=" + begin + ", notes=" + notes + ", weeks=" + weeks + "]";
+    return "DataMonth [begin=" + begin + ", end=" + end + ", weeks=" + weeks + "]";
   }
 }

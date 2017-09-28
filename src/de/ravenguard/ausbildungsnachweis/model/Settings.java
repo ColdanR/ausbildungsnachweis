@@ -1,4 +1,4 @@
-package de.ravenguard.ausbildungsnachweis.logic;
+package de.ravenguard.ausbildungsnachweis.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -6,10 +6,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Settings {
   private boolean saturdayWorkday;
   private boolean sundayWorkday;
-  private String defaultStorage;
+  private boolean companyAndSchool;
 
-  public String getDefaultStorage() {
-    return defaultStorage;
+  public boolean isCompanyAndSchool() {
+    return companyAndSchool;
   }
 
   public boolean isSaturdayWorkday() {
@@ -20,8 +20,8 @@ public class Settings {
     return sundayWorkday;
   }
 
-  public void setDefaultStorage(String defaultStorage) {
-    this.defaultStorage = defaultStorage;
+  public void setCompanyAndSchool(boolean companyAndSchool) {
+    this.companyAndSchool = companyAndSchool;
   }
 
   public void setSaturdayWorkday(boolean saturdayWorkday) {

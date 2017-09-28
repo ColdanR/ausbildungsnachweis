@@ -1,6 +1,5 @@
-package de.ravenguard.ausbildungsnachweis.logic.dao;
+package de.ravenguard.ausbildungsnachweis.model;
 
-import de.ravenguard.ausbildungsnachweis.model.WeekType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 public class WeekTypeAdapter extends XmlAdapter<String, WeekType> {
