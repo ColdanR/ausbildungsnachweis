@@ -8,9 +8,12 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class DataMonth {
+  private static final Logger LOGGER = LogManager.getLogger(DataMonth.class);
   private LocalDate begin;
   private LocalDate end;
   @XmlElementWrapper(name = "weeks")
@@ -21,7 +24,7 @@ public class DataMonth {
    * empty argument constructor.
    */
   public DataMonth() {
-    ;
+    LOGGER.trace("Called DataMonth()");
   }
 
   /**
@@ -30,18 +33,17 @@ public class DataMonth {
    * @param begin begin of the month, may not be null
    * @param end end of the month, may not be null
    * @param weeks list of weeks, may not be null
+   * @throws IllegalDateException If begin or end is not a working day or begin is after end.
    */
-  public DataMonth(LocalDate begin, LocalDate end, List<DataWeek> weeks) {
-    super();
-    DateUtils.checkDate(begin);
-    DateUtils.checkDate(end);
-    DateUtils.checkDate(begin, end);
+  public DataMonth(LocalDate begin, LocalDate end, List<DataWeek> weeks)
+      throws IllegalDateException {
+    LOGGER.trace("Called DataMonth(begin: {}, end: {}, weeks: {})", begin, end, weeks);
     if (weeks == null) {
-      throw new IllegalArgumentException("weeks may not be null");
+      throw new NullPointerException("weeks may not be null");
     }
 
-    this.begin = begin;
-    this.end = end;
+    setBegin(begin);
+    setEnd(end);
     for (final DataWeek week : weeks) {
       addWeek(week);
     }
@@ -51,17 +53,19 @@ public class DataMonth {
    * Adds a week to the month.
    *
    * @param week week to add, may not be null. Will be validated.
+   * @throws IllegalDateException if week is not within month or already in month.
    */
-  public void addWeek(DataWeek week) {
+  public void addWeek(DataWeek week) throws IllegalDateException {
+    LOGGER.trace("Called addWeek(week: {})", week);
     if (week == null) {
       throw new IllegalArgumentException("week cannot be null.");
     }
 
     if (week.getBegin().getMonth() != begin.getMonth()) {
-      throw new IllegalArgumentException("Begin of week is not in month");
+      throw new IllegalDateException("Begin of week is not in month");
     }
     if (week.getEnd().getMonth() != end.getMonth()) {
-      throw new IllegalArgumentException("End of week is not in month");
+      throw new IllegalDateException("End of week is not in month");
     }
 
     boolean conflict = false;
@@ -74,68 +78,26 @@ public class DataMonth {
       }
     }
     if (conflict) {
-      throw new IllegalArgumentException("week is within another week.");
+      throw new IllegalDateException("week is within another week.");
     }
 
     weeks.add(week);
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final DataMonth other = (DataMonth) obj;
-    if (begin == null) {
-      if (other.begin != null) {
-        return false;
-      }
-    } else if (!begin.equals(other.begin)) {
-      return false;
-    }
-    if (end == null) {
-      if (other.end != null) {
-        return false;
-      }
-    } else if (!end.equals(other.end)) {
-      return false;
-    }
-    if (weeks == null) {
-      if (other.weeks != null) {
-        return false;
-      }
-    } else if (!weeks.equals(other.weeks)) {
-      return false;
-    }
-    return true;
+    weeks.sort(null);
   }
 
   public LocalDate getBegin() {
+    LOGGER.trace("Called getBegin()");
     return begin;
   }
 
   public LocalDate getEnd() {
+    LOGGER.trace("Called getEnd()");
     return end;
   }
 
   public List<DataWeek> getWeeks() {
+    LOGGER.trace("Called getWeeks()");
     return weeks;
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + (begin == null ? 0 : begin.hashCode());
-    result = prime * result + (end == null ? 0 : end.hashCode());
-    result = prime * result + (weeks == null ? 0 : weeks.hashCode());
-    return result;
   }
 
   /**
@@ -144,8 +106,9 @@ public class DataMonth {
    * @param week week to remove, may not be null
    */
   public void removeWeek(DataWeek week) {
+    LOGGER.trace("Called removeWeek(week: {})", week);
     if (week == null) {
-      throw new IllegalArgumentException("week cannot be null.");
+      throw new NullPointerException("week cannot be null.");
     }
 
     weeks.remove(week);
@@ -155,10 +118,19 @@ public class DataMonth {
    * Sets the begin of the month.
    *
    * @param begin begin to set, may not be null
+   * @throws IllegalDateException if begin is not a working day or is after end of month
    */
-  public void setBegin(LocalDate begin) {
-    DateUtils.checkDate(begin);
-    DateUtils.checkDate(begin, end);
+  public void setBegin(LocalDate begin) throws IllegalDateException {
+    LOGGER.trace("Called setBegin(begin: {})", begin);
+    if (begin == null) {
+      throw new NullPointerException("begin cannot be null.");
+    }
+    if (!DateUtils.checkWorkday(begin)) {
+      throw new IllegalDateException("begin must be a workday");
+    }
+    if (end != null && begin.isAfter(end)) {
+      throw new IllegalDateException("begin may not be after end of month.");
+    }
 
     this.begin = begin;
   }
@@ -167,10 +139,19 @@ public class DataMonth {
    * Sets the end of the month.
    *
    * @param end end to set, may not be null
+   * @throws IllegalDateException if end is not a working day or is before begin of month
    */
-  public void setEnd(LocalDate end) {
-    DateUtils.checkDate(end);
-    DateUtils.checkDate(begin, end);
+  public void setEnd(LocalDate end) throws IllegalDateException {
+    LOGGER.trace("Called setEnd(end: {})", end);
+    if (end == null) {
+      throw new NullPointerException("end cannot be null.");
+    }
+    if (!DateUtils.checkWorkday(end)) {
+      throw new IllegalDateException("end must be a workday");
+    }
+    if (begin != null && begin.isAfter(end)) {
+      throw new IllegalDateException("end may not be before begin of month.");
+    }
 
     this.end = end;
   }
@@ -179,19 +160,16 @@ public class DataMonth {
    * Sets the begin of the month.
    *
    * @param weeks weeks to set, may not be null
+   * @throws IllegalDateException if a week is within another or begins or ends outside the month
    */
-  public void setWeeks(List<DataWeek> weeks) {
+  public void setWeeks(List<DataWeek> weeks) throws IllegalDateException {
+    LOGGER.trace("Called setWeeks(weeks: {})", weeks);
     if (weeks == null) {
-      throw new IllegalArgumentException("weeks may not be null");
+      throw new NullPointerException("weeks may not be null");
     }
 
     for (final DataWeek week : weeks) {
       addWeek(week);
     }
-  }
-
-  @Override
-  public String toString() {
-    return "DataMonth [begin=" + begin + ", end=" + end + ", weeks=" + weeks + "]";
   }
 }

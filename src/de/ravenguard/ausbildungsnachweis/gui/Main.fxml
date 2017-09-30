@@ -8,50 +8,36 @@
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.Pane?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.ravenguard.ausbildungsnachweis.gui.StartupController">
    <center>
-      <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="800.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
+      <AnchorPane BorderPane.alignment="CENTER">
          <children>
-            <Pane prefHeight="800.0" prefWidth="1000.0">
-               <children>
-                  <AnchorPane prefHeight="800.0" prefWidth="1000.0">
-                     <children>
-                        <ScrollPane prefHeight="800.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children>
-                  </AnchorPane>
-               </children>
-            </Pane>
+            <ScrollPane fitToHeight="true" fitToWidth="true" />
          </children>
       </AnchorPane>
    </center>
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
-          <Menu fx:id="Menu" mnemonicParsing="false" text="Menu">
+          <Menu fx:id="Menu" mnemonicParsing="false" text="Menü">
                <items>
-                  <MenuItem fx:id="New" mnemonicParsing="false" text="New" />
-                  <MenuItem fx:id="Save" mnemonicParsing="false" text="Save" />
-                  <MenuItem fx:id="Close" mnemonicParsing="false" text="Close" />
+                  <MenuItem fx:id="New" mnemonicParsing="false" text="Neuanlage" />
+                  <MenuItem mnemonicParsing="false" text="Daten laden" />
+                  <MenuItem fx:id="Save" mnemonicParsing="false" text="Speichern" />
+                  <MenuItem fx:id="Close" mnemonicParsing="false" text="Beenden" />
                </items>
-          </Menu>
-          <Menu fx:id="Edit" mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Edit  Trainee" />
-                  <MenuItem mnemonicParsing="false" text="Edit Ausbildung-Zeitraum" />
-            </items>
           </Menu>
         </menus>
       </MenuBar>
    </top>
    <left>
-      <SplitPane dividerPositions="0.30701754385964913" orientation="VERTICAL" prefHeight="800.0" prefWidth="213.0" BorderPane.alignment="CENTER">
+      <SplitPane dividerPositions="0.30701754385964913" orientation="VERTICAL" BorderPane.alignment="CENTER">
         <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+          <AnchorPane />
+          <AnchorPane>
                <children>
-                  <TreeView layoutX="-21.0" layoutY="44.0" prefHeight="396.0" prefWidth="158.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <TreeView layoutX="-21.0" layoutY="44.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                </children>
             </AnchorPane>
         </items>

@@ -38,9 +38,11 @@ public class TrainingPeriod {
    * @param classTeacher class teacher, may not be null or empty
    * @param months months of period, may not be null
    * @param schoolSubjects schoolSubjects, may not be null
+   * @throws IllegalDateException if begin or end is not a working day or end is before begin
    */
   public TrainingPeriod(String label, LocalDate begin, LocalDate end, String schoolClass,
-      String classTeacher, List<DataMonth> months, List<SchoolSubject> schoolSubjects) {
+      String classTeacher, List<DataMonth> months, List<SchoolSubject> schoolSubjects)
+      throws IllegalDateException {
     super();
     setLabel(label);
     setBegin(begin);
@@ -230,13 +232,21 @@ public class TrainingPeriod {
   }
 
   /**
-   * Sets the begin of the period.
+   * Sets the begin date.
    *
-   * @param begin LocalDate of the begin, may not be null
+   * @param begin LocalDate of the begin, cannot be null.
+   * @throws IllegalDateException if begin is not a working day or is after end
    */
-  public void setBegin(LocalDate begin) {
-    DateUtils.checkDate(begin);
-    DateUtils.checkDate(begin, end);
+  public void setBegin(LocalDate begin) throws IllegalDateException {
+    if (begin == null) {
+      throw new NullPointerException("begin may not be null.");
+    }
+    if (!DateUtils.checkWorkday(begin)) {
+      throw new IllegalDateException("begin must be a working day.");
+    }
+    if (end != null && begin.isAfter(end)) {
+      throw new IllegalDateException("begin may not be after end.");
+    }
 
     this.begin = begin;
   }
@@ -255,13 +265,21 @@ public class TrainingPeriod {
   }
 
   /**
-   * Sets the end of the period.
+   * Sets the end date.
    *
-   * @param end LocalDate of the end, may not be null
+   * @param end LocalDate of the end, cannot be null.
+   * @throws IllegalDateException if end is not a working day or end is before begin
    */
-  public void setEnd(LocalDate end) {
-    DateUtils.checkDate(end);
-    DateUtils.checkDate(begin, end);
+  public void setEnd(LocalDate end) throws IllegalDateException {
+    if (end == null) {
+      throw new NullPointerException("end may not be null.");
+    }
+    if (!DateUtils.checkWorkday(end)) {
+      throw new IllegalDateException("end must be a working day.");
+    }
+    if (end != null && end.isBefore(begin)) {
+      throw new IllegalDateException("end may not be before begin.");
+    }
 
     this.end = end;
   }

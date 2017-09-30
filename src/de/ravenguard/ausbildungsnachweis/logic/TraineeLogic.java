@@ -3,13 +3,13 @@ package de.ravenguard.ausbildungsnachweis.logic;
 import de.ravenguard.ausbildungsnachweis.logic.dao.TraineeDao;
 import de.ravenguard.ausbildungsnachweis.model.DataMonth;
 import de.ravenguard.ausbildungsnachweis.model.DataWeek;
+import de.ravenguard.ausbildungsnachweis.model.IllegalDateException;
 import de.ravenguard.ausbildungsnachweis.model.Trainee;
 import de.ravenguard.ausbildungsnachweis.model.TrainingPeriod;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 import javax.xml.bind.JAXBException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,16 +26,14 @@ public class TraineeLogic {
    * @param schoolClass schoolClass of the TrainingPeriod, may not be null or empty
    * @param classTeacher class teacher of the period, may not be null or empty
    * @param trainee {@link Trainee} to add the new TrainingPeriode
+   * @throws IllegalDateException if either begin or end is not a working day or end is before begin
    */
   public void addTrainingPeriode(String label, LocalDate begin, LocalDate end, String schoolClass,
-      String classTeacher, Trainee trainee) {
-
-    // Operation 1
-    final List<DataMonth> months = new ArrayList<>();
+      String classTeacher, Trainee trainee) throws IllegalDateException {
 
     // Operation and validation
-    final TrainingPeriod period =
-        new TrainingPeriod(label, begin, end, schoolClass, classTeacher, months, new ArrayList<>());
+    final TrainingPeriodLogic logic = new TrainingPeriodLogic();
+    final TrainingPeriod period = logic.create(label, begin, end, schoolClass, classTeacher);
     trainee.addTrainingPeriode(period);
   }
 
@@ -50,10 +48,11 @@ public class TraineeLogic {
    * @param school school name, may not be null or empty
    * @param training training, may not be null or empty
    * @return new Trainee instance
+   * @throws IllegalDateException if either begin or end is not a working day or end is before begin
    * @throws IllegalArgumentException if one parameter is null or a string is empty
    */
   public Trainee create(String familiyName, String givenNames, LocalDate begin, LocalDate end,
-      String trainer, String school, String training) {
+      String trainer, String school, String training) throws IllegalDateException {
     LOGGER.trace(
         "Called create(familiyName: {}, givenNames: {}, begin: {}, end: {}, "
             + "trainer: {}, school: {}, training: {}",
@@ -75,7 +74,7 @@ public class TraineeLogic {
 
     // Validation
     if (path == null || path.toString().trim().length() == 0) {
-      throw new IllegalArgumentException("Path may not be null or empty.");
+      throw new NullPointerException("Path may not be null or empty.");
     }
 
     // Operation
@@ -120,10 +119,10 @@ public class TraineeLogic {
 
     // Validation
     if (path == null || path.toString().trim().length() == 0) {
-      throw new IllegalArgumentException("Path may not be null or empty.");
+      throw new NullPointerException("Path may not be null or empty.");
     }
     if (trainee == null) {
-      throw new IllegalArgumentException("Trainee may not be null.");
+      throw new NullPointerException("Trainee may not be null.");
     }
 
     // Operation

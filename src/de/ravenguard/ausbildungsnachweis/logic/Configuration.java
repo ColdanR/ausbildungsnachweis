@@ -1,22 +1,17 @@
 package de.ravenguard.ausbildungsnachweis.logic;
 
-import de.ravenguard.ausbildungsnachweis.logic.dao.HolidaysDao;
 import de.ravenguard.ausbildungsnachweis.logic.dao.SettingDao;
 import de.ravenguard.ausbildungsnachweis.model.Settings;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import javax.xml.bind.JAXBException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class Configuration {
   private static final String SETTINGS = "settings.xml";
-  private static final String HOLIDAYS = "holidays.xml";
   private static final Logger LOGGER = LogManager.getLogger(Configuration.class);
 
   private static Configuration INSTANCE = new Configuration();
@@ -31,87 +26,82 @@ public class Configuration {
     return INSTANCE;
   }
 
-  private final List<LocalDate> holidays = new ArrayList<>();
-  private Settings settings;
+  private Settings settings = new Settings();
   private final Path installPath = Paths.get(System.getenv("user.home"), "ausbildungsnachweis");
-  private Path currentFile;
+  private Path currentFile = null;
+  private boolean modified = false;
 
   private Configuration() {
     LOGGER.trace("Called Configuration()");
   }
 
   /**
-   * Adds a holiday to the list.
+   * Returns the current file path, can be null if no such path is set.
    *
-   * @param holiday the holiday to add, may not be null
+   * @return the current file path
    */
-  public void addHoliday(LocalDate holiday) {
-    LOGGER.trace("Called addHoliday(holiday: {})", holiday);
-    if (holiday == null) {
-      throw new IllegalArgumentException("holiday may not be null.");
-    }
-    if (holidays.contains(holiday)) {
-      throw new IllegalArgumentException("holiday already in the list");
-    }
-    holidays.add(holiday);
-  }
-
-  /**
-   * Deletes a holiday from the list.
-   *
-   * @param holiday holiday to delete, may not be null
-   */
-  public void deleteHoliday(LocalDate holiday) {
-    LOGGER.trace("Called deleteHoliday(holiday: {})", holiday);
-    if (holiday == null) {
-      throw new IllegalArgumentException("holiday may not be null.");
-    }
-    holidays.remove(holiday);
-  }
-
   public Path getCurrentFile() {
     LOGGER.trace("Called getCurrentFile()");
+    LOGGER.debug("Returned getCurrentFile(): {}", currentFile);
     return currentFile;
   }
 
-  public Path getHolidaysPath() {
-    LOGGER.trace("Called getHolidaysPath()");
-    return installPath.resolve(HOLIDAYS);
-  }
-
+  /**
+   * Returns the install path.
+   *
+   * @return install path
+   */
   public Path getInstallPath() {
     LOGGER.trace("Called getInstallPath()");
+    LOGGER.debug("Returned getInstallPath(): {}", installPath);
     return installPath;
   }
 
+  /**
+   * Returns the path to the current settings.
+   *
+   * @return settings path
+   */
   public Path getSettingsPath() {
     LOGGER.trace("Called getSettingsPath()");
+    LOGGER.debug("Returned getSettingsPath(): {}", installPath.resolve(SETTINGS));
     return installPath.resolve(SETTINGS);
   }
 
+  /**
+   * Returns if the trainee has school and company in one week.
+   *
+   * @return if trainee has school and company
+   */
   public boolean isCompanyAndSchool() {
+    LOGGER.trace("Called isCompanyAndSchool()");
+    LOGGER.debug("Returned isCompanyAndSchool(): {}", settings.isCompanyAndSchool());
     return settings.isCompanyAndSchool();
   }
 
-  /**
-   * Checks if the date is a holiday.
-   *
-   * @param date date to check, may not be null.
-   * @return true if holiday, false otherwise
-   */
-  public boolean isHoliday(LocalDate date) {
-    if (date == null) {
-      throw new IllegalArgumentException("date may not be null.");
-    }
-    return holidays.contains(date);
+  public boolean isModified() {
+    return modified;
   }
 
+  /**
+   * Returns if the trainee works Saturdays.
+   *
+   * @return trainee has to work Saturdays
+   */
   public boolean isSaturdayWorkday() {
     LOGGER.trace("Called isSaturdayWorkday()");
+    LOGGER.debug("Returned getInstallPath(): {}", installPath);
     return settings.isSaturdayWorkday();
   }
 
+  /**
+   * Returns if the trainee works Sundays.
+   *
+   * @return trainee has to work Sundays
+   */
   public boolean isSundayWorkday() {
+    LOGGER.trace("Called isSaturdayWorkday()");
+    LOGGER.debug("Returned isSundayWorkday(): {}", installPath);
     return settings.isSundayWorkday();
   }
 
@@ -138,18 +128,6 @@ public class Configuration {
       return InstallStatus.PARSE_ERROR_SETTINGS;
     }
 
-    final Path holidayPath = getHolidaysPath();
-    if (!Files.exists(holidayPath)) {
-      return InstallStatus.NOT_FOUND_HOLIDAYS;
-    }
-
-    try {
-      holidays.clear();
-      holidays.addAll(HolidaysDao.getFromPath(holidayPath));
-    } catch (final JAXBException e) {
-      return InstallStatus.PARSE_ERROR_HOLIDAYS;
-    }
-
     return InstallStatus.OK;
   }
 
@@ -159,6 +137,7 @@ public class Configuration {
   }
 
   public void setCompanyAndSchool(boolean companyAndSchool) {
+    LOGGER.trace("Called setCompanyAndSchool(companyAndSchool: {})", companyAndSchool);
     settings.setCompanyAndSchool(companyAndSchool);
   }
 
@@ -167,12 +146,17 @@ public class Configuration {
     this.currentFile = currentFile;
   }
 
+  public void setModified(boolean modified) {
+    this.modified = modified;
+  }
+
   public void setSaturdayWorkday(boolean saturdayWorkday) {
     LOGGER.trace("Called setSaturdayWorkday(saturdayWorkday: {})", saturdayWorkday);
     settings.setSaturdayWorkday(saturdayWorkday);
   }
 
   public void setSundayWorkday(boolean sundayWorkday) {
+    LOGGER.trace("Called setSundayWorkday(sundayWorkday: {})", sundayWorkday);
     settings.setSundayWorkday(sundayWorkday);
   }
 }
