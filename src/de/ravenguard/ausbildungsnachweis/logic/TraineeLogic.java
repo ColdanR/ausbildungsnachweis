@@ -40,7 +40,7 @@ public class TraineeLogic {
   /**
    * Creates a new Trainee Instance.
    *
-   * @param familiyName family name, may not be null or empty
+   * @param familyName family name, may not be null or empty
    * @param givenNames given name(s), may not be null or empty
    * @param begin begin of training, may not be null
    * @param end end of training, may not be null
@@ -51,15 +51,15 @@ public class TraineeLogic {
    * @throws IllegalDateException if either begin or end is not a working day or end is before begin
    * @throws IllegalArgumentException if one parameter is null or a string is empty
    */
-  public Trainee create(String familiyName, String givenNames, LocalDate begin, LocalDate end,
+  public Trainee create(String familyName, String givenNames, LocalDate begin, LocalDate end,
       String trainer, String school, String training) throws IllegalDateException {
     LOGGER.trace(
         "Called create(familiyName: {}, givenNames: {}, begin: {}, end: {}, "
             + "trainer: {}, school: {}, training: {}",
-        familiyName, givenNames, begin, end, trainer, school, training);
+        familyName, givenNames, begin, end, trainer, school, training);
 
     // Operation and validation
-    return new Trainee(familiyName, givenNames, begin, end, trainer, school, training,
+    return new Trainee(familyName, givenNames, begin, end, trainer, school, training,
         new ArrayList<>());
   }
 
@@ -102,6 +102,7 @@ public class TraineeLogic {
     // Operation
     final Trainee trainee = TraineeDao.getFromPath(path);
     Configuration.getInstance().setCurrentFile(path);
+    Configuration.getInstance().setModified(false);
 
     return trainee;
   }
@@ -128,5 +129,6 @@ public class TraineeLogic {
     // Operation
     TraineeDao.saveToPath(path, trainee);
     Configuration.getInstance().setCurrentFile(path);
+    Configuration.getInstance().setModified(false);
   }
 }

@@ -12,8 +12,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Trainee {
-  private String familiyName;
+public class Trainee implements TreeElement {
+  private String familyName;
   private String givenNames;
   private LocalDate begin;
   private LocalDate end;
@@ -32,7 +32,7 @@ public class Trainee {
   /**
    * Fields Constructor.
    *
-   * @param familiyName family name
+   * @param familyName family name
    * @param givenNames given name(s)
    * @param begin begin of training
    * @param end end of training
@@ -42,11 +42,11 @@ public class Trainee {
    * @param trainingPeriods list of training periods
    * @throws IllegalDateException if either begin or end is not a working day or end is before begin
    */
-  public Trainee(String familiyName, String givenNames, LocalDate begin, LocalDate end,
+  public Trainee(String familyName, String givenNames, LocalDate begin, LocalDate end,
       String trainer, String school, String training, List<TrainingPeriod> trainingPeriods)
       throws IllegalDateException {
     super();
-    setFamiliyName(familiyName);
+    setFamilyName(familyName);
     setGivenNames(givenNames);
     setBegin(begin);
     setEnd(end);
@@ -109,11 +109,11 @@ public class Trainee {
     } else if (!end.equals(other.end)) {
       return false;
     }
-    if (familiyName == null) {
-      if (other.familiyName != null) {
+    if (familyName == null) {
+      if (other.familyName != null) {
         return false;
       }
-    } else if (!familiyName.equals(other.familiyName)) {
+    } else if (!familyName.equals(other.familyName)) {
       return false;
     }
     if (givenNames == null) {
@@ -158,12 +158,17 @@ public class Trainee {
     return begin;
   }
 
+  @Override
+  public List<TrainingPeriod> getChildren() {
+    return getTrainingPeriods();
+  }
+
   public LocalDate getEnd() {
     return end;
   }
 
-  public String getFamiliyName() {
-    return familiyName;
+  public String getFamilyName() {
+    return familyName;
   }
 
   public String getGivenNames() {
@@ -187,12 +192,17 @@ public class Trainee {
   }
 
   @Override
+  public String getTreeLabel() {
+    return familyName + ", " + givenNames;
+  }
+
+  @Override
   public int hashCode() {
     final int prime = 31;
     int result = 1;
     result = prime * result + (begin == null ? 0 : begin.hashCode());
     result = prime * result + (end == null ? 0 : end.hashCode());
-    result = prime * result + (familiyName == null ? 0 : familiyName.hashCode());
+    result = prime * result + (familyName == null ? 0 : familyName.hashCode());
     result = prime * result + (givenNames == null ? 0 : givenNames.hashCode());
     result = prime * result + (school == null ? 0 : school.hashCode());
     result = prime * result + (trainer == null ? 0 : trainer.hashCode());
@@ -246,11 +256,11 @@ public class Trainee {
    *
    * @param familiyName family name, cannot be null or empty
    */
-  public void setFamiliyName(String familiyName) {
+  public void setFamilyName(String familiyName) {
     if (familiyName == null || familiyName.trim().length() == 0) {
       throw new IllegalArgumentException("familyName cannot be null or empty");
     }
-    this.familiyName = familiyName.trim();
+    familyName = familiyName.trim();
   }
 
   /**
@@ -319,8 +329,6 @@ public class Trainee {
 
   @Override
   public String toString() {
-    return "Trainee [familiyName=" + familiyName + ", givenNames=" + givenNames + ", begin=" + begin
-        + ", end=" + end + ", trainer=" + trainer + ", school=" + school + ", training=" + training
-        + ", trainingPeriods=" + trainingPeriods + "]";
+    return getTreeLabel();
   }
 }

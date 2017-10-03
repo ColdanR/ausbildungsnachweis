@@ -5,7 +5,6 @@ import de.ravenguard.ausbildungsnachweis.model.Settings;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import javax.xml.bind.JAXBException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,7 +26,7 @@ public class Configuration {
   }
 
   private Settings settings = new Settings();
-  private final Path installPath = Paths.get(System.getenv("user.home"), "ausbildungsnachweis");
+  private Path installPath = null;
   private Path currentFile = null;
   private boolean modified = false;
 
@@ -153,6 +152,11 @@ public class Configuration {
   public void setSaturdayWorkday(boolean saturdayWorkday) {
     LOGGER.trace("Called setSaturdayWorkday(saturdayWorkday: {})", saturdayWorkday);
     settings.setSaturdayWorkday(saturdayWorkday);
+  }
+
+  public void setSettingsPath(Path path) {
+    LOGGER.trace("Called setSettingsPath(path: {})", path);
+    installPath = path;
   }
 
   public void setSundayWorkday(boolean sundayWorkday) {

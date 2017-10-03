@@ -1,5 +1,6 @@
 package de.ravenguard.ausbildungsnachweis.model;
 
+import de.ravenguard.ausbildungsnachweis.gui.Utils;
 import de.ravenguard.ausbildungsnachweis.utils.DateUtils;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class TrainingPeriod {
+public class TrainingPeriod implements TreeElement {
   private String label;
   private LocalDate begin;
   private LocalDate end;
@@ -167,6 +168,11 @@ public class TrainingPeriod {
     return begin;
   }
 
+  @Override
+  public List<DataMonth> getChildren() {
+    return getMonths();
+  }
+
   public String getClassTeacher() {
     return classTeacher;
   }
@@ -189,6 +195,11 @@ public class TrainingPeriod {
 
   public List<SchoolSubject> getSchoolSubjects() {
     return schoolSubjects;
+  }
+
+  @Override
+  public String getTreeLabel() {
+    return "Ausbildungszeitraum vom " + Utils.formatDate(begin) + " bis " + Utils.formatDate(end);
   }
 
   @Override
@@ -344,8 +355,6 @@ public class TrainingPeriod {
 
   @Override
   public String toString() {
-    return "TrainingPeriod [label=" + label + ", begin=" + begin + ", end=" + end + ", schoolClass="
-        + schoolClass + ", classTeacher=" + classTeacher + ", months=" + months
-        + ", schoolSubjects=" + schoolSubjects + "]";
+    return getTreeLabel();
   }
 }

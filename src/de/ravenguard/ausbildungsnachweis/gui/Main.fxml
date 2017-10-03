@@ -9,11 +9,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.ravenguard.ausbildungsnachweis.gui.StartupController">
+<BorderPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.ravenguard.ausbildungsnachweis.gui.MainController">
    <center>
       <AnchorPane BorderPane.alignment="CENTER">
          <children>
-            <ScrollPane fitToHeight="true" fitToWidth="true" />
+            <ScrollPane fitToHeight="true" fitToWidth="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children>
       </AnchorPane>
    </center>
@@ -22,10 +22,11 @@
         <menus>
           <Menu fx:id="Menu" mnemonicParsing="false" text="Menü">
                <items>
-                  <MenuItem fx:id="New" mnemonicParsing="false" text="Neuanlage" />
-                  <MenuItem mnemonicParsing="false" text="Daten laden" />
-                  <MenuItem fx:id="Save" mnemonicParsing="false" text="Speichern" />
-                  <MenuItem fx:id="Close" mnemonicParsing="false" text="Beenden" />
+                  <MenuItem mnemonicParsing="false" onAction="#onMenuNew" text="Neuanlage" />
+                  <MenuItem mnemonicParsing="false" onAction="#onMenuLoad" text="Daten laden" />
+                  <MenuItem mnemonicParsing="false" onAction="#onMenuSave" text="Speichern" />
+                  <MenuItem mnemonicParsing="false" onAction="#onMenuSaveUnder" text="Speichern Unter" />
+                  <MenuItem mnemonicParsing="false" onAction="#onExit" text="Beenden" />
                </items>
           </Menu>
         </menus>
@@ -37,7 +38,7 @@
           <AnchorPane />
           <AnchorPane>
                <children>
-                  <TreeView layoutX="-21.0" layoutY="44.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <TreeView fx:id="treeView" onMouseClicked="#onTreeSelect" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                </children>
             </AnchorPane>
         </items>

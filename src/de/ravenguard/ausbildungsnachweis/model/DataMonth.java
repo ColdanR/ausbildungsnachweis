@@ -1,8 +1,10 @@
 package de.ravenguard.ausbildungsnachweis.model;
 
+import de.ravenguard.ausbildungsnachweis.gui.Utils;
 import de.ravenguard.ausbildungsnachweis.utils.DateUtils;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -12,7 +14,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class DataMonth {
+public class DataMonth implements TreeElement {
   private static final Logger LOGGER = LogManager.getLogger(DataMonth.class);
   private LocalDate begin;
   private LocalDate end;
@@ -90,9 +92,19 @@ public class DataMonth {
     return begin;
   }
 
+  @Override
+  public List<? extends TreeElement> getChildren() {
+    return Collections.emptyList();
+  }
+
   public LocalDate getEnd() {
     LOGGER.trace("Called getEnd()");
     return end;
+  }
+
+  @Override
+  public String getTreeLabel() {
+    return "Monat vom " + Utils.formatDate(begin) + " bis " + Utils.formatDate(end);
   }
 
   public List<DataWeek> getWeeks() {
@@ -171,5 +183,10 @@ public class DataMonth {
     for (final DataWeek week : weeks) {
       addWeek(week);
     }
+  }
+
+  @Override
+  public String toString() {
+    return getTreeLabel();
   }
 }
