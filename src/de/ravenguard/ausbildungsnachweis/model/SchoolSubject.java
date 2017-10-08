@@ -109,6 +109,6 @@ public class SchoolSubject {
 
   @Override
   public String toString() {
-    return "SchoolSubject [label=" + label + ", exemptSince=" + exemptSince + "]";
+    return label;
   }
 }

@@ -3,8 +3,11 @@ package de.ravenguard.ausbildungsnachweis.gui;
 import de.ravenguard.ausbildungsnachweis.logic.Configuration;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class DialogSettingsController {
+  private static final Logger LOGGER = LogManager.getLogger(DialogSettingsController.class);
   @FXML
   private CheckBox saturdayWorkday;
   @FXML
@@ -15,6 +18,7 @@ public class DialogSettingsController {
   private Configuration config;
 
   public Configuration getConfiguration() {
+    LOGGER.trace("Called getConfiguration()");
     return config;
   }
 
@@ -24,6 +28,7 @@ public class DialogSettingsController {
    * @param config {@link Configuration} instance
    */
   public void setConfiguration(Configuration config) {
+    LOGGER.trace("Called setConfiguration(config: {})", config);
     this.config = config;
 
     saturdayWorkday.selectedProperty().set(config.isSaturdayWorkday());

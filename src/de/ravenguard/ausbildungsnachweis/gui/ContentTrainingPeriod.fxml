@@ -1,51 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.Light.Distant?>
-<?import javafx.scene.effect.Lighting?>
-<?import javafx.scene.effect.MotionBlur?>
-<?import javafx.scene.effect.Shadow?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.ravenguard.ausbildungsnachweis.gui.ContentTrainingPeriodController">
    <children>
-      <ListView layoutX="41.0" layoutY="492.0" prefHeight="200.0" prefWidth="200.0" />
-      <Button layoutX="183.0" layoutY="699.0" mnemonicParsing="false" text="+" />
-      <Button layoutX="218.0" layoutY="699.0" mnemonicParsing="false" text="-" />
-      <DatePicker layoutX="345.0" layoutY="667.0" />
-      <TextField layoutX="345.0" layoutY="558.0" />
-      <Label layoutX="345.0" layoutY="512.0" text="Bezeichnung" underline="true">
-         <font>
-            <Font size="13.0" />
-         </font>
-      </Label>
-      <Label layoutX="345.0" layoutY="615.0" text="Berfreit ab:" underline="true">
-         <font>
-            <Font size="13.0" />
-         </font>
-      </Label>
-      <Region layoutX="41.0" layoutY="45.0" prefHeight="320.0" prefWidth="500.0" />
-      <Separator layoutX="32.0" layoutY="430.0" prefHeight="5.0" prefWidth="936.0">
-         <effect>
-            <MotionBlur angle="4.29">
-               <input>
-                  <Lighting>
-                     <bumpInput>
-                        <Shadow />
-                     </bumpInput>
-                     <light>
-                        <Light.Distant color="BLACK" />
-                     </light>
-                  </Lighting>
-               </input>
-            </MotionBlur>
-         </effect></Separator>
+      <GridPane hgap="5.0" vgap="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+         <children>
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="Bezeichnung" />
+                  <Label text="Anfang" GridPane.rowIndex="1" />
+                  <Label text="Ende" GridPane.rowIndex="2" />
+                  <Label text="Berufsschulklasse" GridPane.rowIndex="3" />
+                  <Label text="Klassenleiter" GridPane.rowIndex="4" />
+                  <Label fx:id="begin" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label fx:id="end" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <TextField fx:id="label" GridPane.columnIndex="1" />
+                  <TextField fx:id="schoolClass" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <TextField fx:id="classTeacher" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </GridPane>
+            <VBox alignment="TOP_CENTER" GridPane.columnIndex="1">
+               <children>
+                  <Label text="Schulfächer">
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <ListView fx:id="subjects" />
+                  <HBox alignment="TOP_CENTER" spacing="20.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#onEditSchoolSubject" text="Editieren" />
+                        <Button mnemonicParsing="false" onAction="#onAddSchoolSubject" text="Hinzufügen" />
+                        <Button mnemonicParsing="false" onAction="#onDeleteSchoolSubject" text="Entfernen" />
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </VBox>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </GridPane>
    </children>
 </AnchorPane>

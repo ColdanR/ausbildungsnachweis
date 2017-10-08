@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -8,40 +11,105 @@
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
 <BorderPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.ravenguard.ausbildungsnachweis.gui.MainController">
-   <center>
-      <AnchorPane BorderPane.alignment="CENTER">
-         <children>
-            <ScrollPane fitToHeight="true" fitToWidth="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-         </children>
-      </AnchorPane>
-   </center>
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
-          <Menu fx:id="Menu" mnemonicParsing="false" text="Menü">
+          <Menu mnemonicParsing="false" text="Menü">
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#onMenuNew" text="Neuanlage" />
                   <MenuItem mnemonicParsing="false" onAction="#onMenuLoad" text="Daten laden" />
                   <MenuItem mnemonicParsing="false" onAction="#onMenuSave" text="Speichern" />
                   <MenuItem mnemonicParsing="false" onAction="#onMenuSaveUnder" text="Speichern Unter" />
-                  <MenuItem mnemonicParsing="false" onAction="#onExit" text="Beenden" />
+                  <MenuItem mnemonicParsing="false" onAction="#onMenuExit" text="Beenden" />
                </items>
           </Menu>
         </menus>
       </MenuBar>
    </top>
    <left>
-      <SplitPane dividerPositions="0.30701754385964913" orientation="VERTICAL" BorderPane.alignment="CENTER">
+      <SplitPane dividerPositions="0.4" orientation="VERTICAL" BorderPane.alignment="CENTER">
         <items>
-          <AnchorPane />
+            <AnchorPane>
+               <children>
+                  <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <GridPane alignment="TOP_CENTER">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="198.0" minWidth="10.0" prefWidth="196.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="93.0" minWidth="10.0" prefWidth="80.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Label text="Familienname" />
+                              <Label text="Vorname(n)" GridPane.rowIndex="1" />
+                              <Label text="Ausbildungsbeginn" GridPane.rowIndex="2" />
+                              <Label text="Ausbildungsende (voraussichtlich)" GridPane.rowIndex="3" />
+                              <Label text="Ausbilder" GridPane.rowIndex="4" />
+                              <Label text="Berufsschule" GridPane.rowIndex="5" />
+                              <Label text="Ausbildungsberuf" GridPane.rowIndex="6" />
+                              <Label fx:id="familyName" GridPane.columnIndex="1" />
+                              <Label fx:id="givenNames" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Label fx:id="trainingBegin" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <Label fx:id="trainingEnd" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <Label fx:id="trainer" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <Label fx:id="school" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <Label fx:id="training" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </GridPane>
+                        <HBox alignment="TOP_CENTER" spacing="10.0">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#onEditTrainee" text="Bearbeiten" />
+                              <Button mnemonicParsing="false" onAction="#onNewTrainingPeriod" text="Neuer Ausbildungszeitraum" />
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </AnchorPane>
           <AnchorPane>
                <children>
-                  <TreeView fx:id="treeView" onMouseClicked="#onTreeSelect" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <TreeView fx:id="treeView" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
             </AnchorPane>
         </items>
       </SplitPane>
    </left>
+   <center>
+      <AnchorPane BorderPane.alignment="CENTER">
+         <children>
+            <ScrollPane fx:id="contentPane" fitToHeight="true" fitToWidth="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </ScrollPane>
+         </children>
+      </AnchorPane>
+   </center>
 </BorderPane>
