@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="500.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111">
+<AnchorPane prefHeight="400.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.ravenguard.ausbildungsnachweis.gui.ContentDataMonthController">
    <children>
       <VBox spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <VBox alignment="TOP_CENTER" spacing="10.0">
                <children>
-                  <Label text="Monat Monatsname Jahr" />
-                  <Label text="Beginn: Begin - Ende: end" />
+                  <Label fx:id="headerMonth" text="Monat Monatsname Jahr" />
+                  <Label fx:id="headerBeginEnd" text="Beginn: Begin - Ende: end" />
+                  <Button mnemonicParsing="false" text="Als PDF exportieren" />
                </children>
             </VBox>
             <HBox spacing="10.0" VBox.vgrow="ALWAYS">
@@ -23,14 +23,15 @@
                   <VBox spacing="10.0" HBox.hgrow="ALWAYS">
                      <children>
                         <Label text="Betrieb" />
-                        <ScrollPane VBox.vgrow="ALWAYS" />
+                        <VBox fx:id="company" />
                      </children>
                   </VBox>
                   <VBox spacing="10.0" HBox.hgrow="ALWAYS">
                      <children>
                         <Label text="Schule" />
-                        <Label text="Ausgewählte Woche" />
-                        <ScrollPane VBox.vgrow="ALWAYS" />
+                        <Label fx:id="headerSchool" text="Ausgewählte Woche" />
+                        <Button fx:id="closeSchool" mnemonicParsing="false" text="Schule schließen" />
+                        <VBox fx:id="school" />
                      </children>
                   </VBox>
                </children>

@@ -83,12 +83,17 @@ public class MainController {
           if (newValue.getValue() instanceof TrainingPeriod) {
             final GuiLoader<ContentTrainingPeriodController, AnchorPane> helper =
                 new GuiLoader<>("ContentTrainingPeriod.fxml");
-            contentPane.setContent(helper.getRoot());
             final ContentTrainingPeriodController controller = helper.getController();
             controller.setTrainingPeriod((TrainingPeriod) newValue.getValue());
             controller.setStage(primaryStage);
+            contentPane.setContent(helper.getRoot());
           } else if (newValue.getValue() instanceof DataMonth) {
-            // TODO
+            final GuiLoader<ContentDataMonthController, AnchorPane> helper =
+                new GuiLoader<>("ContentDataMonth.fxml");
+            final ContentDataMonthController controller = helper.getController();
+            controller.setData((DataMonth) newValue.getValue(),
+                (TrainingPeriod) newValue.getParent().getValue(), primaryStage);
+            contentPane.setContent(helper.getRoot());
           } else {
             contentPane.setContent(null);
           }

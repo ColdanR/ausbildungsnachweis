@@ -34,7 +34,7 @@
       </MenuBar>
    </top>
    <left>
-      <SplitPane dividerPositions="0.4" orientation="VERTICAL" BorderPane.alignment="CENTER">
+      <SplitPane dividerPositions="0.4" minWidth="300.0" orientation="VERTICAL" BorderPane.alignment="CENTER">
         <items>
             <AnchorPane>
                <children>

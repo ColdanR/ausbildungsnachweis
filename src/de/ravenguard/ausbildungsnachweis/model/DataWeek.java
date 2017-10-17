@@ -196,4 +196,10 @@ public class DataWeek implements Comparable<DataWeek> {
     }
     this.type = type;
   }
+
+  @Override
+  public String toString() {
+    return "DataWeek [begin=" + begin + ", end=" + end + ", type=" + type + ", notes=" + notes
+        + ", contentCompany=" + contentCompany + ", contentSchool=" + contentSchool + "]";
+  }
 }

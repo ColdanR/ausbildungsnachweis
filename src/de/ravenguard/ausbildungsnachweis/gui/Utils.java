@@ -17,6 +17,8 @@ public class Utils {
   private static final Logger LOGGER = LogManager.getLogger(DialogTraineeController.class);
   private static final DateTimeFormatter FORMATTER =
       DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(Locale.getDefault());
+  private static final DateTimeFormatter MONTH_FORMATTER =
+      DateTimeFormatter.ofPattern("LLLL yyyy", Locale.getDefault());
 
   /**
    * Creates an Alert for errors and displays it.
@@ -57,5 +59,18 @@ public class Utils {
       return "";
     }
     return FORMATTER.format(date);
+  }
+
+  /**
+   * Formats the date to display name of month and the year.
+   *
+   * @param date date to format
+   * @return formated date as string
+   */
+  public static String formatFullNameDate(LocalDate date) {
+    if (date == null) {
+      return "";
+    }
+    return MONTH_FORMATTER.format(date);
   }
 }

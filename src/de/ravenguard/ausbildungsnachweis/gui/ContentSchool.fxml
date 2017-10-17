@@ -1,8 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1">
-	<!-- TODO Add Nodes -->
-</AnchorPane>
-
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.ravenguard.ausbildungsnachweis.gui.ContentSchoolController">
+   <children>
+      <HBox alignment="TOP_CENTER" spacing="10.0" VBox.vgrow="NEVER">
+         <children>
+            <Label text="Schulfach" HBox.hgrow="ALWAYS" />
+            <Label fx:id="subject" text="contentSchulfach" HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
+      <Label fx:id="exempt" text="befreit seit" />
+      <TextArea fx:id="textArea" prefHeight="200.0" prefWidth="200.0" />
+   </children>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+</VBox>

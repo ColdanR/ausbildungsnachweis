@@ -45,6 +45,68 @@ public class TrainingPeriodLogic {
     }
   }
 
+  /**
+   * Creates a new instance of {@link TrainingPeriod}.
+   *
+   * @param label label, may not be null or empty
+   * @param begin begin, may not be null
+   * @param end end, may not be null
+   * @param schoolClass schoolClass, may not be null or empty
+   * @param classTeacher classTeacher, may not be null or empty
+   * @return new {@link TrainingPeriod} with all months and weeks generated
+   * @throws IllegalDateException if either begin or end is not a working day or end is before begin
+   */
+  public TrainingPeriod create(String label, LocalDate begin, LocalDate end, String schoolClass,
+      String classTeacher) throws IllegalDateException {
+    LOGGER.trace("Called create(label: {}, begin: {}, end: {}, schoolClass: {}, classTeacher: {})",
+        label, begin, end, schoolClass, classTeacher);
+    return new TrainingPeriod(label, begin, end, schoolClass, classTeacher,
+        calculateMonths(begin, end), new ArrayList<>());
+  }
+
+  /**
+   * Perform the switch of the {@link WeekType}.
+   *
+   * @param period {@link TrainingPeriod} of the week
+   * @param week {@link DataWeek} to switch {@link WeekType}
+   * @param newType new {@link WeekType}
+   */
+  public void switchWeekType(TrainingPeriod period, DataWeek week, WeekType newType) {
+    LOGGER.trace("Called switchWeekType(period: {}, week: {}, newType: {})", period, week, newType);
+    if (period == null) {
+      throw new NullPointerException("period cannot be null");
+    }
+    if (week == null) {
+      throw new NullPointerException("week cannot be null");
+    }
+    if (newType == null) {
+      throw new NullPointerException("newType cannot be null");
+    }
+    boolean found = false;
+    for (final DataMonth month : period.getMonths()) {
+      if (month.getWeeks().contains(week)) {
+        found = true;
+        break;
+      }
+    }
+    if (!found) {
+      throw new IllegalArgumentException("Week not found.");
+    }
+    week.setType(newType);
+    if (newType == WeekType.SCHOOL) {
+      for (final SchoolSubject subject : period.getSchoolSubjects()) {
+        final ContentSchoolSubject content = new ContentSchoolSubject();
+        content.setSubject(subject);
+        week.getContentSchool().add(content);
+      }
+      if (!Configuration.getInstance().isCompanyAndSchool()) {
+        week.setContentCompany("");
+      }
+    } else {
+      week.getContentSchool().clear();
+    }
+  }
+
   private List<DataMonth> calculateMonths(LocalDate begin, LocalDate end)
       throws IllegalDateException {
     LOGGER.trace("Called calculateMonths(begin: {}, end: {})", begin, end);
@@ -157,66 +219,5 @@ public class TrainingPeriodLogic {
     }
 
     return retValue;
-  }
-
-  /**
-   * Creates a new instance of {@link TrainingPeriod}.
-   *
-   * @param label label, may not be null or empty
-   * @param begin begin, may not be null
-   * @param end end, may not be null
-   * @param schoolClass schoolClass, may not be null or empty
-   * @param classTeacher classTeacher, may not be null or empty
-   * @return new {@link TrainingPeriod} with all months and weeks generated
-   * @throws IllegalDateException if either begin or end is not a working day or end is before begin
-   */
-  public TrainingPeriod create(String label, LocalDate begin, LocalDate end, String schoolClass,
-      String classTeacher) throws IllegalDateException {
-    LOGGER.trace("Called create(label: {}, begin: {}, end: {}, schoolClass: {}, classTeacher: {})",
-        label, begin, end, schoolClass, classTeacher);
-    return new TrainingPeriod(label, begin, end, schoolClass, classTeacher,
-        calculateMonths(begin, end), new ArrayList<>());
-  }
-
-  /**
-   * Perform the switch of the {@link WeekType}.
-   *
-   * @param period {@link TrainingPeriod} of the week
-   * @param week {@link DataWeek} to switch {@link WeekType}
-   * @param newType new {@link WeekType}
-   */
-  public void switchWeekType(TrainingPeriod period, DataWeek week, WeekType newType) {
-    if (period == null) {
-      throw new NullPointerException("period cannot be null");
-    }
-    if (week == null) {
-      throw new NullPointerException("week cannot be null");
-    }
-    if (newType == null) {
-      throw new NullPointerException("newType cannot be null");
-    }
-    boolean found = false;
-    for (final DataMonth month : period.getMonths()) {
-      if (month.getWeeks().contains(week)) {
-        found = true;
-        break;
-      }
-    }
-    if (!found) {
-      throw new IllegalArgumentException("Week not found.");
-    }
-    week.setType(newType);
-    if (newType == WeekType.SCHOOL) {
-      for (final SchoolSubject subject : period.getSchoolSubjects()) {
-        final ContentSchoolSubject content = new ContentSchoolSubject();
-        content.setSubject(subject);
-        week.getContentSchool().add(content);
-      }
-      if (!Configuration.getInstance().isCompanyAndSchool()) {
-        week.setContentCompany("");
-      }
-    } else {
-      week.getContentSchool().clear();
-    }
   }
 }
