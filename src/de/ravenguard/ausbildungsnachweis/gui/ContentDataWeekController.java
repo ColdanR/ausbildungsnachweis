@@ -1,0 +1,99 @@
+package de.ravenguard.ausbildungsnachweis.gui;
+
+import de.ravenguard.ausbildungsnachweis.logic.Configuration;
+import de.ravenguard.ausbildungsnachweis.logic.TrainingPeriodLogic;
+import de.ravenguard.ausbildungsnachweis.model.ContentSchoolSubject;
+import de.ravenguard.ausbildungsnachweis.model.DataWeek;
+import de.ravenguard.ausbildungsnachweis.model.TrainingPeriod;
+import de.ravenguard.ausbildungsnachweis.model.WeekType;
+import de.ravenguard.ausbildungsnachweis.utils.GuiLoader;
+import java.io.IOException;
+import java.time.temporal.WeekFields;
+import javafx.fxml.FXML;
+import javafx.scene.Parent;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+public class ContentDataWeekController {
+  private static final Logger LOGGER = LogManager.getLogger(ContentDataWeekController.class);
+  @FXML
+  private Label header;
+  @FXML
+  private RadioButton button;
+  @FXML
+  private TextArea text;
+  @FXML
+  private Button setSchoolContent;
+
+  /**
+   * Sets and initialize the dataWeek.
+   *
+   * @param dataWeek dataWeek to set
+   */
+  public void setData(DataWeek dataWeek, TrainingPeriod period, Stage stage, Label headerSchool,
+      VBox schoolContent) {
+    LOGGER.trace("Called setData(dataWeek: {})", dataWeek);
+
+    header.setText("KW " + dataWeek.getBegin().get(WeekFields.ISO.weekOfWeekBasedYear()));
+
+    button.selectedProperty().set(dataWeek.getType() == WeekType.SCHOOL);
+    button.selectedProperty().addListener((obs, oldValue, newValue) -> {
+      LOGGER.trace("Called change(obs: {}, oldValue: {}, newValue: {})", obs, oldValue, newValue);
+
+      // Determine new type
+      WeekType type = WeekType.COMPANY;
+      if (newValue.booleanValue()) {
+        type = WeekType.SCHOOL;
+      }
+
+      // Do logic
+      final TrainingPeriodLogic logic = new TrainingPeriodLogic();
+      logic.switchWeekType(period, dataWeek, type);
+    });
+
+    // Set content TextField
+    text.setText(dataWeek.getContentCompany());
+    text.textProperty().addListener((obs, oldValue, newValue) -> {
+      dataWeek.setContentCompany(newValue);
+    });
+
+    // Bind visibility TextField
+    if (!Configuration.getInstance().isCompanyAndSchool()) {
+      text.visibleProperty().bind(button.selectedProperty().not());
+      text.managedProperty().bind(button.selectedProperty().not());
+    }
+
+    // Bind visibility SchoolContentButton
+    setSchoolContent.visibleProperty().bind(button.selectedProperty());
+    setSchoolContent.managedProperty().bind(button.selectedProperty());
+
+    // Button Action
+    setSchoolContent.setOnAction((event) -> {
+      final int weekNumber = dataWeek.getBegin().get(WeekFields.ISO.weekOfWeekBasedYear());
+      headerSchool.setText("Schulwoche: KW " + weekNumber + ": Vom "
+          + Utils.formatDate(dataWeek.getBegin()) + " bis " + Utils.formatDate(dataWeek.getEnd()));
+      for (final ContentSchoolSubject content : dataWeek.getContentSchool()) {
+        try {
+          final GuiLoader<ContentSchoolController, VBox> loader =
+              new GuiLoader<>("ContentSchool.fxml");
+
+          // set Data
+          final ContentSchoolController controller = loader.getController();
+          controller.setData(content, dataWeek.getBegin(), dataWeek.getEnd());
+
+          // Set Node
+          final Parent node = loader.getRoot();
+          schoolContent.getChildren().add(node);
+        } catch (final IOException e) {
+          Utils.createExceptionAlert(e);
+        }
+      }
+    });
+  }
+}
