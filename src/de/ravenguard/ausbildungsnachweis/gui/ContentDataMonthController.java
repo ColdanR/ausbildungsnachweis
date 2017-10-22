@@ -75,6 +75,7 @@ public class ContentDataMonthController {
     }
     closeSchool.setOnAction((event) -> {
       school.getChildren().clear();
+      headerSchool.setText("");
     });
   }
 }

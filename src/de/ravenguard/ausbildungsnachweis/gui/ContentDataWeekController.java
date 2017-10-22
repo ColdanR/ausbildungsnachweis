@@ -40,7 +40,9 @@ public class ContentDataWeekController {
       VBox schoolContent) {
     LOGGER.trace("Called setData(dataWeek: {})", dataWeek);
 
-    header.setText("KW " + dataWeek.getBegin().get(WeekFields.ISO.weekOfWeekBasedYear()));
+    header.setText("KW " + dataWeek.getBegin().get(WeekFields.ISO.weekOfWeekBasedYear())
+        + " - Beginn: " + Utils.formatDate(dataWeek.getBegin()) + " - Ende: "
+        + Utils.formatDate(dataWeek.getEnd()));
 
     button.selectedProperty().set(dataWeek.getType() == WeekType.SCHOOL);
     button.selectedProperty().addListener((obs, oldValue, newValue) -> {
