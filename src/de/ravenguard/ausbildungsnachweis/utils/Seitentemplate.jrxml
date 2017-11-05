@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Seitentemplate" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryNewPage="true" uuid="6eb871a0-35a5-4d9a-b5a6-5263941aed3a">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="subReport" class="net.sf.jasperreports.engine.JasperReport">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="lines" class="java.io.InputStream"/>
+	<parameter name="logo" class="java.io.InputStream"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="headerPageType" class="java.lang.String"/>
+	<field name="headerPageYear" class="java.lang.String"/>
+	<field name="headerPageName" class="java.lang.String"/>
+	<field name="headerPageProfession" class="java.lang.String"/>
+	<field name="headerPagePeriod" class="java.lang.String"/>
+	<field name="pageType" class="java.lang.String"/>
+	<field name="content" class="java.util.List"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="138" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<image isUsingCache="false" evaluationTime="Report">
+				<reportElement x="0" y="0" width="555" height="103" uuid="86df9028-30ce-4f5b-b816-a8ffdd30dec2">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{lines}]]></imageExpression>
+			</image>
+			<image isUsingCache="false" evaluationTime="Report">
+				<reportElement x="390" y="10" width="130" height="50" uuid="d80b7751-56f1-4633-9092-7e6fb91c5b2c"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="120" y="50" width="289" height="39" uuid="78a1c261-50b5-4a71-9ffb-7740db22705a"/>
+				<textElement textAlignment="Center">
+					<font size="26"/>
+				</textElement>
+				<text><![CDATA[Ausbildungsnachweis]]></text>
+			</staticText>
+			<textField evaluationTime="Page" isBlankWhenNull="true">
+				<reportElement x="120" y="89" width="289" height="14" uuid="f3d129b4-aba5-47d9-899e-334b91c46e78"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{headerPageType}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" isBlankWhenNull="true">
+				<reportElement x="100" y="103" width="170" height="15" uuid="d4dd5398-ceff-4c2f-959e-6c7c961d18bf"/>
+				<textFieldExpression><![CDATA[$F{headerPageName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="103" width="100" height="15" uuid="f1bd7c03-71da-49a1-9dd2-c36602190d4d"/>
+				<text><![CDATA[Name:]]></text>
+			</staticText>
+			<textField evaluationTime="Report" isBlankWhenNull="true">
+				<reportElement x="375" y="103" width="180" height="15" uuid="a1d9ed0b-5a83-479e-981b-477b2d68cb81"/>
+				<textFieldExpression><![CDATA[$F{headerPageProfession}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="275" y="103" width="100" height="15" uuid="3674a311-cc13-49b1-923b-60e274d7efa9"/>
+				<text><![CDATA[Ausbildungsberuf:]]></text>
+			</staticText>
+			<textField evaluationTime="Report" isBlankWhenNull="true">
+				<reportElement x="100" y="123" width="170" height="15" uuid="e5ff874a-4686-4bbc-9c23-8de62c78374e"/>
+				<textFieldExpression><![CDATA[$F{headerPageYear}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="123" width="100" height="15" uuid="0c3d21ce-deee-4501-b5ba-db5b2513f3b0"/>
+				<text><![CDATA[Ausbildungsjahr:]]></text>
+			</staticText>
+			<textField evaluationTime="Page" isBlankWhenNull="true">
+				<reportElement x="375" y="123" width="180" height="15" uuid="f714db3b-62d3-48ec-ae4b-7f4967b1ba9c"/>
+				<textFieldExpression><![CDATA[$F{headerPagePeriod}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="275" y="123" width="100" height="15" uuid="e1a0ad33-6ae7-486c-82f3-a5bad598d89a"/>
+				<text><![CDATA[Zeitraum:]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="250" splitType="Immediate">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+			<subreport>
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="555" height="249" uuid="d33ac7f7-fe1a-4c44-9abc-b642c5035f55">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<parametersMapExpression><![CDATA[$P{REPORT_PARAMETERS_MAP}]]></parametersMapExpression>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{content}, false)]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{subReport}]]></subreportExpression>
+			</subreport>
+			<break>
+				<reportElement positionType="Float" x="0" y="249" width="555" height="1" uuid="564813dd-1087-4171-9784-80f9e14450e2">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+			</break>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="50" splitType="Prevent">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<frame>
+				<reportElement stretchType="ContainerHeight" x="0" y="0" width="555" height="25" uuid="2e4abfbe-569c-42f4-9c7f-4c9425901b23">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<staticText>
+					<reportElement x="0" y="0" width="185" height="25" uuid="7727edb2-fae6-4cd3-9679-96986ef03581"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[Datum / Unterschrift Auszubildende(r)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="185" y="0" width="185" height="25" uuid="942b0f7e-c04e-48a2-9c30-677e4e791018">
+						<printWhenExpression><![CDATA[new Boolean($F{pageType}.equalsIgnoreCase("school"))]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[Datum / Unterschrift Berufsschule]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="370" y="0" width="185" height="25" uuid="321080a4-3e5c-405f-9538-96094ce4d70f"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[Datum / Unterschrift Ausbilder]]></text>
+				</staticText>
+			</frame>
+			<frame>
+				<reportElement x="0" y="25" width="555" height="25" uuid="24134b7b-51e6-45fb-a87d-efd61d102b04">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
+				</reportElement>
+				<staticText>
+					<reportElement x="0" y="0" width="185" height="25" uuid="f8866798-abbc-4c5a-bd5b-d1652f81343a"/>
+					<textElement textAlignment="Center" verticalAlignment="Bottom"/>
+					<text><![CDATA[____________________________]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="185" y="0" width="185" height="25" uuid="a72b63db-a385-41b5-8493-c2e868018e16">
+						<printWhenExpression><![CDATA[new Boolean($F{pageType}.equalsIgnoreCase("school"))]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Bottom"/>
+					<text><![CDATA[____________________________]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="370" y="0" width="185" height="25" uuid="a84883ea-0d92-437c-a316-10021c216bc7"/>
+					<textElement textAlignment="Center" verticalAlignment="Bottom"/>
+					<text><![CDATA[____________________________]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</pageFooter>
+</jasperReport>

@@ -1,7 +1,7 @@
 package de.ravenguard.ausbildungsnachweis.model;
 
-import de.ravenguard.ausbildungsnachweis.gui.Utils;
 import de.ravenguard.ausbildungsnachweis.utils.DateUtils;
+import de.ravenguard.ausbildungsnachweis.utils.Utils;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;

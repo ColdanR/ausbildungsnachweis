@@ -9,6 +9,7 @@ import de.ravenguard.ausbildungsnachweis.model.Trainee;
 import de.ravenguard.ausbildungsnachweis.model.TrainingPeriod;
 import de.ravenguard.ausbildungsnachweis.model.TreeElement;
 import de.ravenguard.ausbildungsnachweis.utils.GuiLoader;
+import de.ravenguard.ausbildungsnachweis.utils.Utils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -92,7 +93,7 @@ public class MainController {
                 new GuiLoader<>("ContentDataMonth.fxml");
             final ContentDataMonthController controller = helper.getController();
             controller.setData((DataMonth) newValue.getValue(),
-                (TrainingPeriod) newValue.getParent().getValue(), primaryStage);
+                (TrainingPeriod) newValue.getParent().getValue(), primaryStage, trainee);
             contentPane.setContent(helper.getRoot());
           } else {
             contentPane.setContent(null);
@@ -161,8 +162,9 @@ public class MainController {
       trainee = logic.readTrainee(loadPath);
       config.setCurrentFile(loadPath);
       setGuiFromTrainee();
+      Utils.createInfoMessage("Datei erfolgreich geladen.");
     } catch (final JAXBException e) {
-      Utils.createExceptionAlert(e);
+      Utils.createErrorMessage("Fehlerhafte Datei ausgewählt. Ladevorgang wurde abgebrochen.");
     }
   }
 
@@ -194,6 +196,7 @@ public class MainController {
     final Path savePath = getSavePath();
     try {
       saveTrainee(savePath);
+      Utils.createInfoMessage("Datei gespeichert.");
     } catch (final JAXBException e) {
       Utils.createExceptionAlert(e);
     } catch (final IOException e) {
@@ -212,6 +215,7 @@ public class MainController {
     final Path savePath = savePathFromDialog();
     try {
       saveTrainee(savePath);
+      Utils.createInfoMessage("Datei gespeichert.");
     } catch (final JAXBException e) {
       Utils.createExceptionAlert(e);
     } catch (final IOException e) {
@@ -326,6 +330,7 @@ public class MainController {
     final FileChooser fileChooser = new FileChooser();
     fileChooser.setTitle("Datei laden...");
     fileChooser.getExtensionFilters().add(new ExtensionFilter("XML", "*.xml"));
+    fileChooser.setInitialDirectory(Configuration.getInstance().getInstallPath().toFile());
     final File selectedFile = fileChooser.showOpenDialog(primaryStage);
     if (selectedFile == null) {
       return null;
@@ -377,6 +382,7 @@ public class MainController {
     final FileChooser fileChooser = new FileChooser();
     fileChooser.setTitle("Datei speichern...");
     fileChooser.getExtensionFilters().add(new ExtensionFilter("XML", "*.xml"));
+    fileChooser.setInitialDirectory(Configuration.getInstance().getInstallPath().toFile());
     final File selectedFile = fileChooser.showOpenDialog(primaryStage);
     if (selectedFile == null) {
       return null;

@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class SchoolSubject {
+public class SchoolSubject implements Comparable<SchoolSubject> {
   private String label;
   private LocalDate exemptSince = null;
 
@@ -43,6 +43,11 @@ public class SchoolSubject {
 
     this.label = label.trim();
     this.exemptSince = exemptSince;
+  }
+
+  @Override
+  public int compareTo(SchoolSubject o) {
+    return label.compareToIgnoreCase(o.getLabel());
   }
 
   @Override

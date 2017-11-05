@@ -1,9 +1,11 @@
-package de.ravenguard.ausbildungsnachweis.gui;
+package de.ravenguard.ausbildungsnachweis.utils;
 
+import de.ravenguard.ausbildungsnachweis.gui.DialogTraineeController;
 import de.ravenguard.ausbildungsnachweis.gui.elements.AlertException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.time.temporal.WeekFields;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -48,6 +50,17 @@ public class Utils {
   }
 
   /**
+   * Creates an Alert for info message and displays it.
+   *
+   * @param message info message
+   */
+  public static void createInfoMessage(String message) {
+    LOGGER.trace("Called createInfoMessage(message: {})", message);
+    final Alert alert = new Alert(AlertType.INFORMATION, message, ButtonType.OK);
+    alert.showAndWait();
+  }
+
+  /**
    * Formats the date to local display.
    *
    * @param date date to format
@@ -72,5 +85,9 @@ public class Utils {
       return "";
     }
     return MONTH_FORMATTER.format(date);
+  }
+
+  public static int getWeekNumberFromDate(LocalDate date) {
+    return date.get(WeekFields.ISO.weekOfWeekBasedYear());
   }
 }

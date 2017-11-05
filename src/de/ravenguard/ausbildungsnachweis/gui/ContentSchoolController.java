@@ -1,6 +1,7 @@
 package de.ravenguard.ausbildungsnachweis.gui;
 
 import de.ravenguard.ausbildungsnachweis.model.ContentSchoolSubject;
+import de.ravenguard.ausbildungsnachweis.utils.Utils;
 import java.time.LocalDate;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

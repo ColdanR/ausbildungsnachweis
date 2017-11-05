@@ -51,8 +51,8 @@
                </font>
             </Label>
             <TextField fx:id="label" GridPane.columnIndex="1" />
-            <DatePicker fx:id="begin" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <DatePicker fx:id="end" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <DatePicker fx:id="begin" showWeekNumbers="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <DatePicker fx:id="end" showWeekNumbers="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <TextField fx:id="schoolClass" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <TextField fx:id="classTeacher" GridPane.columnIndex="1" GridPane.rowIndex="4" />
          </children>

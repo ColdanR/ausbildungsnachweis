@@ -3,6 +3,7 @@ package de.ravenguard.ausbildungsnachweis.gui;
 import de.ravenguard.ausbildungsnachweis.logic.Configuration;
 import de.ravenguard.ausbildungsnachweis.logic.InstallStatus;
 import de.ravenguard.ausbildungsnachweis.utils.GuiLoader;
+import de.ravenguard.ausbildungsnachweis.utils.Utils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;

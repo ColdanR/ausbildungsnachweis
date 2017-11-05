@@ -1,7 +1,7 @@
 package de.ravenguard.ausbildungsnachweis.model;
 
-import de.ravenguard.ausbildungsnachweis.gui.Utils;
 import de.ravenguard.ausbildungsnachweis.utils.DateUtils;
+import de.ravenguard.ausbildungsnachweis.utils.Utils;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -98,6 +98,7 @@ public class TrainingPeriod implements TreeElement {
     }
 
     schoolSubjects.add(schoolSubject);
+    schoolSubjects.sort(null);
   }
 
   @Override
@@ -199,7 +200,8 @@ public class TrainingPeriod implements TreeElement {
 
   @Override
   public String getTreeLabel() {
-    return "Ausbildungszeitraum vom " + Utils.formatDate(begin) + " bis " + Utils.formatDate(end);
+    return getLabel() + System.lineSeparator() + "Beginn: " + Utils.formatDate(begin)
+        + System.lineSeparator() + "Ende: " + Utils.formatDate(end);
   }
 
   @Override

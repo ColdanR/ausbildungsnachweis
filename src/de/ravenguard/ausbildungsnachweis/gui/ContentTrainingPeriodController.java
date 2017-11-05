@@ -4,6 +4,7 @@ import de.ravenguard.ausbildungsnachweis.logic.Configuration;
 import de.ravenguard.ausbildungsnachweis.model.SchoolSubject;
 import de.ravenguard.ausbildungsnachweis.model.TrainingPeriod;
 import de.ravenguard.ausbildungsnachweis.utils.GuiLoader;
+import de.ravenguard.ausbildungsnachweis.utils.Utils;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;

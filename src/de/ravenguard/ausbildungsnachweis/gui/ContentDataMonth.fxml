@@ -15,7 +15,7 @@
                <children>
                   <Label fx:id="headerMonth" text="Monat Monatsname Jahr" />
                   <Label fx:id="headerBeginEnd" text="Beginn: Begin - Ende: end" />
-                  <Button mnemonicParsing="false" text="Als PDF exportieren" />
+                  <Button mnemonicParsing="false" onAction="#onPdfExport" text="Als PDF exportieren" />
                </children>
             </VBox>
             <HBox spacing="10.0" VBox.vgrow="ALWAYS">

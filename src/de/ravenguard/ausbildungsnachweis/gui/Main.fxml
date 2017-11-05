@@ -34,13 +34,13 @@
       </MenuBar>
    </top>
    <left>
-      <SplitPane dividerPositions="0.4" minWidth="300.0" orientation="VERTICAL" BorderPane.alignment="CENTER">
+      <SplitPane dividerPositions="0.5" minWidth="400.0" orientation="VERTICAL" BorderPane.alignment="CENTER">
         <items>
             <AnchorPane>
                <children>
                   <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <GridPane alignment="TOP_CENTER">
+                        <GridPane>
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" maxWidth="198.0" minWidth="10.0" prefWidth="196.0" />
                             <ColumnConstraints hgrow="SOMETIMES" maxWidth="93.0" minWidth="10.0" prefWidth="80.0" />
@@ -53,26 +53,25 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
                               <Label text="Familienname" />
                               <Label text="Vorname(n)" GridPane.rowIndex="1" />
                               <Label text="Ausbildungsbeginn" GridPane.rowIndex="2" />
-                              <Label text="Ausbildungsende (voraussichtlich)" GridPane.rowIndex="3" />
+                              <Label text="Ausbildungsende" GridPane.rowIndex="3" />
                               <Label text="Ausbilder" GridPane.rowIndex="4" />
                               <Label text="Berufsschule" GridPane.rowIndex="5" />
-                              <Label text="Ausbildungsberuf" GridPane.rowIndex="6" />
+                              <Label text="Ausbildungsberuf" GridPane.rowIndex="7" />
                               <Label fx:id="familyName" GridPane.columnIndex="1" />
                               <Label fx:id="givenNames" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                               <Label fx:id="trainingBegin" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                               <Label fx:id="trainingEnd" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                               <Label fx:id="trainer" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                              <Label fx:id="school" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                              <Label fx:id="training" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                              <Label fx:id="school" GridPane.columnSpan="2147483647" GridPane.rowIndex="6" />
+                              <Label fx:id="training" GridPane.columnSpan="2147483647" GridPane.rowIndex="8" />
                            </children>
-                           <padding>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </padding>
                         </GridPane>
                         <HBox alignment="TOP_CENTER" spacing="10.0">
                            <children>

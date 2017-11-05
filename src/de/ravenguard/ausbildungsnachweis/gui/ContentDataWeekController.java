@@ -7,6 +7,7 @@ import de.ravenguard.ausbildungsnachweis.model.DataWeek;
 import de.ravenguard.ausbildungsnachweis.model.TrainingPeriod;
 import de.ravenguard.ausbildungsnachweis.model.WeekType;
 import de.ravenguard.ausbildungsnachweis.utils.GuiLoader;
+import de.ravenguard.ausbildungsnachweis.utils.Utils;
 import java.io.IOException;
 import java.time.temporal.WeekFields;
 import javafx.fxml.FXML;
