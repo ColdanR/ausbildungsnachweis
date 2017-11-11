@@ -7,11 +7,17 @@
 	<field name="headLine" class="java.lang.String"/>
 	<field name="content" class="java.lang.String"/>
 	<background>
-		<band splitType="Stretch"/>
+		<band height="1" splitType="Stretch"/>
 	</background>
 	<detail>
 		<band height="50" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<rectangle>
+				<reportElement stretchType="ContainerHeight" x="0" y="0" width="551" height="50" uuid="1a0f85df-7906-46e0-a75f-e5bdb8623935"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</graphicElement>
+			</rectangle>
 			<textField>
 				<reportElement x="0" y="0" width="550" height="20" uuid="8ab888e7-c2fc-4c8b-8f65-1fe7b1bea58d"/>
 				<textFieldExpression><![CDATA[$F{headLine}]]></textFieldExpression>
