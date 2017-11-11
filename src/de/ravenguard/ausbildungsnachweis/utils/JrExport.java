@@ -91,20 +91,16 @@ public class JrExport {
             .getResourceAsStream("/de/ravenguard/ausbildungsnachweis/utils/Content.jrxml");
         InputStream main = JrExport.class
             .getResourceAsStream("/de/ravenguard/ausbildungsnachweis/utils/Seitentemplate.jrxml");
-        InputStream lines = JrExport.class
-            .getResourceAsStream("/de/ravenguard/ausbildungsnachweis/utils/Linien.jpg");
-        InputStream logo = JrExport.class
-            .getResourceAsStream("/de/ravenguard/ausbildungsnachweis/utils/Logo.png");) {
+        InputStream logo = JrExport.class.getResourceAsStream(
+            "/de/ravenguard/ausbildungsnachweis/utils/Ausbildungsnachweis.png");) {
       final String destinationPath = destination.getAbsolutePath();
 
       final JasperReport masterReport = JasperCompileManager.compileReport(main);
       final JasperReport subReport = JasperCompileManager.compileReport(sub);
 
       final Map<String, Object> parameters = new HashMap<>();
-      final Image linesImage = ImageIO.read(lines);
       final Image logoImage = ImageIO.read(logo);
       parameters.put("subReport", subReport);
-      parameters.put("lines", linesImage);
       parameters.put("logo", logoImage);
 
       final JRDataSource dataSource = new JRBeanCollectionDataSource(dataList, false);
