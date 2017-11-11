@@ -20,7 +20,7 @@ public class Utils {
   private static final DateTimeFormatter FORMATTER =
       DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(Locale.getDefault());
   private static final DateTimeFormatter MONTH_FORMATTER =
-      DateTimeFormatter.ofPattern("LLLL yyyy", Locale.getDefault());
+      DateTimeFormatter.ofPattern("MMMM yyyy", Locale.getDefault());
 
   /**
    * Creates an Alert for errors and displays it.

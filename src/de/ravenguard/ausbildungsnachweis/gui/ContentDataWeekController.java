@@ -86,13 +86,12 @@ public class ContentDataWeekController {
           final GuiLoader<ContentSchoolController, VBox> loader =
               new GuiLoader<>("ContentSchool.fxml");
 
-          // set Data
-          final ContentSchoolController controller = loader.getController();
-          controller.setData(content, dataWeek.getBegin(), dataWeek.getEnd());
-
           // Set Node
           final Parent node = loader.getRoot();
           schoolContent.getChildren().add(node);
+          // set Data
+          final ContentSchoolController controller = loader.getController();
+          controller.setData(content, dataWeek.getBegin(), dataWeek.getEnd());
         } catch (final IOException e) {
           Utils.createExceptionAlert(e);
         }

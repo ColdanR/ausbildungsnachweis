@@ -78,18 +78,20 @@ public class ContentDataMonthController {
     chooser.setTitle("Wähle den Speicherort für den Export");
     chooser.getExtensionFilters().add(new ExtensionFilter("Portable Document Format", "*.pdf"));
     chooser.setInitialDirectory(Configuration.getInstance().getInstallPath().toFile());
-    chooser.setInitialFileName("newFile.pdf");
+    chooser.setInitialFileName(Utils.formatFullNameDate(dataMonth.getBegin()));
     final File exportFile = chooser.showSaveDialog(stage);
 
-    try {
-      final String period =
-          Utils.formatDate(dataMonth.getBegin()) + " - " + Utils.formatDate(dataMonth.getEnd());
-      JrExport.export(dataMonth.getWeeks(), exportFile, name, profession, trainingsyear, period);
-      Utils.createInfoMessage("Export abgeschlossen");
-    } catch (final IOException e) {
-      Utils.createExceptionAlert(e);
-    } catch (final JRException e) {
-      Utils.createExceptionAlert(e);
+    if (exportFile != null) {
+      try {
+        final String period =
+            Utils.formatDate(dataMonth.getBegin()) + " - " + Utils.formatDate(dataMonth.getEnd());
+        JrExport.export(dataMonth.getWeeks(), exportFile, name, profession, trainingsyear, period);
+        Utils.createInfoMessage("Export abgeschlossen");
+      } catch (final IOException e) {
+        Utils.createExceptionAlert(e);
+      } catch (final JRException e) {
+        Utils.createExceptionAlert(e);
+      }
     }
   }
 

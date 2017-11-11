@@ -5,8 +5,8 @@
 	<parameter name="subReport" class="net.sf.jasperreports.engine.JasperReport">
 		<parameterDescription><![CDATA[]]></parameterDescription>
 	</parameter>
-	<parameter name="lines" class="java.io.InputStream"/>
-	<parameter name="logo" class="java.io.InputStream"/>
+	<parameter name="lines" class="java.awt.Image"/>
+	<parameter name="logo" class="java.awt.Image"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -23,7 +23,7 @@
 	<pageHeader>
 		<band height="138" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-			<image isUsingCache="false" evaluationTime="Report">
+			<image isUsingCache="false" evaluationTime="Page">
 				<reportElement x="0" y="0" width="555" height="103" uuid="86df9028-30ce-4f5b-b816-a8ffdd30dec2">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
@@ -32,10 +32,45 @@
 				</reportElement>
 				<imageExpression><![CDATA[$P{lines}]]></imageExpression>
 			</image>
-			<image isUsingCache="false" evaluationTime="Report">
+			<image isUsingCache="false" evaluationTime="Page">
 				<reportElement x="390" y="10" width="130" height="50" uuid="d80b7751-56f1-4633-9092-7e6fb91c5b2c"/>
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
+			<textField evaluationTime="Page" isBlankWhenNull="true">
+				<reportElement x="100" y="103" width="170" height="15" isPrintWhenDetailOverflows="true" uuid="d4dd5398-ceff-4c2f-959e-6c7c961d18bf"/>
+				<textFieldExpression><![CDATA[$F{headerPageName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="103" width="100" height="15" uuid="f1bd7c03-71da-49a1-9dd2-c36602190d4d"/>
+				<text><![CDATA[Name:]]></text>
+			</staticText>
+			<textField evaluationTime="Page" isBlankWhenNull="true">
+				<reportElement x="375" y="103" width="180" height="15" isPrintWhenDetailOverflows="true" uuid="a1d9ed0b-5a83-479e-981b-477b2d68cb81"/>
+				<textElement>
+					<paragraph lineSpacing="AtLeast"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{headerPageProfession}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="275" y="103" width="100" height="15" uuid="3674a311-cc13-49b1-923b-60e274d7efa9"/>
+				<text><![CDATA[Ausbildungsberuf:]]></text>
+			</staticText>
+			<textField evaluationTime="Page" isBlankWhenNull="true">
+				<reportElement x="100" y="123" width="170" height="15" isPrintWhenDetailOverflows="true" uuid="e5ff874a-4686-4bbc-9c23-8de62c78374e"/>
+				<textFieldExpression><![CDATA[$F{headerPageYear}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="123" width="100" height="15" uuid="0c3d21ce-deee-4501-b5ba-db5b2513f3b0"/>
+				<text><![CDATA[Ausbildungsjahr:]]></text>
+			</staticText>
+			<textField evaluationTime="Page" isBlankWhenNull="true">
+				<reportElement x="375" y="123" width="180" height="15" isPrintWhenDetailOverflows="true" uuid="f714db3b-62d3-48ec-ae4b-7f4967b1ba9c"/>
+				<textFieldExpression><![CDATA[$F{headerPagePeriod}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="275" y="123" width="100" height="15" uuid="e1a0ad33-6ae7-486c-82f3-a5bad598d89a"/>
+				<text><![CDATA[Zeitraum:]]></text>
+			</staticText>
 			<staticText>
 				<reportElement x="120" y="50" width="289" height="39" uuid="78a1c261-50b5-4a71-9ffb-7740db22705a"/>
 				<textElement textAlignment="Center">
@@ -48,38 +83,6 @@
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{headerPageType}]]></textFieldExpression>
 			</textField>
-			<textField evaluationTime="Report" isBlankWhenNull="true">
-				<reportElement x="100" y="103" width="170" height="15" uuid="d4dd5398-ceff-4c2f-959e-6c7c961d18bf"/>
-				<textFieldExpression><![CDATA[$F{headerPageName}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="0" y="103" width="100" height="15" uuid="f1bd7c03-71da-49a1-9dd2-c36602190d4d"/>
-				<text><![CDATA[Name:]]></text>
-			</staticText>
-			<textField evaluationTime="Report" isBlankWhenNull="true">
-				<reportElement x="375" y="103" width="180" height="15" uuid="a1d9ed0b-5a83-479e-981b-477b2d68cb81"/>
-				<textFieldExpression><![CDATA[$F{headerPageProfession}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="275" y="103" width="100" height="15" uuid="3674a311-cc13-49b1-923b-60e274d7efa9"/>
-				<text><![CDATA[Ausbildungsberuf:]]></text>
-			</staticText>
-			<textField evaluationTime="Report" isBlankWhenNull="true">
-				<reportElement x="100" y="123" width="170" height="15" uuid="e5ff874a-4686-4bbc-9c23-8de62c78374e"/>
-				<textFieldExpression><![CDATA[$F{headerPageYear}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="0" y="123" width="100" height="15" uuid="0c3d21ce-deee-4501-b5ba-db5b2513f3b0"/>
-				<text><![CDATA[Ausbildungsjahr:]]></text>
-			</staticText>
-			<textField evaluationTime="Page" isBlankWhenNull="true">
-				<reportElement x="375" y="123" width="180" height="15" uuid="f714db3b-62d3-48ec-ae4b-7f4967b1ba9c"/>
-				<textFieldExpression><![CDATA[$F{headerPagePeriod}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="275" y="123" width="100" height="15" uuid="e1a0ad33-6ae7-486c-82f3-a5bad598d89a"/>
-				<text><![CDATA[Zeitraum:]]></text>
-			</staticText>
 		</band>
 	</pageHeader>
 	<detail>

@@ -4,6 +4,7 @@ import de.ravenguard.ausbildungsnachweis.logic.Configuration;
 import de.ravenguard.ausbildungsnachweis.model.ContentSchoolSubject;
 import de.ravenguard.ausbildungsnachweis.model.DataWeek;
 import de.ravenguard.ausbildungsnachweis.model.WeekType;
+import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.imageio.ImageIO;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -54,6 +56,8 @@ public class JrExport {
       }
       if (week.getType() == WeekType.SCHOOL) {
         final List<ReportContent> school = new ArrayList<>();
+        final String periodSchool =
+            Utils.formatDate(week.getBegin()) + " bis " + Utils.formatDate(week.getEnd());
         for (final ContentSchoolSubject schoolContent : week.getContentSchool()) {
           final String headLine = schoolContent.getSubject().getLabel();
           String content = schoolContent.getContent();
@@ -73,8 +77,8 @@ public class JrExport {
           }
           school.add(new ReportContent(headLine, content));
         }
-        dataList.add(
-            new ReportBean("schulischer Teil", year, name, profession, period, "school", school));
+        dataList.add(new ReportBean("schulischer Teil", year, name, profession, periodSchool,
+            "school", school));
       }
     }
 
@@ -87,9 +91,9 @@ public class JrExport {
             .getResourceAsStream("/de/ravenguard/ausbildungsnachweis/utils/Content.jrxml");
         InputStream main = JrExport.class
             .getResourceAsStream("/de/ravenguard/ausbildungsnachweis/utils/Seitentemplate.jrxml");
-        InputStream lines = JrExport.class.getClassLoader()
+        InputStream lines = JrExport.class
             .getResourceAsStream("/de/ravenguard/ausbildungsnachweis/utils/Linien.jpg");
-        InputStream logo = JrExport.class.getClassLoader()
+        InputStream logo = JrExport.class
             .getResourceAsStream("/de/ravenguard/ausbildungsnachweis/utils/Logo.png");) {
       final String destinationPath = destination.getAbsolutePath();
 
@@ -97,9 +101,11 @@ public class JrExport {
       final JasperReport subReport = JasperCompileManager.compileReport(sub);
 
       final Map<String, Object> parameters = new HashMap<>();
+      final Image linesImage = ImageIO.read(lines);
+      final Image logoImage = ImageIO.read(logo);
       parameters.put("subReport", subReport);
-      parameters.put("lines", lines);
-      parameters.put("logo", logo);
+      parameters.put("lines", linesImage);
+      parameters.put("logo", logoImage);
 
       final JRDataSource dataSource = new JRBeanCollectionDataSource(dataList, false);
 
