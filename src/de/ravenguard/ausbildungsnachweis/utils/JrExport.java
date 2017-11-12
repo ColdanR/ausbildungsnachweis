@@ -91,8 +91,8 @@ public class JrExport {
             .getResourceAsStream("/de/ravenguard/ausbildungsnachweis/utils/Content.jrxml");
         InputStream main = JrExport.class
             .getResourceAsStream("/de/ravenguard/ausbildungsnachweis/utils/Seitentemplate.jrxml");
-        InputStream logo = JrExport.class.getResourceAsStream(
-            "/de/ravenguard/ausbildungsnachweis/utils/Ausbildungsnachweis.png");) {
+        InputStream logo = JrExport.class
+            .getResourceAsStream("/de/ravenguard/ausbildungsnachweis/utils/logo.png");) {
       final String destinationPath = destination.getAbsolutePath();
 
       final JasperReport masterReport = JasperCompileManager.compileReport(main);
