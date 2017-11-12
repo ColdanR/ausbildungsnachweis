@@ -197,9 +197,7 @@ public class MainController {
     try {
       saveTrainee(savePath);
       Utils.createInfoMessage("Datei gespeichert.");
-    } catch (final JAXBException e) {
-      Utils.createExceptionAlert(e);
-    } catch (final IOException e) {
+    } catch (final JAXBException | IOException e) {
       Utils.createExceptionAlert(e);
     }
   }
@@ -216,9 +214,7 @@ public class MainController {
     try {
       saveTrainee(savePath);
       Utils.createInfoMessage("Datei gespeichert.");
-    } catch (final JAXBException e) {
-      Utils.createExceptionAlert(e);
-    } catch (final IOException e) {
+    } catch (final JAXBException | IOException e) {
       Utils.createExceptionAlert(e);
     }
   }
@@ -279,18 +275,17 @@ public class MainController {
         errors.add("Das Ende kann nicht nach dem Ende der Ausbildung liegen.");
       }
       if (begin != null && end != null) {
-        for (final TrainingPeriod period : trainee.getTrainingPeriods()) {
-          final LocalDate periodBegin = period.getBegin();
-          final LocalDate periodEnd = period.getEnd();
-          if ((begin.isAfter(periodBegin) || begin.isEqual(periodBegin))
-              && (begin.isBefore(periodEnd) || begin.isEqual(periodEnd))) {
-            errors.add("Der Anfang ist innerhalb des Zeitraums von " + period.getLabel());
-          }
-          if ((end.isAfter(periodBegin) || end.isEqual(periodBegin))
-              && (end.isBefore(periodEnd) || end.isEqual(periodEnd))) {
-            errors.add("Das Ende ist innerhalb des Zeitraums von " + period.getLabel());
-          }
-        }
+          trainee.getTrainingPeriods().forEach((period) -> {
+              final LocalDate periodBegin = period.getBegin();
+              final LocalDate periodEnd = period.getEnd();
+              if ((begin.isAfter(periodBegin) || begin.isEqual(periodBegin))
+                      && (begin.isBefore(periodEnd) || begin.isEqual(periodEnd))) {
+                  errors.add("Der Anfang ist innerhalb des Zeitraums von " + period.getLabel());
+              }   if ((end.isAfter(periodBegin) || end.isEqual(periodBegin))
+                      && (end.isBefore(periodEnd) || end.isEqual(periodEnd))) {
+                  errors.add("Das Ende ist innerhalb des Zeitraums von " + period.getLabel());
+              }
+          });
       }
 
       // Validation Result
@@ -355,10 +350,7 @@ public class MainController {
           config.setModified(false);
           setGuiFromTrainee();
           return true;
-        } catch (final JAXBException e) {
-          Utils.createExceptionAlert(e);
-          return false;
-        } catch (final IOException e) {
+        } catch (final JAXBException | IOException e) {
           Utils.createExceptionAlert(e);
           return false;
         }
@@ -383,7 +375,7 @@ public class MainController {
     fileChooser.setTitle("Datei speichern...");
     fileChooser.getExtensionFilters().add(new ExtensionFilter("XML", "*.xml"));
     fileChooser.setInitialDirectory(Configuration.getInstance().getInstallPath().toFile());
-    final File selectedFile = fileChooser.showOpenDialog(primaryStage);
+    final File selectedFile = fileChooser.showSaveDialog(primaryStage);
     if (selectedFile == null) {
       return null;
     }
@@ -458,54 +450,53 @@ public class MainController {
 
     final Optional<ButtonType> result = dialog.showAndWait();
 
-    result.ifPresent(buttonType -> {
+    result.ifPresent((ButtonType buttonType) -> {
       if (buttonType == ButtonType.FINISH) {
-        final String familyName = controller.getFamilyName();
-        final String givenNames = controller.getGivenNames();
-        final LocalDate begin = controller.getBegin();
-        final LocalDate end = controller.getEnd();
-        final String trainer = controller.getTrainer();
-        final String school = controller.getSchool();
-        final String training = controller.getTraining();
         final List<String> errors = new ArrayList<>();
 
-        if (familyName == null || familyName.trim().length() == 0) {
+        if (controller.getFamilyName() == null || 
+                controller.getFamilyName().trim().length() == 0) {
           errors.add("Der Familienname muss ausgefüllt sein.");
         }
-        if (givenNames == null || givenNames.trim().length() == 0) {
+        if (controller.getGivenNames() == null || 
+                controller.getGivenNames().trim().length() == 0) {
           errors.add("Vorname(n) muss ausgefüllt sein.");
         }
-        if (trainer == null || trainer.trim().length() == 0) {
+        if (controller.getTrainer() == null || 
+                controller.getTrainer().trim().length() == 0) {
           errors.add("Der Ausbilder muss ausgefüllt sein.");
         }
-        if (school == null || school.trim().length() == 0) {
+        if (controller.getSchool() == null || 
+                controller.getSchool().trim().length() == 0) {
           errors.add("Die Berufsschule muss ausgefüllt sein.");
         }
-        if (training == null || training.trim().length() == 0) {
+        if (controller.getTraining() == null || 
+                controller.getTraining().trim().length() == 0) {
           errors.add("Der Ausbildungsberuf muss ausgefüllt sein.");
         }
-        if (begin == null) {
+        if (controller.getBegin() == null) {
           errors.add("Beginn der Ausbildung muss ausgewählt sein.");
         }
-        if (begin == null) {
-          errors.add("(Voraussichtliches) Ende der Ausbildung muss ausgewählt sein.");
+        if (controller.getEnd() == null) {
+          errors.add("(Voraussichtliches) Ende der Ausbildung muss ausgewählt "
+                  + "sein.");
         }
-        if (begin != null && end != null && begin.isAfter(end)) {
-          errors.add(
-              "Beginn der Ausbildung muss vor dem (voraussichtlichen) Ende der Ausbildung sein.");
+        if (controller.getBegin() != null && controller.getEnd() != null && 
+                controller.getBegin().isAfter(controller.getEnd())) {
+          errors.add("Beginn der Ausbildung muss vor dem (voraussichtlichen) "
+                  + "Ende der Ausbildung sein.");
         }
         if (errors.size() > 0) {
           Utils.createErrorMessage(errors);
-          return;
         } else if (trainee != null) {
           try {
-            trainee.setBegin(begin);
-            trainee.setEnd(end);
-            trainee.setFamilyName(familyName);
-            trainee.setGivenNames(givenNames);
-            trainee.setSchool(school);
-            trainee.setTrainer(trainer);
-            trainee.setTraining(training);
+            trainee.setBegin(controller.getBegin());
+            trainee.setEnd(controller.getEnd());
+            trainee.setFamilyName(controller.getFamilyName());
+            trainee.setGivenNames(controller.getGivenNames());
+            trainee.setSchool(controller.getSchool());
+            trainee.setTrainer(controller.getTrainer());
+            trainee.setTraining(controller.getTraining());
             config.setModified(true);
             setGuiFromTrainee();
           } catch (final IllegalDateException e) {
@@ -514,7 +505,10 @@ public class MainController {
         } else {
           final TraineeLogic logic = new TraineeLogic();
           try {
-            trainee = logic.create(familyName, givenNames, begin, end, trainer, school, training);
+            trainee = logic.create(controller.getFamilyName(), 
+                    controller.getGivenNames(), controller.getBegin(), 
+                    controller.getEnd(), controller.getTrainer(), 
+                    controller.getSchool(), controller.getTraining());
             config.setCurrentFile(null);
             setGuiFromTrainee();
             dialog.close();
