@@ -29,8 +29,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<pageHeader>
-		<band height="160" splitType="Stretch">
-			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		<band height="200" splitType="Stretch">
 			<image isUsingCache="false" evaluationTime="Page">
 				<reportElement x="0" y="0" width="539" height="103" uuid="86df9028-30ce-4f5b-b816-a8ffdd30dec2">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
@@ -41,42 +40,64 @@
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
 			<textField evaluationTime="Page" isBlankWhenNull="true">
-				<reportElement x="90" y="125" width="170" height="15" isPrintWhenDetailOverflows="true" uuid="d4dd5398-ceff-4c2f-959e-6c7c961d18bf"/>
+				<reportElement x="90" y="150" width="170" height="15" isPrintWhenDetailOverflows="true" uuid="d4dd5398-ceff-4c2f-959e-6c7c961d18bf"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{headerPageName}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="125" width="90" height="15" uuid="f1bd7c03-71da-49a1-9dd2-c36602190d4d">
+				<reportElement x="0" y="150" width="90" height="15" uuid="f1bd7c03-71da-49a1-9dd2-c36602190d4d">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
+				<textElement>
+					<font size="11"/>
+				</textElement>
 				<text><![CDATA[Name:]]></text>
 			</staticText>
 			<textField evaluationTime="Page" isBlankWhenNull="true">
-				<reportElement x="360" y="125" width="179" height="15" isPrintWhenDetailOverflows="true" uuid="a1d9ed0b-5a83-479e-981b-477b2d68cb81"/>
+				<reportElement x="360" y="150" width="179" height="15" isPrintWhenDetailOverflows="true" uuid="a1d9ed0b-5a83-479e-981b-477b2d68cb81"/>
 				<textElement>
+					<font size="11"/>
 					<paragraph lineSpacing="AtLeast"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{headerPageProfession}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="270" y="125" width="90" height="15" uuid="3674a311-cc13-49b1-923b-60e274d7efa9">
+				<reportElement x="270" y="150" width="90" height="15" uuid="3674a311-cc13-49b1-923b-60e274d7efa9">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
+				<textElement>
+					<font size="11"/>
+				</textElement>
 				<text><![CDATA[Ausbildungsberuf:]]></text>
 			</staticText>
 			<textField evaluationTime="Page" isBlankWhenNull="true">
-				<reportElement x="90" y="145" width="170" height="15" isPrintWhenDetailOverflows="true" uuid="e5ff874a-4686-4bbc-9c23-8de62c78374e"/>
+				<reportElement x="90" y="170" width="170" height="15" isPrintWhenDetailOverflows="true" uuid="e5ff874a-4686-4bbc-9c23-8de62c78374e"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{headerPageYear}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="145" width="90" height="15" uuid="0c3d21ce-deee-4501-b5ba-db5b2513f3b0"/>
+				<reportElement x="0" y="170" width="90" height="15" uuid="0c3d21ce-deee-4501-b5ba-db5b2513f3b0"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
 				<text><![CDATA[Ausbildungsjahr:]]></text>
 			</staticText>
 			<textField evaluationTime="Page" isBlankWhenNull="true">
-				<reportElement x="360" y="145" width="179" height="15" isPrintWhenDetailOverflows="true" uuid="f714db3b-62d3-48ec-ae4b-7f4967b1ba9c"/>
+				<reportElement x="360" y="170" width="179" height="15" isPrintWhenDetailOverflows="true" uuid="f714db3b-62d3-48ec-ae4b-7f4967b1ba9c"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{headerPagePeriod}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="270" y="145" width="90" height="15" uuid="e1a0ad33-6ae7-486c-82f3-a5bad598d89a"/>
+				<reportElement x="270" y="170" width="90" height="15" uuid="e1a0ad33-6ae7-486c-82f3-a5bad598d89a"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
 				<text><![CDATA[Zeitraum:]]></text>
 			</staticText>
 			<staticText>
@@ -87,7 +108,7 @@
 				<text><![CDATA[Ausbildungsnachweis]]></text>
 			</staticText>
 			<textField evaluationTime="Page" isBlankWhenNull="true">
-				<reportElement x="120" y="110" width="289" height="14" uuid="f3d129b4-aba5-47d9-899e-334b91c46e78"/>
+				<reportElement x="120" y="120" width="289" height="14" uuid="f3d129b4-aba5-47d9-899e-334b91c46e78"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{headerPageType}]]></textFieldExpression>
 			</textField>

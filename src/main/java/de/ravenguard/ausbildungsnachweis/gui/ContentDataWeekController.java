@@ -10,6 +10,7 @@ import de.ravenguard.ausbildungsnachweis.utils.GuiLoader;
 import de.ravenguard.ausbildungsnachweis.utils.Utils;
 import java.io.IOException;
 import java.time.temporal.WeekFields;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -36,6 +37,10 @@ public class ContentDataWeekController {
    * Sets and initialize the dataWeek.
    *
    * @param dataWeek dataWeek to set
+   * @param period parent period
+   * @param stage parent stage
+   * @param headerSchool header for school
+   * @param schoolContent content for school
    */
   public void setData(DataWeek dataWeek, TrainingPeriod period, Stage stage, Label headerSchool,
       VBox schoolContent) {
@@ -46,12 +51,12 @@ public class ContentDataWeekController {
         + Utils.formatDate(dataWeek.getEnd()));
 
     button.selectedProperty().set(dataWeek.getType() == WeekType.SCHOOL);
-    button.selectedProperty().addListener((obs, oldValue, newValue) -> {
+    button.selectedProperty().addListener((ObservableValue<? extends Boolean> obs, Boolean oldValue, Boolean newValue) -> {
       LOGGER.trace("Called change(obs: {}, oldValue: {}, newValue: {})", obs, oldValue, newValue);
 
       // Determine new type
       WeekType type = WeekType.COMPANY;
-      if (newValue.booleanValue()) {
+      if (newValue) {
         type = WeekType.SCHOOL;
       }
 

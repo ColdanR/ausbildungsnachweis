@@ -46,7 +46,7 @@ public class Start extends Application {
 
       // get directory
       final DirectoryChooser dirChooser = new DirectoryChooser();
-      dirChooser.setTitle("W‰hle Setting Verzeichnis");
+      dirChooser.setTitle("W√§hle Setting Verzeichnis");
       final File selectedDir = dirChooser.showDialog(primaryStage);
       if (selectedDir != null) {
         config.setSettingsPath(Paths.get(selectedDir.toURI()));
@@ -74,10 +74,10 @@ public class Start extends Application {
             break;
         }
       } else {
-        Utils.createErrorMessage("Kein Verzeichnis gew‰hlt. Das Programm wird beendet.");
+        Utils.createErrorMessage("Kein Verzeichnis gew√§hlt. Das Programm wird beendet.");
         primaryStage.close();
       }
-    } catch (final Exception e) {
+    } catch (final IOException | JAXBException e) {
       Utils.createExceptionAlert(e);
       primaryStage.close();
     }
@@ -103,9 +103,7 @@ public class Start extends Application {
       if (buttonType == ButtonType.FINISH) {
         try {
           config.saveSettings();
-        } catch (final IOException e) {
-          Utils.createExceptionAlert(e);
-        } catch (final JAXBException e) {
+        } catch (final IOException | JAXBException e) {
           Utils.createExceptionAlert(e);
         }
         dialog.close();

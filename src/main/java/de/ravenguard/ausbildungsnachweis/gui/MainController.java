@@ -119,7 +119,7 @@ public class MainController {
     LOGGER.trace("Called onEditTrainee(event: {})", event);
     if (trainee == null) {
       Utils.createErrorMessage(
-          "Kein Auszubildender geladen. Es können keine Änderungen vorgenommen werden.");
+          "Kein Auszubildender geladen. Es kÃ¶nnen keine ï¿½nderungen vorgenommen werden.");
       return;
     }
     traineeDialog();
@@ -164,7 +164,7 @@ public class MainController {
       setGuiFromTrainee();
       Utils.createInfoMessage("Datei erfolgreich geladen.");
     } catch (final JAXBException e) {
-      Utils.createErrorMessage("Fehlerhafte Datei ausgewählt. Ladevorgang wurde abgebrochen.");
+      Utils.createErrorMessage("Fehlerhafte Datei ausgewÃ¤hlt. Ladevorgang wurde abgebrochen.");
     }
   }
 
@@ -265,12 +265,12 @@ public class MainController {
         errors.add("Der Klassenlehrer darf nicht leer sein.");
       }
       if (begin == null) {
-        errors.add("Der Anfang muss ausgefüllt sein.");
+        errors.add("Der Anfang muss ausgefÃ¼llt sein.");
       } else if (begin.isBefore(trainee.getBegin())) {
         errors.add("Der Anfang kann nicht vor dem Anfang der Ausbildung liegen.");
       }
       if (end == null) {
-        errors.add("Das Ende muss ausgefüllt sein.");
+        errors.add("Das Ende muss ausgefÃ¼llt sein.");
       } else if (end.isAfter(trainee.getEnd())) {
         errors.add("Das Ende kann nicht nach dem Ende der Ausbildung liegen.");
       }
@@ -338,7 +338,7 @@ public class MainController {
     if (trainee != null && config.isModified()) {
       // Alert
       final Alert alert = new Alert(AlertType.CONFIRMATION,
-          "Es gibt nicht gespeichete Änderungen am Datenstand. Diesen jetzt speichern?",
+          "Es gibt nicht gespeichete Ã„nderungen. Diesen jetzt speichern?",
           ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
       final Optional<ButtonType> returnValue = alert.showAndWait();
 
@@ -456,29 +456,29 @@ public class MainController {
 
         if (controller.getFamilyName() == null || 
                 controller.getFamilyName().trim().length() == 0) {
-          errors.add("Der Familienname muss ausgefüllt sein.");
+          errors.add("Der Familienname muss ausgefÃ¼llt sein.");
         }
         if (controller.getGivenNames() == null || 
                 controller.getGivenNames().trim().length() == 0) {
-          errors.add("Vorname(n) muss ausgefüllt sein.");
+          errors.add("Vorname(n) muss ausgefÃ¼llt sein.");
         }
         if (controller.getTrainer() == null || 
                 controller.getTrainer().trim().length() == 0) {
-          errors.add("Der Ausbilder muss ausgefüllt sein.");
+          errors.add("Der Ausbilder muss ausgefÃ¼llt sein.");
         }
         if (controller.getSchool() == null || 
                 controller.getSchool().trim().length() == 0) {
-          errors.add("Die Berufsschule muss ausgefüllt sein.");
+          errors.add("Die Berufsschule muss ausgefÃ¼llt sein.");
         }
         if (controller.getTraining() == null || 
                 controller.getTraining().trim().length() == 0) {
-          errors.add("Der Ausbildungsberuf muss ausgefüllt sein.");
+          errors.add("Der Ausbildungsberuf muss ausgefÃ¼llt sein.");
         }
         if (controller.getBegin() == null) {
-          errors.add("Beginn der Ausbildung muss ausgewählt sein.");
+          errors.add("Beginn der Ausbildung muss ausgewÃ¤hlt sein.");
         }
         if (controller.getEnd() == null) {
-          errors.add("(Voraussichtliches) Ende der Ausbildung muss ausgewählt "
+          errors.add("(Voraussichtliches) Ende der Ausbildung muss ausgewÃ¤hlt "
                   + "sein.");
         }
         if (controller.getBegin() != null && controller.getEnd() != null && 

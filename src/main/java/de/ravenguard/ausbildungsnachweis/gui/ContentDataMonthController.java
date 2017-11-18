@@ -75,7 +75,7 @@ public class ContentDataMonthController {
       return;
     }
     final FileChooser chooser = new FileChooser();
-    chooser.setTitle("Wähle den Speicherort für den Export");
+    chooser.setTitle("WÃ¤hle den Speicherort fÃ¼r den Export");
     chooser.getExtensionFilters().add(new ExtensionFilter("Portable Document Format", "*.pdf"));
     chooser.setInitialDirectory(Configuration.getInstance().getInstallPath().toFile());
     chooser.setInitialFileName(Utils.formatFullNameDate(dataMonth.getBegin()));
@@ -87,9 +87,7 @@ public class ContentDataMonthController {
             Utils.formatDate(dataMonth.getBegin()) + " - " + Utils.formatDate(dataMonth.getEnd());
         JrExport.export(dataMonth.getWeeks(), exportFile, name, profession, trainingsyear, period);
         Utils.createInfoMessage("Export abgeschlossen");
-      } catch (final IOException e) {
-        Utils.createExceptionAlert(e);
-      } catch (final JRException e) {
+      } catch (final IOException | JRException e) {
         Utils.createExceptionAlert(e);
       }
     }
@@ -99,6 +97,9 @@ public class ContentDataMonthController {
    * Sets the dataMonth instance.
    *
    * @param dataMonth the dataMonth to set
+   * @param period parent periode
+   * @param stage java fx stage
+   * @param trainee trainee to display
    */
   public void setData(DataMonth dataMonth, TrainingPeriod period, Stage stage, Trainee trainee) {
     LOGGER.trace("Called setData(dataMonth: {}, period: {}, stage: {}, trainee: {})", dataMonth,
@@ -139,12 +140,12 @@ public class ContentDataMonthController {
       if (week.getType() == WeekType.COMPANY
           && (week.getContentCompany() == null || week.getContentCompany().trim().length() == 0)) {
         warnings.add("Woche " + week.getBegin().get(WeekFields.ISO.weekOfWeekBasedYear())
-            + " hat keinen Inhalt für Betrieb.");
+            + " hat keinen Inhalt fÃ¼r Betrieb.");
       } else {
         if (Configuration.getInstance().isCompanyAndSchool() && (week.getContentCompany() == null
             || week.getContentCompany().trim().length() == 0)) {
           warnings.add("Woche " + week.getBegin().get(WeekFields.ISO.weekOfWeekBasedYear())
-              + " hat keinen Inhalt für Betrieb.");
+              + " hat keinen Inhalt fÃ¼r Betrieb.");
         }
         for (final ContentSchoolSubject subject : week.getContentSchool()) {
           if (subject.getSubject().getExemptSince() != null
@@ -157,7 +158,7 @@ public class ContentDataMonthController {
         }
       }
     }
-    if (warnings.size() == 0) {
+    if (warnings.isEmpty()) {
       return true;
     } else {
       final String warnung = "Es liegen Fehler vor:" + System.lineSeparator()
@@ -165,11 +166,7 @@ public class ContentDataMonthController {
       final Optional<ButtonType> result =
           new Alert(AlertType.CONFIRMATION, warnung, ButtonType.APPLY, ButtonType.CANCEL)
               .showAndWait();
-      if (result.get() == ButtonType.APPLY) {
-        return true;
-      } else {
-        return false;
-      }
+        return result.get() == ButtonType.APPLY;
     }
   }
 }

@@ -76,7 +76,7 @@ public class ContentTrainingPeriodController {
     final Dialog<ButtonType> dialog = new Dialog<>();
     dialog.initModality(Modality.WINDOW_MODAL);
     dialog.initOwner(stage);
-    dialog.setTitle("Neues Schulfach hinzufügen");
+    dialog.setTitle("Neues Schulfach hinzufÃ¼gen");
     dialog.setDialogPane(root);
 
     // Open Dialog and evaluate result
@@ -119,7 +119,7 @@ public class ContentTrainingPeriodController {
     LOGGER.trace("Called onDeleteSchoolSubject(event: {})", event);
     final SchoolSubject subject = subjects.getSelectionModel().getSelectedItem();
     if (subject == null) {
-      Utils.createErrorMessage("Kein Schulfach in der Liste ausgewählt");
+      Utils.createErrorMessage("Kein Schulfach in der Liste ausgewÃ¤hlt");
       return;
     }
     if (!trainingPeriod.getSchoolSubjects().remove(subject)) {
@@ -140,7 +140,7 @@ public class ContentTrainingPeriodController {
     LOGGER.trace("Called onEditSchoolSubject(event: {})", event);
     final SchoolSubject subject = subjects.getSelectionModel().getSelectedItem();
     if (subject == null) {
-      Utils.createErrorMessage("Kein Schulfach in der Liste ausgewählt");
+      Utils.createErrorMessage("Kein Schulfach in der Liste ausgewÃ¤hlt");
       return;
     }
     // Get Dialog Content
@@ -153,7 +153,7 @@ public class ContentTrainingPeriodController {
     final Dialog<ButtonType> dialog = new Dialog<>();
     dialog.initModality(Modality.WINDOW_MODAL);
     dialog.initOwner(stage);
-    dialog.setTitle("Neues Schulfach hinzufügen");
+    dialog.setTitle("Neues Schulfach hinzufÃ¼gen");
     dialog.setDialogPane(root);
 
     // Initialize Dialog Content
@@ -164,26 +164,24 @@ public class ContentTrainingPeriodController {
     final Optional<ButtonType> result = dialog.showAndWait();
     if (result.get() == ButtonType.CANCEL) {
       // Abbruch
-      return;
     } else if (result.get() == ButtonType.FINISH) {
       // Absenden
       final LocalDate exemptSince = controller.getExemptSince();
-      final String label = controller.getLabel();
+      final String labelValue = controller.getLabel();
 
       // Validiation
       final List<String> errors = new ArrayList<>();
-      if (label == null || label.trim().length() == 0) {
+      if (labelValue == null || labelValue.trim().length() == 0) {
         errors.add("Die Bezeichnung darf nicht leer sein.");
       }
 
       if (errors.size() > 0) {
         // Errors
         Utils.createErrorMessage(errors);
-        return;
       } else {
         // Set new content
         subject.setExemptSince(exemptSince);
-        subject.setLabel(label);
+        subject.setLabel(labelValue);
         Configuration.getInstance().setModified(true);
         initSchoolSubjects();
       }

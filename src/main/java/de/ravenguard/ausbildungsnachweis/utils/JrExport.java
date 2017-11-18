@@ -1,7 +1,6 @@
 package de.ravenguard.ausbildungsnachweis.utils;
 
 import de.ravenguard.ausbildungsnachweis.logic.Configuration;
-import de.ravenguard.ausbildungsnachweis.model.ContentSchoolSubject;
 import de.ravenguard.ausbildungsnachweis.model.DataWeek;
 import de.ravenguard.ausbildungsnachweis.model.WeekType;
 import java.awt.Image;
@@ -47,40 +46,39 @@ public class JrExport {
     final List<ReportBean> dataList = new ArrayList<>();
     final List<ReportContent> company = new ArrayList<>();
 
-    for (final DataWeek week : data) {
-      if (week.getType() == WeekType.COMPANY || Configuration.getInstance().isCompanyAndSchool()) {
-        final String headLine = "Woche vom " + Utils.formatDate(week.getBegin()) + " bis " + "("
-            + Utils.getWeekNumberFromDate(week.getBegin()) + ". KW)";
-        final String content = week.getContentCompany();
-        company.add(new ReportContent(headLine, content));
-      }
-      if (week.getType() == WeekType.SCHOOL) {
-        final List<ReportContent> school = new ArrayList<>();
-        final String periodSchool =
-            Utils.formatDate(week.getBegin()) + " bis " + Utils.formatDate(week.getEnd());
-        for (final ContentSchoolSubject schoolContent : week.getContentSchool()) {
-          final String headLine = schoolContent.getSubject().getLabel();
-          String content = schoolContent.getContent();
-          if (content == null) {
-            content = "";
-          } else {
-            content = content.trim();
-          }
-          final LocalDate exemptSince = schoolContent.getSubject().getExemptSince();
-          if (exemptSince != null && exemptSince.isBefore(week.getEnd())) {
-            if (content.length() > 0) {
-              content = content + System.lineSeparator() + System.lineSeparator() + "Befreit seit "
-                  + Utils.formatDate(exemptSince);
-            } else {
-              content = "Befreit seit " + Utils.formatDate(exemptSince);
-            }
-          }
-          school.add(new ReportContent(headLine, content));
-        }
-        dataList.add(new ReportBean("schulischer Teil", year, name, profession, periodSchool,
-            "school", school));
-      }
-    }
+    data.stream().map((DataWeek week) -> {
+        if (week.getType() == WeekType.COMPANY || Configuration.getInstance().isCompanyAndSchool()) {
+            final String headLine = "Woche vom " + Utils.formatDate(week.getBegin()) + " bis " + "("
+                    + Utils.getWeekNumberFromDate(week.getBegin()) + ". KW)";
+            final String content = week.getContentCompany();
+            company.add(new ReportContent(headLine, content));
+        }   return week;
+    }).filter((week) -> (week.getType() == WeekType.SCHOOL)).forEachOrdered((DataWeek week) -> {
+          final List<ReportContent> school = new ArrayList<>();
+          final String periodSchool =
+                  Utils.formatDate(week.getBegin()) + " bis " + Utils.formatDate(week.getEnd());
+          week.getContentSchool().forEach((schoolContent) -> {
+              final String headLine = schoolContent.getSubject().getLabel();
+              String content = schoolContent.getContent();
+              if (content == null) {
+                  content = "";
+              } else {
+                  content = content.trim();
+              }
+              final LocalDate exemptSince = schoolContent.getSubject().getExemptSince();
+              if (exemptSince != null && exemptSince.isBefore(week.getEnd())) {
+                  if (content.length() > 0) {
+                      content = content + System.lineSeparator() + System.lineSeparator() + "Befreit seit "
+                              + Utils.formatDate(exemptSince);
+                  } else {
+                      content = "Befreit seit " + Utils.formatDate(exemptSince);
+                  }
+              }
+              school.add(new ReportContent(headLine, content));
+          });
+          dataList.add(new ReportBean("schulischer Teil", year, name, profession, periodSchool,
+                  "school", school));
+    });
 
     dataList.add(0,
         new ReportBean("betrieblicher Teil", year, name, profession, period, "company", company));

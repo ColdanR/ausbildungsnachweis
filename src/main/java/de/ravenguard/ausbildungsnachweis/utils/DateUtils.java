@@ -43,6 +43,7 @@ public class DateUtils {
    * Validates a date as work day.
    *
    * @param date date to validate
+   * @return true if the date is a workday
    * @throws NullPointerException if date is null
    */
   public static boolean checkWorkday(LocalDate date) {
