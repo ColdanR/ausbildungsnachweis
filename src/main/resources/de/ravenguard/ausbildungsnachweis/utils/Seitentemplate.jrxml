@@ -108,8 +108,12 @@
 				<text><![CDATA[Ausbildungsnachweis]]></text>
 			</staticText>
 			<textField evaluationTime="Page" isBlankWhenNull="true">
-				<reportElement x="120" y="120" width="289" height="14" uuid="f3d129b4-aba5-47d9-899e-334b91c46e78"/>
-				<textElement textAlignment="Center"/>
+				<reportElement x="120" y="120" width="289" height="16" uuid="f3d129b4-aba5-47d9-899e-334b91c46e78">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{headerPageType}]]></textFieldExpression>
 			</textField>
 		</band>
