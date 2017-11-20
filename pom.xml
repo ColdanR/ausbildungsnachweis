@@ -23,7 +23,6 @@
             <artifactId>log4j-api</artifactId>
             <version>2.9.1</version>
             <scope>compile</scope>
-            <type>jar</type>
         </dependency>
     </dependencies>
     <build>
@@ -34,13 +33,13 @@
                 <version>3.0.2</version>
                 <executions>
                     <execution>
-                        <id>copy-dependencies</id>
+                        <id>copy-dependencies-jars</id>
                         <phase>prepare-package</phase>
                         <goals>
                             <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${project.build.directory}/classes/libs</outputDirectory>
+                            <outputDirectory>${project.build.directory}/classes/lib</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
@@ -53,7 +52,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <classpathPrefix>libs/</classpathPrefix>
+                            <classpathPrefix>lib/</classpathPrefix>
                             <mainClass>de.ravenguard.ausbildungsnachweis.gui.Start</mainClass>
                         </manifest>
                     </archive>
