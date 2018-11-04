@@ -40,12 +40,11 @@ public class Utils {
    */
   public static void createErrorMessage(String error) {
     LOGGER.trace("Called createErrorMessage(error: {})", error);
-    final Alert alert = new Alert(AlertType.ERROR, error, ButtonType.OK);
-    alert.showAndWait();
+    new Alert(AlertType.ERROR, error, ButtonType.OK).showAndWait();
   }
 
   public static void createExceptionAlert(Throwable t) {
-    LOGGER.trace("Called createExceptionAlert(t: {})", t);
+    LOGGER.error("Called createExceptionAlert(t: {})", t);
     new AlertException(t).showAndWait();
   }
 
@@ -55,9 +54,8 @@ public class Utils {
    * @param message info message
    */
   public static void createInfoMessage(String message) {
-    LOGGER.trace("Called createInfoMessage(message: {})", message);
-    final Alert alert = new Alert(AlertType.INFORMATION, message, ButtonType.OK);
-    alert.showAndWait();
+    LOGGER.info("Called createInfoMessage(message: {})", message);
+    new Alert(AlertType.INFORMATION, message, ButtonType.OK).showAndWait();
   }
 
   /**
