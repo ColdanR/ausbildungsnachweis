@@ -13,16 +13,15 @@ steps:
 - task: Bash@3
   inputs:
     targetType: 'inline'
-    script:
+    script: |
       # Install packaging dependencies
-            sudo apt-get update
-            sudo apt-get install -y fakeroot alien
-            # Install and configure an appropriate JDK
-            sudo apt-get install -y openjdk-8-jdk openjfx
-            echo "##vso[task.setvariable variable=jdkDir]/usr/lib/jvm/java-8-openjdk-amd64"
-            echo "##vso[task.prependpath]/usr/lib/jvm/java-8-openjdk-amd64/bin"
-            displayName: Install OpenJDK 8, OpenJFX and packaging dependencies
-    condition: contains(variables['Agent.OS'], 'linux')
+      sudo apt-get update
+      sudo apt-get install -y fakeroot alien
+      # Install and configure an appropriate JDK
+      sudo apt-get install -y openjdk-8-jdk openjfx
+      echo "##vso[task.setvariable variable=jdkDir]/usr/lib/jvm/java-8-openjdk-amd64"
+      echo "##vso[task.prependpath]/usr/lib/jvm/java-8-openjdk-amd64/bin"
+
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
