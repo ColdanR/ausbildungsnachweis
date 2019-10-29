@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Trainee implements TreeElement {
+public class Trainee implements TreeElement<TrainingPeriod> {
 
   private String familyName;
   private String givenNames;

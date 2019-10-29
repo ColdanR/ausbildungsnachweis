@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class TrainingPeriod implements TreeElement {
+public class TrainingPeriod implements TreeElement<DataMonth> {
 
   private String label;
   private LocalDate begin;
