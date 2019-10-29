@@ -1,6 +1,5 @@
 package de.ravenguard.ausbildungsnachweis.utils;
 
-import de.ravenguard.ausbildungsnachweis.gui.DialogTraineeController;
 import de.ravenguard.ausbildungsnachweis.gui.elements.AlertException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -16,11 +15,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class Utils {
-  private static final Logger LOGGER = LogManager.getLogger(DialogTraineeController.class);
-  private static final DateTimeFormatter FORMATTER =
-      DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(Locale.getDefault());
-  private static final DateTimeFormatter MONTH_FORMATTER =
-      DateTimeFormatter.ofPattern("MMMM yyyy", Locale.getDefault());
+
+  private static final Logger LOGGER = LogManager.getLogger(Utils.class);
+  private static final DateTimeFormatter FORMATTER
+          = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(Locale.getDefault());
+  private static final DateTimeFormatter MONTH_FORMATTER
+          = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.getDefault());
 
   /**
    * Creates an Alert for errors and displays it.
@@ -87,5 +87,9 @@ public class Utils {
 
   public static int getWeekNumberFromDate(LocalDate date) {
     return date.get(WeekFields.ISO.weekOfWeekBasedYear());
+  }
+
+  private Utils() {
+    // prevent instances
   }
 }

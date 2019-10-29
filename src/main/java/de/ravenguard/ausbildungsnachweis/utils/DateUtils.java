@@ -5,9 +5,10 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 
 public class DateUtils {
+
   /**
-   * Checks if the {@link LocalDate} is a working day or calculates the next working day after the
-   * LocalDate.
+   * Checks if the {@link LocalDate} is a working day or calculates the next
+   * working day after the LocalDate.
    *
    * @param date {@link LocalDate} to check and start calculation
    * @return {@link LocalDate} representing the working day equal or after date
@@ -23,8 +24,8 @@ public class DateUtils {
   }
 
   /**
-   * Checks if the {@link LocalDate} is a working day or calculates the last working day before the
-   * LocalDate.
+   * Checks if the {@link LocalDate} is a working day or calculates the last
+   * working day before the LocalDate.
    *
    * @param date {@link LocalDate} to check and start calculation
    * @return {@link LocalDate} representing the working day equal or before date
@@ -52,6 +53,10 @@ public class DateUtils {
     }
     final Configuration configuration = Configuration.getInstance();
     return !(date.getDayOfWeek() == DayOfWeek.SATURDAY && !configuration.isSaturdayWorkday()
-        || date.getDayOfWeek() == DayOfWeek.SUNDAY && !configuration.isSundayWorkday());
+            || date.getDayOfWeek() == DayOfWeek.SUNDAY && !configuration.isSundayWorkday());
+  }
+
+  private DateUtils() {
+    // prevent instances
   }
 }

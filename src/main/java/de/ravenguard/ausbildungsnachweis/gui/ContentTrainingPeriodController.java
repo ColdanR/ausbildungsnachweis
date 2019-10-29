@@ -159,28 +159,30 @@ public class ContentTrainingPeriodController {
 
     // Open Dialog and evaluate result
     final Optional<ButtonType> result = dialog.showAndWait();
-    if (result.get() == ButtonType.CANCEL) {
-      // Abbruch
-    } else if (result.get() == ButtonType.FINISH) {
-      // Absenden
-      final LocalDate exemptSince = controller.getExemptSince();
-      final String labelValue = controller.getLabel();
+    if (result.isPresent()) {
+      if (result.get() == ButtonType.CANCEL) {
+        // Abbruch
+      } else if (result.get() == ButtonType.FINISH) {
+        // Absenden
+        final LocalDate exemptSince = controller.getExemptSince();
+        final String labelValue = controller.getLabel();
 
-      // Validiation
-      final List<String> errors = new ArrayList<>();
-      if (labelValue == null || labelValue.trim().length() == 0) {
-        errors.add("Die Bezeichnung darf nicht leer sein.");
-      }
+        // Validiation
+        final List<String> errors = new ArrayList<>();
+        if (labelValue == null || labelValue.trim().length() == 0) {
+          errors.add("Die Bezeichnung darf nicht leer sein.");
+        }
 
-      if (!errors.isEmpty()) {
-        // Errors
-        Utils.createErrorMessage(errors);
-      } else {
-        // Set new content
-        subject.setExemptSince(exemptSince);
-        subject.setLabel(labelValue);
-        Configuration.getInstance().setModified(true);
-        initSchoolSubjects();
+        if (!errors.isEmpty()) {
+          // Errors
+          Utils.createErrorMessage(errors);
+        } else {
+          // Set new content
+          subject.setExemptSince(exemptSince);
+          subject.setLabel(labelValue);
+          Configuration.getInstance().setModified(true);
+          initSchoolSubjects();
+        }
       }
     }
   }

@@ -68,10 +68,9 @@ public class TrainingPeriod implements TreeElement {
       throw new IllegalArgumentException("month cannot be null.");
     }
 
-    final boolean conflict = months.stream().anyMatch(currentMonth -> {
-      return currentMonth.getBegin().getMonth() == month.getBegin().getMonth()
-              || month.getBegin().isBefore(begin) || month.getBegin().isAfter(end);
-    });
+    final boolean conflict = months.stream().anyMatch(currentMonth
+            -> currentMonth.getBegin().getMonth() == month.getBegin().getMonth()
+            || month.getBegin().isBefore(begin) || month.getBegin().isAfter(end));
 
     if (conflict) {
       throw new IllegalArgumentException(
@@ -92,9 +91,8 @@ public class TrainingPeriod implements TreeElement {
       throw new IllegalArgumentException("schoolSubject cannot be null.");
     }
 
-    final boolean conflict = schoolSubjects.stream().anyMatch(currentSchoolSubject -> {
-      return currentSchoolSubject.getLabel().equalsIgnoreCase(schoolSubject.getLabel());
-    });
+    final boolean conflict = schoolSubjects.stream().anyMatch(currentSchoolSubject
+            -> currentSchoolSubject.getLabel().equalsIgnoreCase(schoolSubject.getLabel()));
 
     if (conflict) {
       throw new IllegalArgumentException(
@@ -284,7 +282,7 @@ public class TrainingPeriod implements TreeElement {
     if (!DateUtils.checkWorkday(end)) {
       throw new IllegalDateException("end must be a working day.");
     }
-    if (end != null && end.isBefore(begin)) {
+    if (begin != null && end.isBefore(begin)) {
       throw new IllegalDateException("end may not be before begin.");
     }
 
@@ -315,9 +313,7 @@ public class TrainingPeriod implements TreeElement {
     }
 
     this.months.clear();
-    months.forEach(month -> {
-      addMonth(month);
-    });
+    months.forEach(this::addMonth);
   }
 
   /**
@@ -344,9 +340,7 @@ public class TrainingPeriod implements TreeElement {
     }
 
     this.schoolSubjects.clear();
-    schoolSubjects.forEach(subject -> {
-      addSchoolSubject(subject);
-    });
+    schoolSubjects.forEach(this::addSchoolSubject);
   }
 
   @Override

@@ -108,7 +108,7 @@ public class DataWeek implements Comparable<DataWeek> {
    * @param content content to remove, may not be null
    */
   public void removeContentSchool(ContentSchoolSubject content) {
-    LOGGER.trace("Called removeContentSchool()");
+    LOGGER.trace("Called removeContentSchool(content: {})", content);
     if (content == null) {
       throw new NullPointerException("Content may not be null.");
     }
@@ -139,7 +139,7 @@ public class DataWeek implements Comparable<DataWeek> {
   }
 
   public void setContentCompany(String contentCompany) {
-    LOGGER.trace("Called setContentCompany(contentCompany: {})", begin);
+    LOGGER.trace("Called setContentCompany(contentCompany: {})", contentCompany);
     this.contentCompany = contentCompany;
   }
 
@@ -149,13 +149,13 @@ public class DataWeek implements Comparable<DataWeek> {
    * @param contentSchool content of school to set, may not be null
    */
   public void setContentSchool(List<ContentSchoolSubject> contentSchool) {
-    LOGGER.trace("Called setContentSchool(contentSchool: {})", begin);
+    LOGGER.trace("Called setContentSchool(contentSchool: {})", contentSchool);
     if (contentSchool == null) {
       throw new NullPointerException("ContentSchool of week may not be null.");
     }
 
     this.contentSchool.clear();
-    contentSchool.forEach(content -> addContentSchool(content));
+    contentSchool.forEach(this::addContentSchool);
   }
 
   /**

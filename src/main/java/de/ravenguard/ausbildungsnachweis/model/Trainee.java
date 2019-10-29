@@ -319,9 +319,7 @@ public class Trainee implements TreeElement {
     }
 
     this.trainingPeriods.clear();
-    trainingPeriods.forEach(period -> {
-      addTrainingPeriode(period);
-    });
+    trainingPeriods.forEach(this::addTrainingPeriode);
   }
 
   @Override

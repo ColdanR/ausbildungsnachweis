@@ -29,6 +29,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
  *
  */
 public class JrExport {
+
   /**
    * Exports the data to pdf file.
    *
@@ -42,70 +43,74 @@ public class JrExport {
    * @throws JRException JR error
    */
   public static void export(List<DataWeek> data, File destination, String name, String profession,
-      String year, String period) throws IOException, JRException {
+          String year, String period) throws IOException, JRException {
     final List<ReportBean> dataList = new ArrayList<>();
     final List<ReportContent> company = new ArrayList<>();
 
-    data.stream().map((DataWeek week) -> {
-        if (week.getType() == WeekType.COMPANY || Configuration.getInstance().isCompanyAndSchool()) {
-            final String headLine = "Woche vom " + Utils.formatDate(week.getBegin()) + " bis " + "("
-                    + Utils.getWeekNumberFromDate(week.getBegin()) + ". KW)";
-            final String content = week.getContentCompany();
-            company.add(new ReportContent(headLine, content));
-        }   return week;
-    }).filter((week) -> (week.getType() == WeekType.SCHOOL)).forEachOrdered((DataWeek week) -> {
-          final List<ReportContent> school = new ArrayList<>();
-          final String periodSchool =
-                  Utils.formatDate(week.getBegin()) + " bis " + Utils.formatDate(week.getEnd());
-          week.getContentSchool().forEach((schoolContent) -> {
-              final String headLine = schoolContent.getSubject().getLabel();
-              String content = schoolContent.getContent();
-              if (content == null) {
-                  content = "";
-              } else {
-                  content = content.trim();
-              }
-              final LocalDate exemptSince = schoolContent.getSubject().getExemptSince();
-              if (exemptSince != null && exemptSince.isBefore(week.getEnd())) {
-                  if (content.length() > 0) {
-                      content = content + System.lineSeparator() + System.lineSeparator() + "Befreit seit "
-                              + Utils.formatDate(exemptSince);
-                  } else {
-                      content = "Befreit seit " + Utils.formatDate(exemptSince);
-                  }
-              }
-              school.add(new ReportContent(headLine, content));
-          });
-          dataList.add(new ReportBean("schulischer Teil", year, name, profession, periodSchool,
-                  "school", school));
+    data.stream().map(week -> {
+      if (week.getType() == WeekType.COMPANY || Configuration.getInstance().isCompanyAndSchool()) {
+        final String headLine = "Woche vom " + Utils.formatDate(week.getBegin()) + " bis " + "("
+                + Utils.getWeekNumberFromDate(week.getBegin()) + ". KW)";
+        final String content = week.getContentCompany();
+        company.add(new ReportContent(headLine, content));
+      }
+      return week;
+    }).filter(week -> (week.getType() == WeekType.SCHOOL)).forEachOrdered((DataWeek week) -> {
+      final List<ReportContent> school = new ArrayList<>();
+      final String periodSchool
+              = Utils.formatDate(week.getBegin()) + " bis " + Utils.formatDate(week.getEnd());
+      week.getContentSchool().forEach(schoolContent -> {
+        final String headLine = schoolContent.getSubject().getLabel();
+        String content = schoolContent.getContent();
+        if (content == null) {
+          content = "";
+        } else {
+          content = content.trim();
+        }
+        final LocalDate exemptSince = schoolContent.getSubject().getExemptSince();
+        if (exemptSince != null && exemptSince.isBefore(week.getEnd())) {
+          if (content.length() > 0) {
+            content = content + System.lineSeparator() + System.lineSeparator() + "Befreit seit "
+                    + Utils.formatDate(exemptSince);
+          } else {
+            content = "Befreit seit " + Utils.formatDate(exemptSince);
+          }
+        }
+        school.add(new ReportContent(headLine, content));
+      });
+      dataList.add(new ReportBean("schulischer Teil", year, name, profession, periodSchool,
+              "school", school));
     });
 
     dataList.add(0,
-        new ReportBean("betrieblicher Teil", year, name, profession, period, "company", company));
-
+            new ReportBean("betrieblicher Teil", year, name, profession, period, "company", company));
 
     try (
-        InputStream sub = JrExport.class
-            .getResourceAsStream("/de/ravenguard/ausbildungsnachweis/utils/Content.jrxml");
-        InputStream main = JrExport.class
-            .getResourceAsStream("/de/ravenguard/ausbildungsnachweis/utils/Seitentemplate.jrxml");
-        InputStream logo = JrExport.class
-            .getResourceAsStream("/de/ravenguard/ausbildungsnachweis/utils/logo.png");) {
-      final String destinationPath = destination.getAbsolutePath();
+            InputStream sub = JrExport.class
+                    .getResourceAsStream("/de/ravenguard/ausbildungsnachweis/utils/Content.jrxml");
+            InputStream main = JrExport.class
+                    .getResourceAsStream("/de/ravenguard/ausbildungsnachweis/utils/Seitentemplate.jrxml");
+            InputStream logo = JrExport.class
+                    .getResourceAsStream("/de/ravenguard/ausbildungsnachweis/utils/logo.png");) {
+              final String destinationPath = destination.getAbsolutePath();
 
-      final JasperReport masterReport = JasperCompileManager.compileReport(main);
-      final JasperReport subReport = JasperCompileManager.compileReport(sub);
+              final JasperReport masterReport = JasperCompileManager.compileReport(main);
+              final JasperReport subReport = JasperCompileManager.compileReport(sub);
 
-      final Map<String, Object> parameters = new HashMap<>();
-      final Image logoImage = ImageIO.read(logo);
-      parameters.put("subReport", subReport);
-      parameters.put("logo", logoImage);
+              final Map<String, Object> parameters = new HashMap<>();
+              final Image logoImage = ImageIO.read(logo);
+              parameters.put("subReport", subReport);
+              parameters.put("logo", logoImage);
 
-      final JRDataSource dataSource = new JRBeanCollectionDataSource(dataList, false);
+              final JRDataSource dataSource = new JRBeanCollectionDataSource(dataList, false);
 
-      final JasperPrint report = JasperFillManager.fillReport(masterReport, parameters, dataSource);
+              final JasperPrint report = JasperFillManager.fillReport(masterReport, parameters, dataSource);
 
-      JasperExportManager.exportReportToPdfFile(report, destinationPath);
-    }
+              JasperExportManager.exportReportToPdfFile(report, destinationPath);
+            }
+  }
+
+  private JrExport() {
+    // prevent instances
   }
 }
