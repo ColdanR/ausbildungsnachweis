@@ -120,7 +120,7 @@ public class MainController {
     LOGGER.trace("Called onEditTrainee(event: {})", event);
     if (trainee == null) {
       Utils.createErrorMessage(
-              "Kein Auszubildender geladen. Es können keine �nderungen vorgenommen werden.");
+              "Kein Auszubildender geladen. Es können keine Änderungen vorgenommen werden.");
       return;
     }
     traineeDialog();
