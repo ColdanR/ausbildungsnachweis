@@ -20,7 +20,11 @@ steps:
       sudo apt-get install -y openjdk-8-jdk openjfx
       echo "##vso[task.setvariable variable=jdkDir]/usr/lib/jvm/java-8-openjdk-amd64"
       echo "##vso[task.prependpath]/usr/lib/jvm/java-8-openjdk-amd64/bin"
-
+- task: SonarCloudPrepare@1
+  inputs:
+    SonarCloud: 'SonarCloud'
+    organization: 'coldanr'
+    scannerMode: 'Other'
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
@@ -31,9 +35,6 @@ steps:
     effectivePomSkip: false
     sonarQubeRunAnalysis: true
     sqMavenPluginVersionChoice: 'latest'
-    checkStyleRunAnalysis: true
-    pmdRunAnalysis: true
-    findBugsRunAnalysis: true
     goals: 'package'
     javaHomeOption: Path
     jdkDirectory: $(jdkDir)
