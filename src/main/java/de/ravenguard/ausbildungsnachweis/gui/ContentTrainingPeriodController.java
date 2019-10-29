@@ -25,6 +25,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class ContentTrainingPeriodController {
+
   private static final Logger LOGGER = LogManager.getLogger(ContentTrainingPeriodController.class);
 
   private TrainingPeriod trainingPeriod;
@@ -67,8 +68,8 @@ public class ContentTrainingPeriodController {
   public void onAddSchoolSubject(ActionEvent event) throws IOException {
     LOGGER.trace("Called onAddSchoolSubject(event: {})", event);
     // Get Dialog Content
-    final GuiLoader<DialogSchoolSubjectController, DialogPane> helper =
-        new GuiLoader<>("DialogSchoolSubject.fxml");
+    final GuiLoader<DialogSchoolSubjectController, DialogPane> helper
+            = new GuiLoader<>("DialogSchoolSubject.fxml");
     final DialogSchoolSubjectController controller = helper.getController();
     final DialogPane root = helper.getRoot();
 
@@ -81,27 +82,23 @@ public class ContentTrainingPeriodController {
 
     // Open Dialog and evaluate result
     final Optional<ButtonType> result = dialog.showAndWait();
-    if (result.get() == ButtonType.CANCEL) {
-      // Abbruch
-      return;
-    } else if (result.get() == ButtonType.FINISH) {
+    if (result.isPresent() && result.get() == ButtonType.FINISH) {
       // Absenden
       final LocalDate exemptSince = controller.getExemptSince();
-      final String label = controller.getLabel();
+      final String labelSchool = controller.getLabel();
 
       // Validiation
       final List<String> errors = new ArrayList<>();
-      if (label == null || label.trim().length() == 0) {
+      if (labelSchool == null || labelSchool.trim().length() == 0) {
         errors.add("Die Bezeichnung darf nicht leer sein.");
       }
 
-      if (errors.size() > 0) {
+      if (!errors.isEmpty()) {
         // Errors
         Utils.createErrorMessage(errors);
-        return;
       } else {
         // Set new content
-        final SchoolSubject subject = new SchoolSubject(label, exemptSince);
+        final SchoolSubject subject = new SchoolSubject(labelSchool, exemptSince);
         trainingPeriod.addSchoolSubject(subject);
         Configuration.getInstance().setModified(true);
         initSchoolSubjects();
@@ -144,8 +141,8 @@ public class ContentTrainingPeriodController {
       return;
     }
     // Get Dialog Content
-    final GuiLoader<DialogSchoolSubjectController, DialogPane> helper =
-        new GuiLoader<>("DialogSchoolSubject.fxml");
+    final GuiLoader<DialogSchoolSubjectController, DialogPane> helper
+            = new GuiLoader<>("DialogSchoolSubject.fxml");
     final DialogSchoolSubjectController controller = helper.getController();
     final DialogPane root = helper.getRoot();
 
@@ -175,7 +172,7 @@ public class ContentTrainingPeriodController {
         errors.add("Die Bezeichnung darf nicht leer sein.");
       }
 
-      if (errors.size() > 0) {
+      if (!errors.isEmpty()) {
         // Errors
         Utils.createErrorMessage(errors);
       } else {

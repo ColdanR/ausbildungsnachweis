@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Trainee implements TreeElement {
+
   private String familyName;
   private String givenNames;
   private LocalDate begin;
@@ -27,7 +28,8 @@ public class Trainee implements TreeElement {
   /**
    * empty argument constructor.
    */
-  public Trainee() {}
+  public Trainee() {
+  }
 
   /**
    * Fields Constructor.
@@ -40,11 +42,12 @@ public class Trainee implements TreeElement {
    * @param school name of school
    * @param training training
    * @param trainingPeriods list of training periods
-   * @throws IllegalDateException if either begin or end is not a working day or end is before begin
+   * @throws IllegalDateException if either begin or end is not a working day or
+   * end is before begin
    */
   public Trainee(String familyName, String givenNames, LocalDate begin, LocalDate end,
-      String trainer, String school, String training, List<TrainingPeriod> trainingPeriods)
-      throws IllegalDateException {
+          String trainer, String school, String training, List<TrainingPeriod> trainingPeriods)
+          throws IllegalDateException {
     super();
     setFamilyName(familyName);
     setGivenNames(givenNames);
@@ -67,13 +70,13 @@ public class Trainee implements TreeElement {
     }
 
     final boolean conflict = trainingPeriods.stream().anyMatch(periode -> {
-      final LocalDate begin = periode.getBegin();
-      final LocalDate end = periode.getEnd();
-      return begin.isAfter(trainingPeriod.getBegin()) && begin.isBefore(trainingPeriod.getEnd())
-          || end.isAfter(trainingPeriod.getBegin()) && end.isBefore(trainingPeriod.getEnd())
-          || begin.isBefore(trainingPeriod.getBegin()) && end.isAfter(trainingPeriod.getEnd())
-          || begin.equals(trainingPeriod.getBegin()) || begin.equals(trainingPeriod.getEnd())
-          || end.equals(trainingPeriod.getBegin()) || end.equals(trainingPeriod.getEnd());
+      final LocalDate testBegin = periode.getBegin();
+      final LocalDate testEnd = periode.getEnd();
+      return testBegin.isAfter(trainingPeriod.getBegin()) && testBegin.isBefore(trainingPeriod.getEnd())
+              || testEnd.isAfter(trainingPeriod.getBegin()) && testEnd.isBefore(trainingPeriod.getEnd())
+              || testBegin.isBefore(trainingPeriod.getBegin()) && testEnd.isAfter(trainingPeriod.getEnd())
+              || testBegin.equals(trainingPeriod.getBegin()) || testBegin.equals(trainingPeriod.getEnd())
+              || testEnd.equals(trainingPeriod.getBegin()) || testEnd.equals(trainingPeriod.getEnd());
     });
 
     if (conflict) {
@@ -144,14 +147,7 @@ public class Trainee implements TreeElement {
     } else if (!training.equals(other.training)) {
       return false;
     }
-    if (trainingPeriods == null) {
-      if (other.trainingPeriods != null) {
-        return false;
-      }
-    } else if (!trainingPeriods.equals(other.trainingPeriods)) {
-      return false;
-    }
-    return true;
+    return trainingPeriods.equals(other.trainingPeriods);
   }
 
   public LocalDate getBegin() {
@@ -207,7 +203,7 @@ public class Trainee implements TreeElement {
     result = prime * result + (school == null ? 0 : school.hashCode());
     result = prime * result + (trainer == null ? 0 : trainer.hashCode());
     result = prime * result + (training == null ? 0 : training.hashCode());
-    result = prime * result + (trainingPeriods == null ? 0 : trainingPeriods.hashCode());
+    result = prime * result + trainingPeriods.hashCode();
     return result;
   }
 
@@ -235,7 +231,8 @@ public class Trainee implements TreeElement {
    * Sets the end date.
    *
    * @param end LocalDate of the end, cannot be null.
-   * @throws IllegalDateException if end is not a working day or end is before begin
+   * @throws IllegalDateException if end is not a working day or end is before
+   * begin
    */
   public void setEnd(LocalDate end) throws IllegalDateException {
     if (end == null) {
@@ -244,7 +241,7 @@ public class Trainee implements TreeElement {
     if (!DateUtils.checkWorkday(end)) {
       throw new IllegalDateException("end must be a working day.");
     }
-    if (end != null && end.isBefore(begin)) {
+    if (begin != null && end.isBefore(begin)) {
       throw new IllegalDateException("end may not be before begin.");
     }
 

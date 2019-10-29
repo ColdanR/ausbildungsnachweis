@@ -14,6 +14,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class TraineeDao {
+
   private static final Logger LOGGER = LogManager.getLogger(TraineeDao.class);
 
   /**
@@ -75,8 +76,12 @@ public class TraineeDao {
     m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
     m.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
     final OutputStream os = Files.newOutputStream(path, StandardOpenOption.CREATE,
-        StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
+            StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
 
     m.marshal(trainee, os);
+  }
+
+  private TraineeDao() {
+    // prevent instances
   }
 }

@@ -13,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class DataWeek implements Comparable<DataWeek> {
+
   private static final Logger LOGGER = LogManager.getLogger(DataWeek.class);
   private LocalDate begin;
   private LocalDate end;
@@ -77,27 +78,27 @@ public class DataWeek implements Comparable<DataWeek> {
   }
 
   public String getContentCompany() {
-    LOGGER.trace("Called getBegin()");
+    LOGGER.trace("Called getContentCompany()");
     return contentCompany;
   }
 
   public List<ContentSchoolSubject> getContentSchool() {
-    LOGGER.trace("Called getBegin()");
+    LOGGER.trace("Called getContentSchool()");
     return contentSchool;
   }
 
   public LocalDate getEnd() {
-    LOGGER.trace("Called getBegin()");
+    LOGGER.trace("Called getEnd()");
     return end;
   }
 
   public String getNotes() {
-    LOGGER.trace("Called getBegin()");
+    LOGGER.trace("Called getNotes()");
     return notes;
   }
 
   public WeekType getType() {
-    LOGGER.trace("Called getBegin()");
+    LOGGER.trace("Called getType()");
     return type;
   }
 
@@ -107,7 +108,7 @@ public class DataWeek implements Comparable<DataWeek> {
    * @param content content to remove, may not be null
    */
   public void removeContentSchool(ContentSchoolSubject content) {
-    LOGGER.trace("Called getBegin()");
+    LOGGER.trace("Called removeContentSchool()");
     if (content == null) {
       throw new NullPointerException("Content may not be null.");
     }
@@ -118,7 +119,8 @@ public class DataWeek implements Comparable<DataWeek> {
   /**
    * Sets the begin of the week.
    *
-   * @param begin begin of the week, may not be null or after the end of the week.
+   * @param begin begin of the week, may not be null or after the end of the
+   * week.
    * @throws IllegalDateException if begin is not a working day or after end
    */
   public void setBegin(LocalDate begin) throws IllegalDateException {
@@ -137,7 +139,7 @@ public class DataWeek implements Comparable<DataWeek> {
   }
 
   public void setContentCompany(String contentCompany) {
-    LOGGER.trace("Called setBegin(begin: {})", begin);
+    LOGGER.trace("Called setContentCompany(contentCompany: {})", begin);
     this.contentCompany = contentCompany;
   }
 
@@ -147,21 +149,20 @@ public class DataWeek implements Comparable<DataWeek> {
    * @param contentSchool content of school to set, may not be null
    */
   public void setContentSchool(List<ContentSchoolSubject> contentSchool) {
-    LOGGER.trace("Called setBegin(begin: {})", begin);
+    LOGGER.trace("Called setContentSchool(contentSchool: {})", begin);
     if (contentSchool == null) {
       throw new NullPointerException("ContentSchool of week may not be null.");
     }
 
     this.contentSchool.clear();
-    for (final ContentSchoolSubject content : contentSchool) {
-      addContentSchool(content);
-    }
+    contentSchool.forEach(content -> addContentSchool(content));
   }
 
   /**
    * Sets the end of the week.
    *
-   * @param end End of the week, may not be null or before the begin of the week.
+   * @param end End of the week, may not be null or before the begin of the
+   * week.
    * @throws IllegalDateException if end is not a working day or is before begin
    */
   public void setEnd(LocalDate end) throws IllegalDateException {
@@ -200,6 +201,6 @@ public class DataWeek implements Comparable<DataWeek> {
   @Override
   public String toString() {
     return "DataWeek [begin=" + begin + ", end=" + end + ", type=" + type + ", notes=" + notes
-        + ", contentCompany=" + contentCompany + ", contentSchool=" + contentSchool + "]";
+            + ", contentCompany=" + contentCompany + ", contentSchool=" + contentSchool + "]";
   }
 }

@@ -6,6 +6,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SchoolSubject implements Comparable<SchoolSubject> {
+
+  private static final String LABEL_MAY_NOT_BE_NULL_OR_EMPTY = "label may not be null or empty.";
+
   private String label;
   private LocalDate exemptSince = null;
 
@@ -13,7 +16,7 @@ public class SchoolSubject implements Comparable<SchoolSubject> {
    * empty argument constructor.
    */
   public SchoolSubject() {
-    ;
+    // XML
   }
 
   /**
@@ -23,7 +26,7 @@ public class SchoolSubject implements Comparable<SchoolSubject> {
    */
   public SchoolSubject(String label) {
     if (label == null || label.trim().length() == 0) {
-      throw new IllegalArgumentException("label may not be null or empty.");
+      throw new IllegalArgumentException(LABEL_MAY_NOT_BE_NULL_OR_EMPTY);
     }
 
     this.label = label.trim();
@@ -38,7 +41,7 @@ public class SchoolSubject implements Comparable<SchoolSubject> {
   public SchoolSubject(String label, LocalDate exemptSince) {
     super();
     if (label == null || label.trim().length() == 0) {
-      throw new IllegalArgumentException("label may not be null or empty.");
+      throw new IllegalArgumentException(LABEL_MAY_NOT_BE_NULL_OR_EMPTY);
     }
 
     this.label = label.trim();
@@ -107,7 +110,7 @@ public class SchoolSubject implements Comparable<SchoolSubject> {
    */
   public void setLabel(String label) {
     if (label == null || label.trim().length() == 0) {
-      throw new IllegalArgumentException("label may not be null or empty.");
+      throw new IllegalArgumentException(LABEL_MAY_NOT_BE_NULL_OR_EMPTY);
     }
     this.label = label.trim();
   }

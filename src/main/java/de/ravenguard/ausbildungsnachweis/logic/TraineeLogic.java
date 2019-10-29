@@ -15,21 +15,25 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class TraineeLogic {
+
   private static final Logger LOGGER = LogManager.getLogger(TraineeLogic.class);
 
   /**
-   * Creates a new {@link TrainingPeriod} and creates the {@link DataMonth} and {@link DataWeek}.
+   * Creates a new {@link TrainingPeriod} and creates the {@link DataMonth} and
+   * {@link DataWeek}.
    *
    * @param label label of the TrainingPeriod, may not be null or empty
    * @param begin begin of the TrainingPeriod, may not be null
    * @param end end of the TrainingPeriod, may not be null
-   * @param schoolClass schoolClass of the TrainingPeriod, may not be null or empty
+   * @param schoolClass schoolClass of the TrainingPeriod, may not be null or
+   * empty
    * @param classTeacher class teacher of the period, may not be null or empty
    * @param trainee {@link Trainee} to add the new TrainingPeriode
-   * @throws IllegalDateException if either begin or end is not a working day or end is before begin
+   * @throws IllegalDateException if either begin or end is not a working day or
+   * end is before begin
    */
   public void addTrainingPeriode(String label, LocalDate begin, LocalDate end, String schoolClass,
-      String classTeacher, Trainee trainee) throws IllegalDateException {
+          String classTeacher, Trainee trainee) throws IllegalDateException {
 
     // Operation and validation
     final TrainingPeriodLogic logic = new TrainingPeriodLogic();
@@ -48,19 +52,21 @@ public class TraineeLogic {
    * @param school school name, may not be null or empty
    * @param training training, may not be null or empty
    * @return new Trainee instance
-   * @throws IllegalDateException if either begin or end is not a working day or end is before begin
-   * @throws IllegalArgumentException if one parameter is null or a string is empty
+   * @throws IllegalDateException if either begin or end is not a working day or
+   * end is before begin
+   * @throws IllegalArgumentException if one parameter is null or a string is
+   * empty
    */
   public Trainee create(String familyName, String givenNames, LocalDate begin, LocalDate end,
-      String trainer, String school, String training) throws IllegalDateException {
+          String trainer, String school, String training) throws IllegalDateException {
     LOGGER.trace(
-        "Called create(familiyName: {}, givenNames: {}, begin: {}, end: {}, "
+            "Called create(familiyName: {}, givenNames: {}, begin: {}, end: {}, "
             + "trainer: {}, school: {}, training: {}",
-        familyName, givenNames, begin, end, trainer, school, training);
+            familyName, givenNames, begin, end, trainer, school, training);
 
     // Operation and validation
     return new Trainee(familyName, givenNames, begin, end, trainer, school, training,
-        new ArrayList<>());
+            new ArrayList<>());
   }
 
   /**
@@ -74,7 +80,7 @@ public class TraineeLogic {
 
     // Validation
     if (path == null || path.toString().trim().length() == 0) {
-      throw new NullPointerException("Path may not be null or empty.");
+      throw new NullPointerException(PATH_MAY_NOT_BE_NULL_OR_EMPTY);
     }
 
     // Operation
@@ -96,7 +102,7 @@ public class TraineeLogic {
 
     // Validation
     if (path == null || path.toString().trim().length() == 0) {
-      throw new IllegalArgumentException("Path may not be null or empty.");
+      throw new IllegalArgumentException(PATH_MAY_NOT_BE_NULL_OR_EMPTY);
     }
 
     // Operation
@@ -106,6 +112,7 @@ public class TraineeLogic {
 
     return trainee;
   }
+  private static final String PATH_MAY_NOT_BE_NULL_OR_EMPTY = "Path may not be null or empty.";
 
   /**
    * Saves a trainee.
@@ -120,7 +127,7 @@ public class TraineeLogic {
 
     // Validation
     if (path == null || path.toString().trim().length() == 0) {
-      throw new NullPointerException("Path may not be null or empty.");
+      throw new NullPointerException(PATH_MAY_NOT_BE_NULL_OR_EMPTY);
     }
     if (trainee == null) {
       throw new NullPointerException("Trainee may not be null.");

@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class TrainingPeriod implements TreeElement {
+
   private String label;
   private LocalDate begin;
   private LocalDate end;
@@ -27,7 +28,8 @@ public class TrainingPeriod implements TreeElement {
   /**
    * empty argument constructor.
    */
-  public TrainingPeriod() {}
+  public TrainingPeriod() {
+  }
 
   /**
    * Field Constructor.
@@ -39,11 +41,12 @@ public class TrainingPeriod implements TreeElement {
    * @param classTeacher class teacher, may not be null or empty
    * @param months months of period, may not be null
    * @param schoolSubjects schoolSubjects, may not be null
-   * @throws IllegalDateException if begin or end is not a working day or end is before begin
+   * @throws IllegalDateException if begin or end is not a working day or end is
+   * before begin
    */
   public TrainingPeriod(String label, LocalDate begin, LocalDate end, String schoolClass,
-      String classTeacher, List<DataMonth> months, List<SchoolSubject> schoolSubjects)
-      throws IllegalDateException {
+          String classTeacher, List<DataMonth> months, List<SchoolSubject> schoolSubjects)
+          throws IllegalDateException {
     super();
     setLabel(label);
     setBegin(begin);
@@ -57,8 +60,8 @@ public class TrainingPeriod implements TreeElement {
   /**
    * Adds a month to the training period.
    *
-   * @param month month to add, may not be null, not already in the list and must be within the
-   *        bonds of the period
+   * @param month month to add, may not be null, not already in the list and
+   * must be within the bonds of the period
    */
   public void addMonth(DataMonth month) {
     if (month == null) {
@@ -67,12 +70,12 @@ public class TrainingPeriod implements TreeElement {
 
     final boolean conflict = months.stream().anyMatch(currentMonth -> {
       return currentMonth.getBegin().getMonth() == month.getBegin().getMonth()
-          || month.getBegin().isBefore(begin) || month.getBegin().isAfter(end);
+              || month.getBegin().isBefore(begin) || month.getBegin().isAfter(end);
     });
 
     if (conflict) {
       throw new IllegalArgumentException(
-          "month allready added or before begin or after end of period.");
+              "month allready added or before begin or after end of period.");
     }
 
     months.add(month);
@@ -81,7 +84,8 @@ public class TrainingPeriod implements TreeElement {
   /**
    * Adds a school subject to the training period.
    *
-   * @param schoolSubject school subject to add, may not be null and not already in the list
+   * @param schoolSubject school subject to add, may not be null and not already
+   * in the list
    */
   public void addSchoolSubject(SchoolSubject schoolSubject) {
     if (schoolSubject == null) {
@@ -94,7 +98,7 @@ public class TrainingPeriod implements TreeElement {
 
     if (conflict) {
       throw new IllegalArgumentException(
-          "schoolSubject allready added or before begin or after end of period.");
+              "schoolSubject allready added or before begin or after end of period.");
     }
 
     schoolSubjects.add(schoolSubject);
@@ -141,11 +145,7 @@ public class TrainingPeriod implements TreeElement {
     } else if (!label.equals(other.label)) {
       return false;
     }
-    if (months == null) {
-      if (other.months != null) {
-        return false;
-      }
-    } else if (!months.equals(other.months)) {
+    if (!months.equals(other.months)) {
       return false;
     }
     if (schoolClass == null) {
@@ -155,14 +155,7 @@ public class TrainingPeriod implements TreeElement {
     } else if (!schoolClass.equals(other.schoolClass)) {
       return false;
     }
-    if (schoolSubjects == null) {
-      if (other.schoolSubjects != null) {
-        return false;
-      }
-    } else if (!schoolSubjects.equals(other.schoolSubjects)) {
-      return false;
-    }
-    return true;
+    return schoolSubjects.equals(other.schoolSubjects);
   }
 
   public LocalDate getBegin() {
@@ -201,7 +194,7 @@ public class TrainingPeriod implements TreeElement {
   @Override
   public String getTreeLabel() {
     return getLabel() + System.lineSeparator() + "Beginn: " + Utils.formatDate(begin)
-        + System.lineSeparator() + "Ende: " + Utils.formatDate(end);
+            + System.lineSeparator() + "Ende: " + Utils.formatDate(end);
   }
 
   @Override
@@ -212,9 +205,9 @@ public class TrainingPeriod implements TreeElement {
     result = prime * result + (classTeacher == null ? 0 : classTeacher.hashCode());
     result = prime * result + (end == null ? 0 : end.hashCode());
     result = prime * result + (label == null ? 0 : label.hashCode());
-    result = prime * result + (months == null ? 0 : months.hashCode());
+    result = prime * result + months.hashCode();
     result = prime * result + (schoolClass == null ? 0 : schoolClass.hashCode());
-    result = prime * result + (schoolSubjects == null ? 0 : schoolSubjects.hashCode());
+    result = prime * result + schoolSubjects.hashCode();
     return result;
   }
 
@@ -281,7 +274,8 @@ public class TrainingPeriod implements TreeElement {
    * Sets the end date.
    *
    * @param end LocalDate of the end, cannot be null.
-   * @throws IllegalDateException if end is not a working day or end is before begin
+   * @throws IllegalDateException if end is not a working day or end is before
+   * begin
    */
   public void setEnd(LocalDate end) throws IllegalDateException {
     if (end == null) {

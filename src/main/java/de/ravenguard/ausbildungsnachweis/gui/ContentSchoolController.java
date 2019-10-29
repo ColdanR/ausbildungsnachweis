@@ -10,6 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class ContentSchoolController {
+
   private static final Logger LOGGER = LogManager.getLogger(ContentSchoolController.class);
   @FXML
   private TextArea textArea;
@@ -27,13 +28,11 @@ public class ContentSchoolController {
    */
   public void setData(ContentSchoolSubject schoolSubject, LocalDate weekBegin, LocalDate weekEnd) {
     LOGGER.trace("Called setData(schoolSubject: {}, weekBegin: {}, weekEnd: {})", schoolSubject,
-        weekBegin, weekEnd);
+            weekBegin, weekEnd);
     final LocalDate exemptSince = schoolSubject.getSubject().getExemptSince();
 
     // Init textArea
-    textArea.textProperty().addListener((observable, oldValue, newValue) -> {
-      schoolSubject.setContent(newValue);
-    });
+    textArea.textProperty().addListener((observable, oldValue, newValue) -> schoolSubject.setContent(newValue));
     textArea.setText(schoolSubject.getContent());
 
     // Set subject

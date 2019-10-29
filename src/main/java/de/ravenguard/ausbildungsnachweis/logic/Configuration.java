@@ -3,17 +3,17 @@ package de.ravenguard.ausbildungsnachweis.logic;
 import de.ravenguard.ausbildungsnachweis.logic.dao.SettingDao;
 import de.ravenguard.ausbildungsnachweis.model.Settings;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import javax.xml.bind.JAXBException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class Configuration {
+
   private static final String SETTINGS = "settings.xml";
   private static final Logger LOGGER = LogManager.getLogger(Configuration.class);
 
-  private static Configuration INSTANCE = new Configuration();
+  private static final Configuration INSTANCE = new Configuration();
 
   /**
    * Returns the singleton instance.
@@ -25,7 +25,7 @@ public class Configuration {
     return INSTANCE;
   }
 
-  private Settings settings = new Settings();
+  private Settings settingsLoaded = new Settings();
   private Path installPath = null;
   private Path currentFile = null;
   private boolean modified = false;
@@ -74,8 +74,8 @@ public class Configuration {
    */
   public boolean isCompanyAndSchool() {
     LOGGER.trace("Called isCompanyAndSchool()");
-    LOGGER.debug("Returned isCompanyAndSchool(): {}", settings.isCompanyAndSchool());
-    return settings.isCompanyAndSchool();
+    LOGGER.debug("Returned isCompanyAndSchool(): {}", settingsLoaded.isCompanyAndSchool());
+    return settingsLoaded.isCompanyAndSchool();
   }
 
   public boolean isModified() {
@@ -90,7 +90,7 @@ public class Configuration {
   public boolean isSaturdayWorkday() {
     LOGGER.trace("Called isSaturdayWorkday()");
     LOGGER.debug("Returned getInstallPath(): {}", installPath);
-    return settings.isSaturdayWorkday();
+    return settingsLoaded.isSaturdayWorkday();
   }
 
   /**
@@ -101,7 +101,7 @@ public class Configuration {
   public boolean isSundayWorkday() {
     LOGGER.trace("Called isSaturdayWorkday()");
     LOGGER.debug("Returned isSundayWorkday(): {}", installPath);
-    return settings.isSundayWorkday();
+    return settingsLoaded.isSundayWorkday();
   }
 
   /**
@@ -112,17 +112,17 @@ public class Configuration {
   public InstallStatus loadSettings() {
     LOGGER.trace("Called loadSettings()");
 
-    if (!Files.exists(installPath)) {
+    if (!installPath.toFile().exists()) {
       return InstallStatus.NOT_INSTALLED;
     }
 
     final Path settingsPath = getSettingsPath();
-    if (!Files.exists(settingsPath)) {
+    if (!settingsPath.toFile().exists()) {
       return InstallStatus.NOT_FOUND_SETTINGS;
     }
 
     try {
-      settings = SettingDao.readFromPath(settingsPath);
+      settingsLoaded = SettingDao.readFromPath(settingsPath);
     } catch (final JAXBException e) {
       return InstallStatus.PARSE_ERROR_SETTINGS;
     }
@@ -132,12 +132,12 @@ public class Configuration {
 
   public void saveSettings() throws IOException, JAXBException {
     LOGGER.trace("Called saveSettings()");
-    SettingDao.saveToPath(getSettingsPath(), settings);
+    SettingDao.saveToPath(getSettingsPath(), settingsLoaded);
   }
 
   public void setCompanyAndSchool(boolean companyAndSchool) {
     LOGGER.trace("Called setCompanyAndSchool(companyAndSchool: {})", companyAndSchool);
-    settings.setCompanyAndSchool(companyAndSchool);
+    settingsLoaded.setCompanyAndSchool(companyAndSchool);
   }
 
   public void setCurrentFile(Path currentFile) {
@@ -151,7 +151,7 @@ public class Configuration {
 
   public void setSaturdayWorkday(boolean saturdayWorkday) {
     LOGGER.trace("Called setSaturdayWorkday(saturdayWorkday: {})", saturdayWorkday);
-    settings.setSaturdayWorkday(saturdayWorkday);
+    settingsLoaded.setSaturdayWorkday(saturdayWorkday);
   }
 
   public void setSettingsPath(Path path) {
@@ -161,6 +161,6 @@ public class Configuration {
 
   public void setSundayWorkday(boolean sundayWorkday) {
     LOGGER.trace("Called setSundayWorkday(sundayWorkday: {})", sundayWorkday);
-    settings.setSundayWorkday(sundayWorkday);
+    settingsLoaded.setSundayWorkday(sundayWorkday);
   }
 }

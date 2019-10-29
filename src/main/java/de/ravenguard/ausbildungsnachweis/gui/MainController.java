@@ -39,6 +39,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class MainController {
+
   private static final Logger LOGGER = LogManager.getLogger(MainController.class);
   private final Configuration config = Configuration.getInstance();
   private Trainee trainee;
@@ -82,18 +83,18 @@ public class MainController {
       if (newValue != null) {
         try {
           if (newValue.getValue() instanceof TrainingPeriod) {
-            final GuiLoader<ContentTrainingPeriodController, AnchorPane> helper =
-                new GuiLoader<>("ContentTrainingPeriod.fxml");
+            final GuiLoader<ContentTrainingPeriodController, AnchorPane> helper
+                    = new GuiLoader<>("ContentTrainingPeriod.fxml");
             final ContentTrainingPeriodController controller = helper.getController();
             controller.setTrainingPeriod((TrainingPeriod) newValue.getValue());
             controller.setStage(primaryStage);
             contentPane.setContent(helper.getRoot());
           } else if (newValue.getValue() instanceof DataMonth) {
-            final GuiLoader<ContentDataMonthController, AnchorPane> helper =
-                new GuiLoader<>("ContentDataMonth.fxml");
+            final GuiLoader<ContentDataMonthController, AnchorPane> helper
+                    = new GuiLoader<>("ContentDataMonth.fxml");
             final ContentDataMonthController controller = helper.getController();
             controller.setData((DataMonth) newValue.getValue(),
-                (TrainingPeriod) newValue.getParent().getValue(), primaryStage, trainee);
+                    (TrainingPeriod) newValue.getParent().getValue(), primaryStage, trainee);
             contentPane.setContent(helper.getRoot());
           } else {
             contentPane.setContent(null);
@@ -119,7 +120,7 @@ public class MainController {
     LOGGER.trace("Called onEditTrainee(event: {})", event);
     if (trainee == null) {
       Utils.createErrorMessage(
-          "Kein Auszubildender geladen. Es können keine �nderungen vorgenommen werden.");
+              "Kein Auszubildender geladen. Es können keine �nderungen vorgenommen werden.");
       return;
     }
     traineeDialog();
@@ -141,7 +142,8 @@ public class MainController {
   }
 
   /**
-   * Checks for unsaved changes, ask to save and loads a chosen File for the user.
+   * Checks for unsaved changes, ask to save and loads a chosen File for the
+   * user.
    *
    * @param event event
    */
@@ -233,8 +235,8 @@ public class MainController {
       return;
     }
     // Create Dialog
-    final GuiLoader<DialogTrainingPeriodController, DialogPane> loader =
-        new GuiLoader<>("DialogTrainingPeriod.fxml");
+    final GuiLoader<DialogTrainingPeriodController, DialogPane> loader
+            = new GuiLoader<>("DialogTrainingPeriod.fxml");
     final DialogPane root = loader.getRoot();
     final DialogTrainingPeriodController controller = loader.getController();
 
@@ -244,66 +246,69 @@ public class MainController {
     dialog.setDialogPane(root);
     // getResult
     final Optional<ButtonType> result = dialog.showAndWait();
-    if (result.get() == ButtonType.CANCEL) {
-      return;
-    } else if (result.get() == ButtonType.FINISH) {
-      final String label = controller.getLabel();
-      final String schoolClass = controller.getSchoolClass();
-      final String classTeacher = controller.getClassTeacher();
-      final LocalDate begin = controller.getBegin();
-      final LocalDate end = controller.getEnd();
-
-      // Validierung
-      final List<String> errors = new ArrayList<>();
-      if (label == null || label.trim().length() == 0) {
-        errors.add("Die Bezeichnung darf nicht leer sein.");
-      }
-      if (schoolClass == null || schoolClass.trim().length() == 0) {
-        errors.add("Die Berufsschulklasse darf nicht leer sein.");
-      }
-      if (classTeacher == null || classTeacher.trim().length() == 0) {
-        errors.add("Der Klassenlehrer darf nicht leer sein.");
-      }
-      if (begin == null) {
-        errors.add("Der Anfang muss ausgefüllt sein.");
-      } else if (begin.isBefore(trainee.getBegin())) {
-        errors.add("Der Anfang kann nicht vor dem Anfang der Ausbildung liegen.");
-      }
-      if (end == null) {
-        errors.add("Das Ende muss ausgefüllt sein.");
-      } else if (end.isAfter(trainee.getEnd())) {
-        errors.add("Das Ende kann nicht nach dem Ende der Ausbildung liegen.");
-      }
-      if (begin != null && end != null) {
-          trainee.getTrainingPeriods().forEach((period) -> {
-              final LocalDate periodBegin = period.getBegin();
-              final LocalDate periodEnd = period.getEnd();
-              if ((begin.isAfter(periodBegin) || begin.isEqual(periodBegin))
-                      && (begin.isBefore(periodEnd) || begin.isEqual(periodEnd))) {
-                  errors.add("Der Anfang ist innerhalb des Zeitraums von " + period.getLabel());
-              }   if ((end.isAfter(periodBegin) || end.isEqual(periodBegin))
-                      && (end.isBefore(periodEnd) || end.isEqual(periodEnd))) {
-                  errors.add("Das Ende ist innerhalb des Zeitraums von " + period.getLabel());
-              }
-          });
-      }
-
-      // Validation Result
-      if (errors.size() > 0) {
-        Utils.createErrorMessage(errors);
+    if (result.isPresent()) {
+      if (result.get() == ButtonType.CANCEL) {
         return;
-      } else {
-        final TraineeLogic logic = new TraineeLogic();
-        try {
-          logic.addTrainingPeriode(label, begin, end, schoolClass, classTeacher, trainee);
-        } catch (final IllegalDateException e) {
-          Utils.createExceptionAlert(e);
+      } else if (result.get() == ButtonType.FINISH) {
+        final String label = controller.getLabel();
+        final String schoolClass = controller.getSchoolClass();
+        final String classTeacher = controller.getClassTeacher();
+        final LocalDate begin = controller.getBegin();
+        final LocalDate end = controller.getEnd();
+
+        // Validierung
+        final List<String> errors = new ArrayList<>();
+        if (label == null || label.trim().length() == 0) {
+          errors.add("Die Bezeichnung darf nicht leer sein.");
+        }
+        if (schoolClass == null || schoolClass.trim().length() == 0) {
+          errors.add("Die Berufsschulklasse darf nicht leer sein.");
+        }
+        if (classTeacher == null || classTeacher.trim().length() == 0) {
+          errors.add("Der Klassenlehrer darf nicht leer sein.");
+        }
+        if (begin == null) {
+          errors.add("Der Anfang muss ausgefüllt sein.");
+        } else if (begin.isBefore(trainee.getBegin())) {
+          errors.add("Der Anfang kann nicht vor dem Anfang der Ausbildung liegen.");
+        }
+        if (end == null) {
+          errors.add("Das Ende muss ausgefüllt sein.");
+        } else if (end.isAfter(trainee.getEnd())) {
+          errors.add("Das Ende kann nicht nach dem Ende der Ausbildung liegen.");
+        }
+        if (begin != null && end != null) {
+          trainee.getTrainingPeriods().forEach(period -> {
+            final LocalDate periodBegin = period.getBegin();
+            final LocalDate periodEnd = period.getEnd();
+            if ((begin.isAfter(periodBegin) || begin.isEqual(periodBegin))
+                    && (begin.isBefore(periodEnd) || begin.isEqual(periodEnd))) {
+              errors.add("Der Anfang ist innerhalb des Zeitraums von " + period.getLabel());
+            }
+            if ((end.isAfter(periodBegin) || end.isEqual(periodBegin))
+                    && (end.isBefore(periodEnd) || end.isEqual(periodEnd))) {
+              errors.add("Das Ende ist innerhalb des Zeitraums von " + period.getLabel());
+            }
+          });
+        }
+
+        // Validation Result
+        if (!errors.isEmpty()) {
+          Utils.createErrorMessage(errors);
           return;
+        } else {
+          final TraineeLogic logic = new TraineeLogic();
+          try {
+            logic.addTrainingPeriode(label, begin, end, schoolClass, classTeacher, trainee);
+          } catch (final IllegalDateException e) {
+            Utils.createExceptionAlert(e);
+            return;
+          }
         }
       }
+      // Reset TreeView
+      treeView.setRoot(new TraineeWrapper(trainee));
     }
-    // Reset TreeView
-    treeView.setRoot(new TraineeWrapper(trainee));
   }
 
   public void setPrimaryStage(Stage primaryStage) {
@@ -338,29 +343,31 @@ public class MainController {
     if (trainee != null && config.isModified()) {
       // Alert
       final Alert alert = new Alert(AlertType.CONFIRMATION,
-          "Es gibt nicht gespeichete Änderungen. Diesen jetzt speichern?",
-          ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+              "Es gibt nicht gespeichete Änderungen. Diesen jetzt speichern?",
+              ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
       final Optional<ButtonType> returnValue = alert.showAndWait();
 
-      if (returnValue.get() == ButtonType.YES) {
-        final Path savePath = getSavePath();
-        try {
-          saveTrainee(savePath);
+      if (returnValue.isPresent()) {
+        if (returnValue.get() == ButtonType.YES) {
+          final Path savePath = getSavePath();
+          try {
+            saveTrainee(savePath);
+            trainee = null;
+            config.setModified(false);
+            setGuiFromTrainee();
+            return true;
+          } catch (final JAXBException | IOException e) {
+            Utils.createExceptionAlert(e);
+            return false;
+          }
+        } else if (returnValue.get() == ButtonType.NO) {
           trainee = null;
           config.setModified(false);
           setGuiFromTrainee();
           return true;
-        } catch (final JAXBException | IOException e) {
-          Utils.createExceptionAlert(e);
+        } else {
           return false;
         }
-      } else if (returnValue.get() == ButtonType.NO) {
-        trainee = null;
-        config.setModified(false);
-        setGuiFromTrainee();
-        return true;
-      } else if (returnValue.get() == ButtonType.CANCEL) {
-        return false;
       } else {
         return false;
       }
@@ -418,18 +425,15 @@ public class MainController {
       trainingBegin.setText(Utils.formatDate(trainee.getBegin()));
       trainingEnd.setText(Utils.formatDate(trainee.getEnd()));
       // Reset ListView
-      treeView.setRoot(null);
-      if (trainee != null) {
-        treeView.setRoot(new TraineeWrapper(trainee));
-      }
+      treeView.setRoot(new TraineeWrapper(trainee));
     }
   }
 
   private void traineeDialog() throws IOException {
     LOGGER.trace("Called traineeDialog()");
     // Dialog erschaffen
-    final GuiLoader<DialogTraineeController, DialogPane> loader =
-        new GuiLoader<>("DialogTrainee.fxml");
+    final GuiLoader<DialogTraineeController, DialogPane> loader
+            = new GuiLoader<>("DialogTrainee.fxml");
     final DialogPane root = loader.getRoot();
     final DialogTraineeController controller = loader.getController();
 
@@ -454,24 +458,24 @@ public class MainController {
       if (buttonType == ButtonType.FINISH) {
         final List<String> errors = new ArrayList<>();
 
-        if (controller.getFamilyName() == null || 
-                controller.getFamilyName().trim().length() == 0) {
+        if (controller.getFamilyName() == null
+                || controller.getFamilyName().trim().length() == 0) {
           errors.add("Der Familienname muss ausgefüllt sein.");
         }
-        if (controller.getGivenNames() == null || 
-                controller.getGivenNames().trim().length() == 0) {
+        if (controller.getGivenNames() == null
+                || controller.getGivenNames().trim().length() == 0) {
           errors.add("Vorname(n) muss ausgefüllt sein.");
         }
-        if (controller.getTrainer() == null || 
-                controller.getTrainer().trim().length() == 0) {
+        if (controller.getTrainer() == null
+                || controller.getTrainer().trim().length() == 0) {
           errors.add("Der Ausbilder muss ausgefüllt sein.");
         }
-        if (controller.getSchool() == null || 
-                controller.getSchool().trim().length() == 0) {
+        if (controller.getSchool() == null
+                || controller.getSchool().trim().length() == 0) {
           errors.add("Die Berufsschule muss ausgefüllt sein.");
         }
-        if (controller.getTraining() == null || 
-                controller.getTraining().trim().length() == 0) {
+        if (controller.getTraining() == null
+                || controller.getTraining().trim().length() == 0) {
           errors.add("Der Ausbildungsberuf muss ausgefüllt sein.");
         }
         if (controller.getBegin() == null) {
@@ -481,12 +485,12 @@ public class MainController {
           errors.add("(Voraussichtliches) Ende der Ausbildung muss ausgewählt "
                   + "sein.");
         }
-        if (controller.getBegin() != null && controller.getEnd() != null && 
-                controller.getBegin().isAfter(controller.getEnd())) {
+        if (controller.getBegin() != null && controller.getEnd() != null
+                && controller.getBegin().isAfter(controller.getEnd())) {
           errors.add("Beginn der Ausbildung muss vor dem (voraussichtlichen) "
                   + "Ende der Ausbildung sein.");
         }
-        if (errors.size() > 0) {
+        if (!errors.isEmpty()) {
           Utils.createErrorMessage(errors);
         } else if (trainee != null) {
           try {
@@ -505,9 +509,9 @@ public class MainController {
         } else {
           final TraineeLogic logic = new TraineeLogic();
           try {
-            trainee = logic.create(controller.getFamilyName(), 
-                    controller.getGivenNames(), controller.getBegin(), 
-                    controller.getEnd(), controller.getTrainer(), 
+            trainee = logic.create(controller.getFamilyName(),
+                    controller.getGivenNames(), controller.getBegin(),
+                    controller.getEnd(), controller.getTrainer(),
                     controller.getSchool(), controller.getTraining());
             config.setCurrentFile(null);
             setGuiFromTrainee();

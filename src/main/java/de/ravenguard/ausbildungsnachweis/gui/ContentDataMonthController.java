@@ -33,6 +33,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class ContentDataMonthController {
+
   private static final Logger LOGGER = LogManager.getLogger(ContentDataMonthController.class);
   private DataMonth dataMonth;
   private Stage stage;
@@ -83,8 +84,8 @@ public class ContentDataMonthController {
 
     if (exportFile != null) {
       try {
-        final String period =
-            Utils.formatDate(dataMonth.getBegin()) + " - " + Utils.formatDate(dataMonth.getEnd());
+        final String period
+                = Utils.formatDate(dataMonth.getBegin()) + " - " + Utils.formatDate(dataMonth.getEnd());
         JrExport.export(dataMonth.getWeeks(), exportFile, name, profession, trainingsyear, period);
         Utils.createInfoMessage("Export abgeschlossen");
       } catch (final IOException | JRException e) {
@@ -103,7 +104,7 @@ public class ContentDataMonthController {
    */
   public void setData(DataMonth dataMonth, TrainingPeriod period, Stage stage, Trainee trainee) {
     LOGGER.trace("Called setData(dataMonth: {}, period: {}, stage: {}, trainee: {})", dataMonth,
-        period, stage, trainee);
+            period, stage, trainee);
     this.dataMonth = dataMonth;
     this.stage = stage;
     profession = trainee.getTraining();
@@ -113,13 +114,13 @@ public class ContentDataMonthController {
     // Set headers
     headerMonth.setText("Monat " + Utils.formatFullNameDate(dataMonth.getBegin()));
     headerBeginEnd.setText("Anfang: " + Utils.formatDate(dataMonth.getBegin()) + " - Ende: "
-        + Utils.formatDate(dataMonth.getEnd()));
+            + Utils.formatDate(dataMonth.getEnd()));
 
     // Set Weeks
     for (final DataWeek week : dataMonth.getWeeks()) {
       try {
-        final GuiLoader<ContentDataWeekController, VBox> loader =
-            new GuiLoader<>("ContentDataWeek.fxml");
+        final GuiLoader<ContentDataWeekController, VBox> loader
+                = new GuiLoader<>("ContentDataWeek.fxml");
         final VBox content = loader.getRoot();
         company.getChildren().add(content);
         final ContentDataWeekController controller = loader.getController();
@@ -128,7 +129,7 @@ public class ContentDataMonthController {
         Utils.createExceptionAlert(e);
       }
     }
-    closeSchool.setOnAction((event) -> {
+    closeSchool.setOnAction(event -> {
       school.getChildren().clear();
       headerSchool.setText("");
     });
@@ -138,22 +139,22 @@ public class ContentDataMonthController {
     final List<String> warnings = new ArrayList<>();
     for (final DataWeek week : dataMonth.getWeeks()) {
       if (week.getType() == WeekType.COMPANY
-          && (week.getContentCompany() == null || week.getContentCompany().trim().length() == 0)) {
+              && (week.getContentCompany() == null || week.getContentCompany().trim().length() == 0)) {
         warnings.add("Woche " + week.getBegin().get(WeekFields.ISO.weekOfWeekBasedYear())
-            + " hat keinen Inhalt für Betrieb.");
+                + " hat keinen Inhalt für Betrieb.");
       } else {
         if (Configuration.getInstance().isCompanyAndSchool() && (week.getContentCompany() == null
-            || week.getContentCompany().trim().length() == 0)) {
+                || week.getContentCompany().trim().length() == 0)) {
           warnings.add("Woche " + week.getBegin().get(WeekFields.ISO.weekOfWeekBasedYear())
-              + " hat keinen Inhalt für Betrieb.");
+                  + " hat keinen Inhalt für Betrieb.");
         }
         for (final ContentSchoolSubject subject : week.getContentSchool()) {
           if (subject.getSubject().getExemptSince() != null
-              && !subject.getSubject().getExemptSince().isBefore(week.getBegin())
-              && (subject.getContent() == null || subject.getContent().trim().length() == 0)) {
+                  && !subject.getSubject().getExemptSince().isBefore(week.getBegin())
+                  && (subject.getContent() == null || subject.getContent().trim().length() == 0)) {
             warnings.add("Schulfach " + subject.getSubject().getLabel() + " in KW "
-                + week.getBegin().get(WeekFields.ISO.weekOfWeekBasedYear())
-                + " hat keinen Inhalt.");
+                    + week.getBegin().get(WeekFields.ISO.weekOfWeekBasedYear())
+                    + " hat keinen Inhalt.");
           }
         }
       }
@@ -162,11 +163,15 @@ public class ContentDataMonthController {
       return true;
     } else {
       final String warnung = "Es liegen Fehler vor:" + System.lineSeparator()
-          + warnings.stream().collect(Collectors.joining(System.lineSeparator()));
-      final Optional<ButtonType> result =
-          new Alert(AlertType.CONFIRMATION, warnung, ButtonType.APPLY, ButtonType.CANCEL)
-              .showAndWait();
+              + warnings.stream().collect(Collectors.joining(System.lineSeparator()));
+      final Optional<ButtonType> result
+              = new Alert(AlertType.CONFIRMATION, warnung, ButtonType.APPLY, ButtonType.CANCEL)
+                      .showAndWait();
+      if (result.isPresent()) {
         return result.get() == ButtonType.APPLY;
+      } else {
+        return false;
+      }
     }
   }
 }

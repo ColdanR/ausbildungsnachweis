@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class DialogSettingsController {
+
   private static final Logger LOGGER = LogManager.getLogger(DialogSettingsController.class);
   @FXML
   private CheckBox saturdayWorkday;
@@ -23,7 +24,8 @@ public class DialogSettingsController {
   }
 
   /**
-   * Binds the {@link Configuration} to the dialog and initiates the values of the gui.
+   * Binds the {@link Configuration} to the dialog and initiates the values of
+   * the gui.
    *
    * @param config {@link Configuration} instance
    */
@@ -34,17 +36,8 @@ public class DialogSettingsController {
     saturdayWorkday.selectedProperty().set(config.isSaturdayWorkday());
     sundayWorkday.selectedProperty().set(config.isSundayWorkday());
     companyAndWork.selectedProperty().set(config.isCompanyAndSchool());
-
-    saturdayWorkday.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
-      config.setSaturdayWorkday(isNowSelected.booleanValue());
-    });
-
-    sundayWorkday.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
-      config.setSundayWorkday(isNowSelected.booleanValue());
-    });
-
-    companyAndWork.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
-      config.setCompanyAndSchool(isNowSelected.booleanValue());
-    });
+    saturdayWorkday.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> config.setSaturdayWorkday(isNowSelected.booleanValue()));
+    sundayWorkday.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> config.setSundayWorkday(isNowSelected.booleanValue()));
+    companyAndWork.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> config.setCompanyAndSchool(isNowSelected.booleanValue()));
   }
 }

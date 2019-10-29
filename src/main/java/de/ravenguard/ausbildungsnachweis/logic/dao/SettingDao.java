@@ -14,6 +14,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class SettingDao {
+
   private static final Logger LOGGER = LogManager.getLogger(SettingDao.class);
 
   /**
@@ -52,13 +53,17 @@ public class SettingDao {
    * @throws IOException Read / write error
    */
   public static void saveToPath(Path settingsPath, Settings settings)
-      throws IOException, JAXBException {
+          throws IOException, JAXBException {
     LOGGER.trace("Called saveToPath(settingsPath: {}, settings: {})", settingsPath, settings);
 
     final JAXBContext jc = JAXBContext.newInstance(Settings.class);
     final Marshaller m = jc.createMarshaller();
     final OutputStream os = Files.newOutputStream(settingsPath, StandardOpenOption.CREATE,
-        StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
+            StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
     m.marshal(settings, os);
+  }
+
+  private SettingDao() {
+    // prevent instances
   }
 }

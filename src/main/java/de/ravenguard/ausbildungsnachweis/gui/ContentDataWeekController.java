@@ -2,7 +2,6 @@ package de.ravenguard.ausbildungsnachweis.gui;
 
 import de.ravenguard.ausbildungsnachweis.logic.Configuration;
 import de.ravenguard.ausbildungsnachweis.logic.TrainingPeriodLogic;
-import de.ravenguard.ausbildungsnachweis.model.ContentSchoolSubject;
 import de.ravenguard.ausbildungsnachweis.model.DataWeek;
 import de.ravenguard.ausbildungsnachweis.model.TrainingPeriod;
 import de.ravenguard.ausbildungsnachweis.model.WeekType;
@@ -23,6 +22,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class ContentDataWeekController {
+
   private static final Logger LOGGER = LogManager.getLogger(ContentDataWeekController.class);
   @FXML
   private Label header;
@@ -43,12 +43,12 @@ public class ContentDataWeekController {
    * @param schoolContent content for school
    */
   public void setData(DataWeek dataWeek, TrainingPeriod period, Stage stage, Label headerSchool,
-      VBox schoolContent) {
+          VBox schoolContent) {
     LOGGER.trace("Called setData(dataWeek: {})", dataWeek);
 
     header.setText("KW " + dataWeek.getBegin().get(WeekFields.ISO.weekOfWeekBasedYear())
-        + " - Beginn: " + Utils.formatDate(dataWeek.getBegin()) + " - Ende: "
-        + Utils.formatDate(dataWeek.getEnd()));
+            + " - Beginn: " + Utils.formatDate(dataWeek.getBegin()) + " - Ende: "
+            + Utils.formatDate(dataWeek.getEnd()));
 
     button.selectedProperty().set(dataWeek.getType() == WeekType.SCHOOL);
     button.selectedProperty().addListener((ObservableValue<? extends Boolean> obs, Boolean oldValue, Boolean newValue) -> {
@@ -56,7 +56,7 @@ public class ContentDataWeekController {
 
       // Determine new type
       WeekType type = WeekType.COMPANY;
-      if (newValue) {
+      if (Boolean.TRUE.equals(newValue)) {
         type = WeekType.SCHOOL;
       }
 
@@ -67,9 +67,7 @@ public class ContentDataWeekController {
 
     // Set content TextField
     text.setText(dataWeek.getContentCompany());
-    text.textProperty().addListener((obs, oldValue, newValue) -> {
-      dataWeek.setContentCompany(newValue);
-    });
+    text.textProperty().addListener((obs, oldValue, newValue) -> dataWeek.setContentCompany(newValue));
 
     // Bind visibility TextField
     if (!Configuration.getInstance().isCompanyAndSchool()) {
@@ -82,14 +80,14 @@ public class ContentDataWeekController {
     setSchoolContent.managedProperty().bind(button.selectedProperty());
 
     // Button Action
-    setSchoolContent.setOnAction((event) -> {
+    setSchoolContent.setOnAction(event -> {
       final int weekNumber = dataWeek.getBegin().get(WeekFields.ISO.weekOfWeekBasedYear());
       headerSchool.setText("Schulwoche: KW " + weekNumber + ": Vom "
-          + Utils.formatDate(dataWeek.getBegin()) + " bis " + Utils.formatDate(dataWeek.getEnd()));
-      for (final ContentSchoolSubject content : dataWeek.getContentSchool()) {
+              + Utils.formatDate(dataWeek.getBegin()) + " bis " + Utils.formatDate(dataWeek.getEnd()));
+      dataWeek.getContentSchool().forEach(content -> {
         try {
-          final GuiLoader<ContentSchoolController, VBox> loader =
-              new GuiLoader<>("ContentSchool.fxml");
+          final GuiLoader<ContentSchoolController, VBox> loader
+                  = new GuiLoader<>("ContentSchool.fxml");
 
           // Set Node
           final Parent node = loader.getRoot();
@@ -100,7 +98,7 @@ public class ContentDataWeekController {
         } catch (final IOException e) {
           Utils.createExceptionAlert(e);
         }
-      }
+      });
     });
   }
 }
