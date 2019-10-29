@@ -14,7 +14,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class DataMonth implements TreeElement {
+public class DataMonth implements TreeElement<DataMonth> {
+
   private static final Logger LOGGER = LogManager.getLogger(DataMonth.class);
   private LocalDate begin;
   private LocalDate end;
@@ -35,10 +36,11 @@ public class DataMonth implements TreeElement {
    * @param begin begin of the month, may not be null
    * @param end end of the month, may not be null
    * @param weeks list of weeks, may not be null
-   * @throws IllegalDateException If begin or end is not a working day or begin is after end.
+   * @throws IllegalDateException If begin or end is not a working day or begin
+   * is after end.
    */
   public DataMonth(LocalDate begin, LocalDate end, List<DataWeek> weeks)
-      throws IllegalDateException {
+          throws IllegalDateException {
     LOGGER.trace("Called DataMonth(begin: {}, end: {}, weeks: {})", begin, end, weeks);
     if (weeks == null) {
       throw new NullPointerException("weeks may not be null");
@@ -55,7 +57,8 @@ public class DataMonth implements TreeElement {
    * Adds a week to the month.
    *
    * @param week week to add, may not be null. Will be validated.
-   * @throws IllegalDateException if week is not within month or already in month.
+   * @throws IllegalDateException if week is not within month or already in
+   * month.
    */
   public void addWeek(DataWeek week) throws IllegalDateException {
     LOGGER.trace("Called addWeek(week: {})", week);
@@ -73,8 +76,8 @@ public class DataMonth implements TreeElement {
     boolean conflict = false;
     for (final DataWeek temp : weeks) {
       if (week.getBegin().isAfter(temp.getBegin()) && week.getBegin().isBefore(temp.getEnd())
-          || week.getEnd().isAfter(temp.getBegin()) && week.getEnd().isBefore(temp.getEnd())
-          || week.getBegin().isBefore(temp.getBegin()) && week.getEnd().isAfter(temp.getEnd())) {
+              || week.getEnd().isAfter(temp.getBegin()) && week.getEnd().isBefore(temp.getEnd())
+              || week.getBegin().isBefore(temp.getBegin()) && week.getEnd().isAfter(temp.getEnd())) {
         conflict = true;
         break;
       }
@@ -93,7 +96,7 @@ public class DataMonth implements TreeElement {
   }
 
   @Override
-  public List<? extends TreeElement> getChildren() {
+  public List<DataMonth> getChildren() {
     return Collections.emptyList();
   }
 
@@ -130,7 +133,8 @@ public class DataMonth implements TreeElement {
    * Sets the begin of the month.
    *
    * @param begin begin to set, may not be null
-   * @throws IllegalDateException if begin is not a working day or is after end of month
+   * @throws IllegalDateException if begin is not a working day or is after end
+   * of month
    */
   public void setBegin(LocalDate begin) throws IllegalDateException {
     LOGGER.trace("Called setBegin(begin: {})", begin);
@@ -151,7 +155,8 @@ public class DataMonth implements TreeElement {
    * Sets the end of the month.
    *
    * @param end end to set, may not be null
-   * @throws IllegalDateException if end is not a working day or is before begin of month
+   * @throws IllegalDateException if end is not a working day or is before begin
+   * of month
    */
   public void setEnd(LocalDate end) throws IllegalDateException {
     LOGGER.trace("Called setEnd(end: {})", end);
@@ -172,7 +177,8 @@ public class DataMonth implements TreeElement {
    * Sets the begin of the month.
    *
    * @param weeks weeks to set, may not be null
-   * @throws IllegalDateException if a week is within another or begins or ends outside the month
+   * @throws IllegalDateException if a week is within another or begins or ends
+   * outside the month
    */
   public void setWeeks(List<DataWeek> weeks) throws IllegalDateException {
     LOGGER.trace("Called setWeeks(weeks: {})", weeks);
