@@ -9,6 +9,16 @@
     <javax.activation.version>1.2.0</javax.activation.version>
     <jaxb.api.version>2.3.0</jaxb.api.version>
   </properties>
+  <repository>
+  <id>berndschmidt82</id>
+  <url>https://pkgs.dev.azure.com/berndschmidt82/_packaging/berndschmidt82/maven/v1</url>
+  <releases>
+    <enabled>true</enabled>
+  </releases>
+  <snapshots>
+    <enabled>true</enabled>
+  </snapshots>
+</repository>
   <dependencies>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
@@ -70,7 +80,6 @@
       <artifactId>javafx-base</artifactId>
       <version>11.0.2</version>
     </dependency>
-
   </dependencies>
   <build>
     <plugins>
