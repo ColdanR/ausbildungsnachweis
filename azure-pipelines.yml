@@ -25,7 +25,7 @@ steps:
     effectivePomSkip: false
     sonarQubeRunAnalysis: true
     sqMavenPluginVersionChoice: 'latest'
-    goals: 'deploy'
+    goals: 'package'
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.11'
     jdkArchitectureOption: 'x64'
